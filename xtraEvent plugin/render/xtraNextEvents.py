@@ -17,7 +17,6 @@ from Tools.Directories import fileExists
 import re
 
 try:
-	from Plugins.Extensions.xtraEvent.xtra import xtra
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
@@ -64,7 +63,7 @@ class xtraNextEvents(Renderer):
 			events = self.epgcache.lookupEvent(['IBDCTM', (ref.toString(), 0, 1, -1)])
 			if events:
 				evnt = events[self.nxEvnt][4]
-				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip().lower()
+				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
 				pstrNm = "{}xtraEvent/{}/{}.jpg".format(pathLoc, self.nxEvntUsed, evntNm)
 				if fileExists(pstrNm):	
 					size = self.instance.size()

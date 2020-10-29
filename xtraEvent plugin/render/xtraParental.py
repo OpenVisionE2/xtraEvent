@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # by digiteng...
-# v1 07.2020
+# 07.2020, 08.2020
 # <widget render="xtraParental" source="session.Event_Now" position="0,0" size="60,60" alphatest="blend" zPosition="2" transparent="1" />
 from Renderer import Renderer
 from enigma import ePixmap, loadPNG
@@ -10,7 +10,6 @@ import re
 import json
 
 try:
-	from Plugins.Extensions.xtraEvent.xtra import xtra
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
@@ -32,16 +31,16 @@ class xtraParental(Renderer):
 			if event:
 				fd = event.getShortDescription() + "\n" + event.getExtendedDescription()
 				try:
-					ppr = ["[aA]b ((\d+))", "[+]((\d+))", "Od lat: ((\d+))"]
+					ppr = ["[aA]b ((\d+))", "[+]((\d+))", "Od lat: ((\d+))", "(\d+)[+]", "(TP)", "[-](\d+)"]
 					for i in ppr:
 						prr = re.search(i, fd)
 						if prr:
 							parentName = prr.group(1)
-							parentName = parentName.replace("7", "6")
+							parentName = parentName.replace("7", "6").replace("10", "12").replace ("TP", "0")
 							break
 					else:
 						evnt = event.getEventName()
-						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip().lower()
+						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
 						rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
 
 						if fileExists(rating_json):

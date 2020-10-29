@@ -10,7 +10,6 @@ import re
 from Tools.Directories import fileExists
 
 try:
-	from Plugins.Extensions.xtraEvent.xtra import xtra
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
@@ -46,7 +45,7 @@ class xtraPoster(Renderer):
 			event = self.source.event
 			if event:
 				evnt = event.getEventName()
-				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip().lower()
+				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
 				pstrNm = "{}xtraEvent/poster/{}.jpg".format(pathLoc, evntNm)
 				if fileExists(pstrNm):
 					size = self.instance.size()

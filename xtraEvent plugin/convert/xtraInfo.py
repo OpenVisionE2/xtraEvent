@@ -13,7 +13,6 @@ import re
 import json
 
 try:
-	from Plugins.Extensions.xtraEvent.xtra import xtra
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
@@ -129,8 +128,10 @@ class xtraInfo(Converter, object):
 									totalSeasons = read_json["totalSeasons"]
 									if totalSeasons:
 										evnt.append("totalSeasons : {}".format(totalSeasons))
+
 								else:
 									return ""
+
 						return "\n".join(evnt)
 					except:
 						return ""

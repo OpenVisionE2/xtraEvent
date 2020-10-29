@@ -1,32 +1,48 @@
 # -*- coding: utf-8 -*-
-# by digiteng...06.2020, 07.2020, 08.2020
+# by digiteng...06.2020, 08.2020
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Screens.MessageBox import MessageBox
+from Screens.Standby import TryQuitMainloop
 import Tools.Notifications
 import os, re, random
 from Components.SelectionList import SelectionList, SelectionEntryComponent
 from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory
 from Components.ConfigList import ConfigListScreen
-from enigma import eTimer, eLabel, eServiceCenter, eServiceReference, ePixmap, ePicLoad, eSize, ePoint, loadJPG, iServiceInformation, eEPGCache, getBestPlayableServiceReference, getDesktop
+from enigma import eTimer, eLabel, eServiceCenter, eServiceReference, ePixmap, eSize, ePoint, loadJPG, iServiceInformation, eEPGCache, getBestPlayableServiceReference, getDesktop
 from Components.Sources.List import List
 from Components.Sources.StaticText import StaticText
 from Screens.VirtualKeyBoard import VirtualKeyBoard
-
 from PIL import Image, ImageDraw, ImageFilter
 from Screens.LocationBox import LocationBox
+import socket
 import requests
+import thread
+import threading
+from Components.ProgressBar import ProgressBar
+from Screens.ChoiceBox import ChoiceBox
+# import download
+
 
 desktop_size = getDesktop(0).size().width()
 epgcache = eEPGCache.getInstance()
 
 config.plugins.xtraEvent = ConfigSubsection()
+config.plugins.xtraEvent.skinSelect = ConfigSelection(default = "default", choices = [("default"), ("skin_2"), ("skin_3")])
 config.plugins.xtraEvent.loc = ConfigDirectory(default='')
 config.plugins.xtraEvent.searchMOD = ConfigSelection(default = "Current Channel", choices = [("Bouquets"), ("Current Channel")])
-config.plugins.xtraEvent.searchNUMBER = ConfigSelectionNumber(0, 999, 1, default=0)
+# config.plugins.xtraEvent.searchNUMBER = ConfigSelectionNumber(0, 999, 1, default=0)
+imglist = []
+for i in range(0, 999):
+	if i == 0:
+		imglist.append(("all epg"))
+	else:
+		imglist.append(("%d" % i))
+config.plugins.xtraEvent.searchNUMBER = ConfigSelection(default = "all epg", choices = imglist)
+
 config.plugins.xtraEvent.timer = ConfigSelectionNumber(1, 168, 1, default=1)
 config.plugins.xtraEvent.searchMANUELnmbr = ConfigSelectionNumber(0, 999, 1, default=1)
 config.plugins.xtraEvent.searchMANUELyear = ConfigInteger(default = 0, limits=(0, 9999))
@@ -35,6 +51,7 @@ config.plugins.xtraEvent.imgNmbr = ConfigSelectionNumber(0, 999, 1, default=1)
 config.plugins.xtraEvent.searchModManuel = ConfigSelection(default = "TV List", choices = [("TV List"), ("Movies List")])
 config.plugins.xtraEvent.EMCloc = ConfigDirectory(default='')
 
+config.plugins.xtraEvent.apis = ConfigYesNo(default = False)
 config.plugins.xtraEvent.tmdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
 config.plugins.xtraEvent.tvdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
 config.plugins.xtraEvent.omdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
@@ -52,6 +69,7 @@ config.plugins.xtraEvent.maze = ConfigYesNo(default = False)
 config.plugins.xtraEvent.fanart = ConfigYesNo(default = False)
 config.plugins.xtraEvent.bing = ConfigYesNo(default = False)
 config.plugins.xtraEvent.extra = ConfigYesNo(default = False)
+config.plugins.xtraEvent.extra2 = ConfigYesNo(default = False)
 
 config.plugins.xtraEvent.poster = ConfigYesNo(default = False)
 config.plugins.xtraEvent.banner = ConfigYesNo(default = False)
@@ -125,59 +143,36 @@ config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choice
 	('movies', 'MOVIE')])
 
 class xtra(Screen, ConfigListScreen):
-	if desktop_size <= 1280:
-		skin = """
-<screen name="xtra" position="0,0" size="1280,720" title="xtraEvent v1" flags="wfNoBorder" backgroundColor="transparent">
-  <ePixmap position="0,0" size="1280,720" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_hd.png" transparent="1" />
-  <widget source="Title" render="Label" position="40,35" size="745,40" font="Console; 30" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-  <widget name="config" position="40,95" size="745,510" itemHeight="30" font="Regular;24" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-  <widget source="help" position="840,600" size="400,26" render="Label" font="Regular;22" foregroundColor="#f3fc92" backgroundColor="#23262e" halign="left" valign="center" transparent="1" />
-  <widget name="status" position="840,300" size="400,30" transparent="1" font="Regular;22" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-  <widget name="info" position="840,330" size="400,260" transparent="1" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" halign="left" valign="top" />
-  <widget source="key_red" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="45,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_green" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="235,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_yellow" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="425,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_blue" render="Label" font="Regular; 20" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="615,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-  <widget source="global.CurrentTime" render="Label" position="839,40" size="400,30" font="Console; 25" valign="center" halign="center" transparent="1" foregroundColor="#c5c5c5" backgroundColor="#23262e" zPosition="2">
-    <convert type="ClockToText">Default</convert>
-  </widget>
-  <eLabel name="" text=" INFO" position="1150,640" size="100,30" transparent="1" halign="center" font="Console; 20" />
-</screen>
-		"""
-
-	else:
-		skin = """
-<screen name="xtra" position="0,0" size="1920,1080" title="xtraEvent v1" flags="wfNoBorder" backgroundColor="transparent">
-  <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_fhd.png" transparent="1" />
-  <widget source="Title" render="Label" position="60,53" size="1118,60" font="Console; 45" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-  <widget name="config" position="60,143" size="1118,765" itemHeight="45" font="Regular;36" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-  <widget source="help" position="1260,900" size="600,39" render="Label" font="Regular;33" foregroundColor="#f3fc92" backgroundColor="#23262e" halign="left" valign="center" transparent="1" />
-  <widget name="status" position="1260,450" size="600,45" transparent="1" font="Regular;33" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-  <widget name="info" position="1260,495" size="600,390" transparent="1" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" halign="left" valign="top" />
-  <widget source="key_red" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="68,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_green" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="353,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_yellow" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="638,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-  <widget source="key_blue" render="Label" font="Regular; 30" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="923,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-  <widget source="global.CurrentTime" render="Label" position="1259,60" size="600,45" font="Console; 38" valign="center" halign="center" transparent="1" foregroundColor="#c5c5c5" backgroundColor="#23262e" zPosition="2">
-    <convert type="ClockToText">Default</convert>
-  </widget>
-  <eLabel name="" text=" INFO" position="1725,960" size="150,45" transparent="1" halign="center" font="Console; 30" />
-</screen>
-		"""
 
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-
-		self.epgcache = eEPGCache.getInstance()
-
+		skin = None
+		if desktop_size <= 1280:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_720_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_720_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_720_3.xml"
+		else:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_1080_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_1080_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_1080_3.xml"
+		with open(skin, 'r') as f:
+			self.skin = f.read()
+		
+		# self.epgcache = eEPGCache.getInstance()
 		list = []
 		ConfigListScreen.__init__(self, list, session=session)
 
 		self['key_red'] = Label(_('Close'))
 		self['key_green'] = Label(_('Search'))
-		self['key_yellow'] = Label(_('Download'))
-		self['key_blue'] = Label(_('Manuel Search'))
+		# self['key_yellow'] = Label(_('Download'))
+		self['key_blue'] = Label(_('Manual Search'))
 
 		self["actions"] = ActionMap(["OkCancelActions", "SetupActions", "DirectionActions", "ColorActions", "EventViewActions", "VirtualKeyboardAction"],
 		{
@@ -187,17 +182,15 @@ class xtra(Screen, ConfigListScreen):
 			"right": self.keyRight,
 			"red": self.exit,
 			"green": self.search,
-			"yellow": self.dwnldFileld,
+			# "yellow": self.dwnldFileld,
 			"blue": self.ms,
 			"cancel": self.exit,
 			"ok": self.keyOK,
 			"info": self.strg,
-			"menu": self.brokenImageRemove,
-
-			# "info": self.about,
+			"menu": self.menuS
 		},-1)
 		
-		self.setTitle(_("xtraEvent v1"))
+		self.setTitle(_("xtraEvent..."))
 		self['status'] = Label()
 		self['info'] = Label()
 		self["help"] = StaticText()
@@ -256,7 +249,7 @@ class xtra(Screen, ConfigListScreen):
 				os.makedirs(pathLoc + "infos")
 				os.makedirs(pathLoc + "mSearch")
 				os.makedirs(pathLoc + "EMC")
-		return
+				self.exit()
 
 	def delay(self):
 		self.timer.start(100, True)
@@ -267,23 +260,27 @@ class xtra(Screen, ConfigListScreen):
 				x[1].save()
 		list = []
 		list.append(getConfigListEntry("—"*100))
-# path location_________________________________________________________________________________________________________________
-		list.append(getConfigListEntry("CONFIG MENU", config.plugins.xtraEvent.cnfg, _("general setup...")))
+# CONFIG_________________________________________________________________________________________________________________
+		list.append(getConfigListEntry("CONFIG MENU", config.plugins.xtraEvent.cnfg, _("adjust your settings and close ... your settings are valid ...")))
 		list.append(getConfigListEntry("—"*100))
 		if config.plugins.xtraEvent.cnfg.value:
 			list.append(getConfigListEntry("    LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
+			list.append(getConfigListEntry("    SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
 			
 			list.append(getConfigListEntry("    OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
 			if config.plugins.xtraEvent.opt_Images.value:
 				list.append(getConfigListEntry("\tOPTIMIZE IMAGES SELECT", config.plugins.xtraEvent.cnfgSel, _("'OK' select for optimize images...")))
-			list.append(getConfigListEntry("    TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
-			list.append(getConfigListEntry("    TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
-			list.append(getConfigListEntry("    OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
-			list.append(getConfigListEntry("    FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
+			list.append(getConfigListEntry("    YOUR API'S", config.plugins.xtraEvent.apis, _("...")))
+			if config.plugins.xtraEvent.apis.value:
+				list.append(getConfigListEntry("    TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
 			list.append(getConfigListEntry("—"*100))
-# config_________________________________________________________________________________________________________________
+
 			list.append(getConfigListEntry("    SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))		
 			list.append(getConfigListEntry("    SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
+
 			list.append(getConfigListEntry("    SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
 			list.append(getConfigListEntry("    TIMER", config.plugins.xtraEvent.timerMod, _("select timer update for events..")))
 			if config.plugins.xtraEvent.timerMod.value == True:
@@ -326,7 +323,8 @@ class xtra(Screen, ConfigListScreen):
 			if config.plugins.xtraEvent.fanart.value:
 				list.append(getConfigListEntry("\tFANART BACKDROP SIZE", config.plugins.xtraEvent.FANART_Backdrop_Resize, _("Choose backdrop sizes for FANART")))
 				list.append(getConfigListEntry("_"*100))
-			list.append(getConfigListEntry("\tEXTRA", config.plugins.xtraEvent.extra, _("tvmovie.de, bing, google search images...")))
+			list.append(getConfigListEntry("\tEXTRA", config.plugins.xtraEvent.extra, _("tvmovie.de, bing search images...")))
+			list.append(getConfigListEntry("\tEXTRA-2", config.plugins.xtraEvent.extra2, _("google search images...")))
 			list.append(getConfigListEntry("—"*100))
 # info___________________________________________________________________________________________________________________
 		list.append(getConfigListEntry("INFO", config.plugins.xtraEvent.info, _("Program information with OMDB...")))
@@ -365,12 +363,6 @@ class xtra(Screen, ConfigListScreen):
 		if cur:
 			self["help"].text = cur[2]
 
-	def search(self):
-		if config.plugins.xtraEvent.searchMOD.value == "Current Channel":
-			self.currentChEpgs() 
-		elif config.plugins.xtraEvent.searchMOD.value == "Bouquets":
-			self.session.open(selBouquets)
-
 	def currentChEpgs(self):
 		if os.path.exists(pathLoc+"events"):
 			os.remove(pathLoc+"events")
@@ -378,25 +370,37 @@ class xtra(Screen, ConfigListScreen):
 			events = None
 			ref = self.session.nav.getCurrentlyPlayingServiceReference().toString()
 			try:
-				events = self.epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
-				n = config.plugins.xtraEvent.searchNUMBER.value
-				for i in range(int(n)):
-					title = events[i][4]
-					evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip().lower()
-					
-					open(pathLoc+"events","a+").write("%s\n" % str(evntNm))
-				
-				if os.path.exists(pathLoc+"events"):
-					with open(pathLoc+"events", "r") as f:
-						titles = f.readlines()
-					titles = list(dict.fromkeys(titles))
-					n = len(titles)
+				events = epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
+				if config.plugins.xtraEvent.searchNUMBER.value == "all epg":
+					n = len(events)
+					ttls = []
+					for i in range(int(n)):
+						title = events[i][4]
+						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
+						ttls.append(str(evntNm))
+					ttls = list(dict.fromkeys(ttls))
+					open(pathLoc+"events", "w").write(str(ttls))
+					n = len(ttls)
 					self['info'].setText(_("Event to be Scanned : {}".format(str(n))))
-				self.dwnldFileld()
+				else:
+					n = config.plugins.xtraEvent.searchNUMBER.value
+					ttls = []
+					for i in range(int(n)):
+						title = events[i][4]
+						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
+						ttls.append(str(evntNm))
+					ttls = list(dict.fromkeys(ttls))
+					open(pathLoc+"events", "w").write(str(ttls))
+					n = len(ttls)
+					self['info'].setText(_("Event to be Scanned : {}".format(str(n))))
 			except:
 				pass
 		except:
 			pass
+
+	def menuS(self):
+		list = [(_('Broken Images Remove'), self.brokenImageRemove), (_('No(Exit)'), self.exit)]
+		self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('xtraEvent...'), list=list)
 
 	def compressImg(self):
 		import sys
@@ -440,12 +444,18 @@ class xtra(Screen, ConfigListScreen):
 			pass
 		self['info'].setText(_("Removed Broken Images : {}".format(str(rmvd))))
 
+	def menuCallback(self, ret = None):
+		ret and ret[1]()
+
+	def search(self):
+		import download
+		if config.plugins.xtraEvent.searchMOD.value == "Current Channel":
+			self.session.open(download.downloads)
+		if config.plugins.xtraEvent.searchMOD.value == "Bouquets":
+			self.session.open(selBouquets)
+
 	def ms(self):
 		self.session.open(manuelSearch)
-
-	def dwnldFileld(self):
-		from download import download
-		download()
 
 	def exit(self):
 		for x in self["config"].list:
@@ -455,50 +465,27 @@ class xtra(Screen, ConfigListScreen):
 		self.close()
 
 class manuelSearch(Screen, ConfigListScreen):
-	if desktop_size <= 1280:
-		skin = """
-  <screen name="manuelSearch" position="center,center" size="1280,720" title="Manuel Search..." backgroundColor="#ffffff" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1280,720" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_hd.png" transparent="1" />
-    <widget source="Title" render="Label" position="40,40" size="745,40" font="Console; 30" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-	<widget source="session.CurrentService" render="Label" position="40,80" size="638,40" zPosition="2" font="Console; 30" transparent="1" backgroundColor="#23262e" valign="center">
-		<convert type="ServiceName">Name</convert>
-	</widget>
-	<widget name="config" position="40,150" size="745,550" itemHeight="30" font="Regular;24" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-    <widget name="status" position="40,560" size="745,60" transparent="1" font="Regular;24" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-    <widget name="info" position="840,640" size="400,30" transparent="1" font="Regular;22" halign="center" foregroundColor="#c5c5c5" backgroundColor="#23262e" />
-    <widget name="Picture" position="840,320" size="185,278" zPosition="5" transparent="1" />
-	
-	<widget source="key_red" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="40,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_green" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="230,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_yellow" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="420,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_blue" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="610,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <eLabel name="" position="40,120" size="745, 1" backgroundColor="#898989" />
-
-  </screen>
-		"""
-	else:
-		skin = """
-  <screen name="manuelSearch" position="center,center" size="1920,1080" title="Manuel Search..." backgroundColor="#ffffff" flags="wfNoBorder">
-	<ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_fhd.png" transparent="1" />
-    <widget source="Title" render="Label" position="60,60" size="1118,60" font="Console; 45" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-	<widget source="session.CurrentService" render="Label" position="60,120" size="957,60" zPosition="2" font="Console; 45" transparent="1" backgroundColor="#23262e" valign="center">
-		<convert type="ServiceName">Name</convert>
-	</widget>
-	<widget name="config" position="60,225" size="1118,825" itemHeight="45" font="Regular;36" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-    <widget name="status" position="60,840" size="1118,90" transparent="1" font="Regular;36" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-    <widget name="info" position="1260,960" size="600,45" transparent="1" font="Regular;33" halign="center" foregroundColor="#c5c5c5" backgroundColor="#23262e" />
-    <widget name="Picture" position="1260,480" size="278,417" zPosition="5" transparent="1" />
-	<widget source="key_red" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="60,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_green" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="345,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_yellow" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="630,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_blue" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="915,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <eLabel name="" position="60,180" size="1118, 2" backgroundColor="#898989" />
-
-  </screen>			
-		"""
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
+
+		skin = None
+		if desktop_size <= 1280:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_720_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_720_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_720_3.xml"
+		else:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_1080_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_1080_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/manuelSearch_1080_3.xml"
+		with open(skin, 'r') as f:
+			self.skin = f.read()
 
 		self.title = ""
 		self.year = ""
@@ -528,7 +515,9 @@ class manuelSearch(Screen, ConfigListScreen):
 		self['status'] = Label()
 		self['info'] = Label()
 		self["Picture"] = Pixmap()
-		
+		self['progress'] = ProgressBar()
+		self['progress'].setRange((0, 100))
+		self['progress'].setValue(0)		
 
 		self.timer = eTimer()
 		self.timer.callback.append(self.msList)
@@ -546,6 +535,14 @@ class manuelSearch(Screen, ConfigListScreen):
 			pathLoc = config.plugins.xtraEvent.EMCloc.value
 			# self['status'].setText(_(pathLoc))
 		return
+
+	def intCheck(self):
+		try:
+			socket.setdefaulttimeout(0.5)
+			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
+			return True
+		except:
+			return False
 
 	def delay(self):
 		self.timer.start(100, True)
@@ -591,7 +588,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.imdb_Poster_size))
 
 		list.append(getConfigListEntry("—"*50))
-		list.append(getConfigListEntry(_("Next Images"), config.plugins.xtraEvent.imgNmbr))
+		list.append(getConfigListEntry(_("Show Images"), config.plugins.xtraEvent.imgNmbr))
 		list.append(getConfigListEntry("—"*50))
 		
 		self["config"].list = list
@@ -667,34 +664,38 @@ class manuelSearch(Screen, ConfigListScreen):
 				os.remove(pathLoc + "mSearch/" + f)
 		except:
 			return
-		self['status'].setText(_("Download : "))
-		from download import intCheck
-		if intCheck():
+
+		if self.intCheck():
+
 			if config.plugins.xtraEvent.PB.value == "posters":
 				if config.plugins.xtraEvent.imgs.value == "TMDB":
-					self.tmdb()
+					threading.Thread(target=self.tmdb).start()
 				if config.plugins.xtraEvent.imgs.value == "TVDB":
-					self.tvdb()
+					threading.Thread(target=self.tvdb).start()
 				if config.plugins.xtraEvent.imgs.value == "FANART":
-					self.fanart()
+					threading.Thread(target=self.fanart).start()
 				if config.plugins.xtraEvent.imgs.value == "IMDB(poster)":
-					self.imdb()
+					threading.Thread(target=self.imdb).start()
 				if config.plugins.xtraEvent.imgs.value == "Bing":
-					self.bing()
+					threading.Thread(target=self.bing).start()
 				if config.plugins.xtraEvent.imgs.value == "Google":
-					self.google()
+					threading.Thread(target=self.google).start()
 
 			if config.plugins.xtraEvent.PB.value == "backdrops":
 				if config.plugins.xtraEvent.imgs.value == "TMDB":
-					self.tmdb()
+					threading.Thread(target=self.tmdb).start()
 				if config.plugins.xtraEvent.imgs.value == "TVDB":
-					self.tvdb()
+					threading.Thread(target=self.tvdb).start()
 				if config.plugins.xtraEvent.imgs.value == "FANART":
-					self.fanart()
+					threading.Thread(target=self.fanart).start()
 				if config.plugins.xtraEvent.imgs.value == "Bing":
-					self.bing()
+					threading.Thread(target=self.bing).start()
 				if config.plugins.xtraEvent.imgs.value == "Google":
-					self.google()
+					threading.Thread(target=self.google).start()
+
+		else:
+			Tools.Notifications.AddNotification(MessageBox, _("NO INTERNET CONNECTION !.."), MessageBox.TYPE_INFO, timeout = 10)
+			return
 
 	def pc(self):
 		try:
@@ -755,7 +756,7 @@ class manuelSearch(Screen, ConfigListScreen):
 
 	def append(self):
 		try:
-			self.title = self.title.lower()
+			self.title = self.title
 			if config.plugins.xtraEvent.PB.value == "posters":
 				if config.plugins.xtraEvent.imgs.value == "bing":
 					target = pathLoc + "poster/{}.jpg".format(self.title)
@@ -767,7 +768,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				if config.plugins.xtraEvent.searchModManuel.value == "TV List":
 					target = pathLoc + "backdrop/{}.jpg".format(self.title)
 					if config.plugins.xtraEvent.imgs.value == "bing":
-						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", self.title).rstrip().lower()
+						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", self.title).rstrip()
 						target = pathLoc + "backdrop/{}.jpg".format(evntNm)
 				else:
 					target = pathLoc + "EMC/{}-backdrop.jpg".format(self.title)
@@ -791,37 +792,51 @@ class manuelSearch(Screen, ConfigListScreen):
 		except:
 			return
 
-	def tmdb(self): 
+	def tmdb(self):
+		self['progress'].setValue(0)
 		try:
 			self.srch = config.plugins.xtraEvent.searchType.value
 			self.year = config.plugins.xtraEvent.searchMANUELyear.value
 			from requests.utils import quote
-			url_tmdb = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}".format(self.srch, tmdb_api, quote(self.title))
-			if self.year != 0:
-				url_tmdb += "&primary_release_year={}&year={}".format(self.year, self.year)
-			
-			id = requests.get(url_tmdb).json()['results'][0]['id']
+			url = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}".format(self.srch, tmdb_api, quote(self.title))
+			if self.year != "0":
+				if config.plugins.xtraEvent.searchType.value == "tv":
+					url += "&first_air_date_year={}".format(self.year)
+				elif config.plugins.xtraEvent.searchType.value == "movie":
+					url += "&year={}".format(self.year)
+
+			id = requests.get(url).json()['results'][0]['id']
 			url = "https://api.themoviedb.org/3/{}/{}?api_key={}&append_to_response=images".format(self.srch, int(id), tmdb_api)
 			if config.plugins.xtraEvent.searchLang.value != "":
-				url += "&language={}".format(config.plugins.xtraEvent.searchLang.value)
+				url += "&language={}".format(config.plugins.xtraEvent.searchLang.value)			
 			if config.plugins.xtraEvent.PB.value == "posters":
 				sz = config.plugins.xtraEvent.TMDBpostersize.value
 			else:
 				sz = config.plugins.xtraEvent.TMDBbackdropsize.value
-			for i in range(99):
-				poster = requests.get(url).json()
-				poster = poster['images']['{}'.format(self.pb)][i]['file_path']
-				if poster:
-					url_poster = "https://image.tmdb.org/t/p/{}{}".format(sz, poster)
-					dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
-					open(dwnldFile, 'wb').write(requests.get(url_poster, stream=True, allow_redirects=True).content)
-					dwnldFile_tot = i+1
-					self['status'].setText(_("Download : {}".format(str(dwnldFile_tot))))
-					
+			p1 = requests.get(url).json()
+			pb_no = p1['images']['{}'.format(self.pb)]
+			n = len(pb_no)
+			if n > 0:
+				downloaded = 0
+				for i in range(int(n)):
+
+					poster = p1['images']['{}'.format(self.pb)][i]['file_path']
+					if poster:
+						url_poster = "https://image.tmdb.org/t/p/{}{}".format(sz, poster)
+						dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
+						open(dwnldFile, 'wb').write(requests.get(url_poster, stream=True, allow_redirects=True).content)
+						
+						downloaded += 1
+						self.prgrs(downloaded, n)
+			else:
+				self['status'].setText(_("Download : 0"))
+			config.plugins.xtraEvent.imgNmbr.value = 0
+
 		except:
 			return
 
 	def tvdb(self):
+		self['progress'].setValue(0)
 		try:
 			self.srch = config.plugins.xtraEvent.searchType.value
 			self.year = config.plugins.xtraEvent.searchMANUELyear.value
@@ -838,19 +853,28 @@ class manuelSearch(Screen, ConfigListScreen):
 				keyType = "fanart"
 			url = 'https://api.thetvdb.com/series/{}/images/query?keyType={}'.format(series_id, keyType)
 			u = requests.get(url, headers={"Accept-Language":"{}".format(config.plugins.xtraEvent.searchLang.value)})
+			try:
+				pb_no = u.json()["data"]
+				n = len(pb_no)
+			except:
+				self['status'].setText(_("Download : No"))
+				return
+			if n > 0:
+				downloaded = 0
+				for i in range(int(n)):
+					if config.plugins.xtraEvent.PB.value == "posters":
+						img_pb = u.json()["data"][i]['{}'.format(config.plugins.xtraEvent.TVDBpostersize.value)]
+					else:
+						img_pb = u.json()["data"][i]['{}'.format(config.plugins.xtraEvent.TVDBbackdropsize.value)]
+					url = "https://artworks.thetvdb.com/banners/{}".format(img_pb)
 
-			for i in range(99):
-				if config.plugins.xtraEvent.PB.value == "posters":
-					img_pb = u.json()["data"][i]['{}'.format(config.plugins.xtraEvent.TVDBpostersize.value)]
-				else:
-					img_pb = u.json()["data"][i]['{}'.format(config.plugins.xtraEvent.TVDBbackdropsize.value)]
-				url = "https://artworks.thetvdb.com/banners/{}".format(img_pb)
-
-				dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
-				open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-				dwnldFile_tot = i+1
-				self['status'].setText(_("Download : {}".format(str(dwnldFile_tot))))
-
+					dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
+					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+					downloaded += 1
+					self.prgrs(downloaded, n)
+			else:
+				self['status'].setText(_("Download : No"))
+			config.plugins.xtraEvent.imgNmbr.value = 0
 		except:
 			return
 
@@ -868,10 +892,10 @@ class manuelSearch(Screen, ConfigListScreen):
 			else:
 				try:
 					self.year = config.plugins.xtraEvent.searchMANUELyear.value
-					url_tmdb = "https://api.themoviedb.org/3/search/movie?api_key={}&query={}".format(tmdb_api, quote(self.title))
+					url = "https://api.themoviedb.org/3/search/movie?api_key={}&query={}".format(tmdb_api, quote(self.title))
 					if self.year != 0:
-						url_tmdb += "&primary_release_year={}&year={}".format(self.year, self.year)
-					id = requests.get(url_tmdb).json()['results'][0]['id']
+						url += "&primary_release_year={}&year={}".format(self.year, self.year)
+					id = requests.get(url).json()['results'][0]['id']
 				except:
 					pass
 
@@ -879,34 +903,53 @@ class manuelSearch(Screen, ConfigListScreen):
 				m_type = config.plugins.xtraEvent.FanartSearchType.value
 				url_fanart = "https://webservice.fanart.tv/v3/{}/{}?api_key={}".format(m_type, id, fanart_api)
 				fjs = requests.get(url_fanart).json()
-
-				for i in range(99):
-					if config.plugins.xtraEvent.PB.value == "posters":
-						if config.plugins.xtraEvent.FanartSearchType.value == "tv":
-							url = (fjs['tvposter'][i]['url'])
-						else:
-							url = (fjs['movieposter'][i]['url'])
-					
-					if config.plugins.xtraEvent.PB.value == "backdrops":
-						if config.plugins.xtraEvent.FanartSearchType.value == "tv":
-							url = (fjs['showbackground'][i]['url'])
-						else:
-							url = (fjs['moviebackground'][i]['url'])
-							
-					if url:
-						dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
-						open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-							
-						scl = 1
-						im = Image.open(dwnldFile)
+				if config.plugins.xtraEvent.PB.value == "posters":
+					if config.plugins.xtraEvent.FanartSearchType.value == "tv":
+						pb_no = fjs['tvposter']
+						n = len(pb_no)
+					else:
+						pb_no = fjs['movieposter']
+						n = len(pb_no)
+				if config.plugins.xtraEvent.PB.value == "backdrops":
+					if config.plugins.xtraEvent.FanartSearchType.value == "tv":
+						pb_no = fjs['showbackground']
+						n = len(pb_no)
+					else:
+						pb_no = fjs['moviebackground']
+						n = len(pb_no)
+				if n > 0:
+					downloaded = 0				
+					for i in range(int(n)):
 						if config.plugins.xtraEvent.PB.value == "posters":
-							scl = config.plugins.xtraEvent.FANART_Poster_Resize.value
+							if config.plugins.xtraEvent.FanartSearchType.value == "tv":
+								url = (fjs['tvposter'][i]['url'])
+							else:
+								url = (fjs['movieposter'][i]['url'])
+						
 						if config.plugins.xtraEvent.PB.value == "backdrops":
-							scl = config.plugins.xtraEvent.FANART_Backdrop_Resize.value
-						im1 = im.resize((im.size[0] // int(scl), im.size[1] // int(scl)), Image.ANTIALIAS)
-						im1.save(dwnldFile)
-						dwnldFile_tot = i+1
-						self['status'].setText(_("Download : {}".format(str(dwnldFile_tot))))
+							if config.plugins.xtraEvent.FanartSearchType.value == "tv":
+								url = (fjs['showbackground'][i]['url'])
+							else:
+								url = (fjs['moviebackground'][i]['url'])
+								
+						if url:
+							dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
+							open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+							downloaded += 1
+							self.prgrs(downloaded, n)
+							
+							scl = 1
+							im = Image.open(dwnldFile)
+							if config.plugins.xtraEvent.PB.value == "posters":
+								scl = config.plugins.xtraEvent.FANART_Poster_Resize.value
+							if config.plugins.xtraEvent.PB.value == "backdrops":
+								scl = config.plugins.xtraEvent.FANART_Backdrop_Resize.value
+							im1 = im.resize((im.size[0] // int(scl), im.size[1] // int(scl)), Image.ANTIALIAS)
+							im1.save(dwnldFile)
+
+				else:
+					self['status'].setText(_("Download : No"))
+				config.plugins.xtraEvent.imgNmbr.value = 0
 			except:
 				pass
 	
@@ -914,6 +957,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			pass
 
 	def imdb(self):
+		downloaded = 0
 		try:
 			from requests.utils import quote
 			url_find = 'https://m.imdb.com/find?q={}'.format(quote(self.title))
@@ -924,9 +968,13 @@ class manuelSearch(Screen, ConfigListScreen):
 				url = "https://{}._V1_UX{}_AL_.jpg".format(pstr, config.plugins.xtraEvent.imdb_Poster_size.value)
 				if url:
 					dwnldFile = pathLoc + "mSearch/{}-poster-1.jpg".format(self.title)
-					w = open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-					self['status'].setText(_("Download : 1"))
-					w.close()
+					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+					downloaded += 1
+					n = 1
+					self.prgrs(downloaded, n)
+				else:
+					self['status'].setText(_("Download : No"))
+				config.plugins.xtraEvent.imgNmbr.value = 0
 		except:
 			pass
 
@@ -937,12 +985,18 @@ class manuelSearch(Screen, ConfigListScreen):
 			ff = requests.get(url, stream=True, headers=headers).text
 			p = re.findall('ihk=\"\/th\?id=(.*?)&', ff)
 			n = len(p)
-			for i in range(n):
-				url = "https://www.bing.com/th?id={}".format(p[i])
-				dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
-				open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-				dwnldFile_tot = i+1
-				self['status'].setText(_("Download : {}".format(str(dwnldFile_tot))))
+			downloaded = 0
+			if n > 0:
+				for i in range(n):
+					url = "https://www.bing.com/th?id={}".format(p[i])
+					dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
+					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+
+					downloaded += 1
+					self.prgrs(downloaded, n)
+			else:
+				self['status'].setText(_("Download : No"))
+			config.plugins.xtraEvent.imgNmbr.value = 0
 		except:
 			pass
 
@@ -952,14 +1006,22 @@ class manuelSearch(Screen, ConfigListScreen):
 			headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 			ff = requests.get(url, stream=True, headers=headers).text
 			p = re.findall('"https://(.*?).jpg",(\d*),(\d*)', ff)
-			for i in range(9):
+			n = 9
+			downloaded = 0
+			for i in range(n):
 				url = "https://" + p[i+1][0] + ".jpg"
 				dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
 				open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-				dwnldFile_tot = i+1
-				self['status'].setText(_("Download : {}".format(str(dwnldFile_tot))))
+				downloaded += 1
+				self.prgrs(downloaded, n)
+			config.plugins.xtraEvent.imgNmbr.value = 0
 		except:
-			pass
+			self['status'].setText(_("Download : No"))
+			return
+
+	def prgrs(self, downloaded, n):
+		self['status'].setText("Download : {} / {}".format(downloaded, n))
+		self['progress'].setValue(int(100*downloaded/n))
 
 def bqtList():
 	bouquets = []
@@ -996,50 +1058,36 @@ def chList(bqtNm):
 	return
 
 class selBouquets(Screen):
-	if desktop_size <= 1280:
-		skin = """
-  <screen name="selBouquets" position="center,center" size="1280,720" title="xtraEvent v1" backgroundColor="#ffffff">
-    <ePixmap position="0,0" size="1280,720" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_hd.png" transparent="1" />
-    <widget source="Title" render="Label" position="40,35" size="745,40" font="Console; 30" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-    <widget name="list" position="40,95" size="745,510" itemHeight="30" font="Regular;24" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-
-    <widget name="status" position="840,300" size="400,30" transparent="1" font="Regular;22" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-    <widget name="info" position="840,330" size="400,270" transparent="1" font="Regular;10" foregroundColor="#c5c5c5" backgroundColor="#23262e" halign="left" valign="top" />
-    <widget source="key_red" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="40,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_green" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="230,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_yellow" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="420,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_blue" render="Label" font="Regular;22" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="610,640" size="170,30" halign="left" transparent="1" zPosition="1" />
-
-    <eLabel name="" text="v1" position="840, 35" size="400, 40" transparent="1" halign="center" font="Console; 30" backgroundColor="#0023262e" />
-  </screen>
-		"""
-	else:
-		skin = """
-  <screen name="selBouquets" position="center,center" size="1920,1080" title="xtraEvent v1" backgroundColor="#ffffff">
-    <ePixmap position="0,0" size="1920,1080" zPosition="-1" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/xtra_fhd.png" transparent="1" />
-    <widget source="Title" render="Label" position="60,53" size="1118,60" font="Console; 45" foregroundColor="#c5c5c5" backgroundColor="#23262e" transparent="1" />
-    <widget name="list" position="60,143" size="1118,765" itemHeight="45" font="Regular;36" foregroundColor="#c5c5c5" scrollbarMode="showOnDemand" transparent="1" backgroundColor="#23262e" backgroundColorSelected="#565d6d" foregroundColorSelected="#ffffff" />
-    <widget name="status" position="1260,450" size="600,45" transparent="1" font="Regular;33" foregroundColor="#92f1fc" backgroundColor="#23262e" />
-    <widget name="info" position="1260,495" size="600,405" transparent="1" font="Regular;15" foregroundColor="#c5c5c5" backgroundColor="#23262e" halign="left" valign="top" />
-    <widget source="key_red" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="60,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_green" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="345,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_yellow" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="630,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <widget source="key_blue" render="Label" font="Regular;33" foregroundColor="#c5c5c5" backgroundColor="#23262e" position="915,960" size="255,45" halign="left" transparent="1" zPosition="1" />
-    <eLabel name="" text="v1" position="1260, 53" size="600, 60" transparent="1" halign="center" font="Console; 45" backgroundColor="#0023262e" />
-  </screen>
-		"""		
-
+	
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
-		
+
+		skin = None
+		if desktop_size <= 1280:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_720_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_720_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_720_3.xml"
+		else:
+			if config.plugins.xtraEvent.skinSelect.value == "default":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_1080_default.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_2":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_1080_2.xml"
+			elif config.plugins.xtraEvent.skinSelect.value == "skin_3":
+				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/selBouquets_1080_3.xml"
+		with open(skin, 'r') as f:
+			self.skin = f.read()
+
 		self.bouquets = bqtList()
-		self.epgcache = eEPGCache.getInstance()
+		# self.epgcache = eEPGCache.getInstance()
 		self.setTitle(_("Bouquet Selection"))
 		self.sources = [SelectionEntryComponent(s[0], s[1], 0, (s[0] in ["sources"])) for s in self.bouquets]
 		self["list"] = SelectionList(self.sources)
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["OkCancelActions", "ColorActions"],
 			{
 				"cancel": self.cancel,
 				"red": self.cancel,
@@ -1047,12 +1095,12 @@ class selBouquets(Screen):
 				"yellow": self["list"].toggleSelection,
 				"blue": self["list"].toggleAllSelection,
 
-				"ok": self["list"].toggleSelection,
+				"ok": self["list"].toggleSelection
 			}, -2)
 
 		self["key_red"] = Label(_("Cancel"))
 		self["key_green"] = Label(_("Save"))
-		self["key_yellow"] = Label(_("Select"))
+		self["key_yellow"] = Label(_("Select(OK)"))
 		self["key_blue"] = Label(_("All Select"))
 		
 		self['status'] = Label()
@@ -1066,28 +1114,55 @@ class selBouquets(Screen):
 		try:
 			self.sources = []
 			for idx,item in enumerate(self["list"].list):
-					item = self["list"].list[idx][0]
-					if item[3]:
-						self.sources.append(item[0])
+				item = self["list"].list[idx][0]
+				if item[3]:
+					self.sources.append(item[0])
 
 			for p in self.sources:
 				serviceHandler = eServiceCenter.getInstance()
-				channels = chList(p)
-				for ref in channels:
+				refs = chList(p)
+				# open(pathLoc + "bqts", "w").write(str(refs))
+				# self.refs = refs
+				eventlist=[]
+				for ref in refs:
 					open(pathLoc + "bqts", "a+").write("%s\n"% str(ref))
 					try:
-						events = self.epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
+						events = epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
 						n = config.plugins.xtraEvent.searchNUMBER.value
 						for i in range(int(n)):
 							title = events[i][4]
-							evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip().lower()
-							
-							open(pathLoc+"events","a+").write("%s\n"% str(evntNm))
+							evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
+							eventlist.append(evntNm)
+						open(pathLoc+"events","w").write(str(eventlist))
+					
 					except:
 						pass
-			self.close()
+
+			else:
+				list = [(_('With Plugin Download'), self.withPluginDownload), (_('With Timer Download'), self.withTimerDownload), (_('No(Exit)'), self.cancel)]
+				self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('Download ?'), list=list)
+
 		except:
 			pass
+
+	def withPluginDownload(self):
+		self.session.open(download.downloads)
+
+	def withTimerDownload(self):
+		if config.plugins.xtraEvent.timerMod.value == False:
+			self.session.open(MessageBox, _("PLEASE TURN ON AND SET THE TIMER! ..."), MessageBox.TYPE_INFO, timeout = 10)
+		else:
+			self.session.openWithCallback(self.restart, MessageBox, _("NOW AND RESTART TO SEARCH AND DOWNLOAD IN BACKGROUND WITH TIMER?"), MessageBox.TYPE_YESNO, timeout = 20)
+
+	def menuCallback(self, ret = None):
+		ret and ret[1]()
+
+	def restart(self, answer):
+		if answer is True:
+			configfile.save()
+			self.session.open(TryQuitMainloop, 3)
+		else:
+			self.close()
 
 	def cancel(self):
 		self.close(self.session, False)
