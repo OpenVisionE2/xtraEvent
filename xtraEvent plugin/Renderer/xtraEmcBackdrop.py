@@ -20,7 +20,9 @@ class xtraEmcBackdrop(Renderer):
 		Renderer.__init__(self)
 		self.piconsize = (0,0)
 		self.delayPicTime = 100
-
+		self.timer = eTimer()
+		self.timer.callback.append(self.showPicture)
+		
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
 		for (attrib, value) in self.skinAttributes:
@@ -37,7 +39,7 @@ class xtraEmcBackdrop(Renderer):
 			return
 		else:
 			if what[0] != self.CHANGED_CLEAR:
-				self.delay()
+				self.timer.start(self.delayPicTime, True)
 
 	def showPicture(self):
 		movieNm = ""
@@ -60,9 +62,3 @@ class xtraEmcBackdrop(Renderer):
 				self.instance.hide()
 		except:
 			pass
-
-	def delay(self):
-		self.timer = eTimer()
-		self.timer.callback.append(self.showPicture)
-		self.timer.start(self.delayPicTime, True)
-		

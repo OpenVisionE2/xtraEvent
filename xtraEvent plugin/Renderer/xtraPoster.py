@@ -1,30 +1,32 @@
 # -*- coding: utf-8 -*-
-# by digiteng...04.2020 - 08,2020
-# <widget source="session.Event_Now" render="xtraBackdrop" delayPic="500" position="0,0" size="300,169" zPosition="1" />
+# by digiteng...08.2020
+# <widget source="session.Event_Now" render="xtraPoster" delayPic="200" position="0,0" size="185,278" zPosition="1" />
 from Renderer import Renderer
-from enigma import ePixmap, ePicLoad, eTimer, eEPGCache
+from enigma import ePixmap, eTimer, ePicLoad
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
 from Components.config import config
-from Tools.Directories import fileExists
 import re
+from Tools.Directories import fileExists
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
 
-class xtraBackdrop(Renderer):
+class xtraPoster(Renderer):
+
 	def __init__(self):
 		Renderer.__init__(self)
 		self.delayPicTime = 100
-
+		self.timer = eTimer()
+		self.timer.callback.append(self.showPicture)
+		
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
 		for attrib, value in self.skinAttributes:
-			if attrib == 'delayPic':          # delay time(ms) for backdrop showing...
+			if attrib == 'delayPic':          # delay time(ms) for poster showing...
 				self.delayPicTime = int(value)
-			
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 
@@ -34,7 +36,7 @@ class xtraBackdrop(Renderer):
 			return
 		else:
 			if what[0] != self.CHANGED_CLEAR:
-				self.delay()
+				self.timer.start(self.delayPicTime, True)
 
 	def showPicture(self):
 		evnt = ''
@@ -45,7 +47,7 @@ class xtraBackdrop(Renderer):
 			if event:
 				evnt = event.getEventName()
 				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
-				pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
+				pstrNm = "{}xtraEvent/poster/{}.jpg".format(pathLoc, evntNm)
 				if fileExists(pstrNm):
 					size = self.instance.size()
 					self.picload = ePicLoad()
@@ -63,12 +65,6 @@ class xtraBackdrop(Renderer):
 					self.instance.hide()
 			else:
 				self.instance.hide()
+			return
 		except:
 			pass
-
-
-	def delay(self):
-		self.timer = eTimer()
-		self.timer.callback.append(self.showPicture)
-		self.timer.start(self.delayPicTime, True)
-		

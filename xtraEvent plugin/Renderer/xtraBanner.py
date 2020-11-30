@@ -1,31 +1,32 @@
 # -*- coding: utf-8 -*-
-# by digiteng...08.2020
-# <widget source="session.Event_Now" render="xtraPoster" delayPic="200" position="0,0" size="185,278" zPosition="1" />
+# by digiteng...06.2020 - 08.2020,
+# <widget source="session.Event_Now" render="xtraBanner" delayPic="500" position="0,0" size="762,141" zPosition="1" />
 from Renderer import Renderer
-from enigma import ePixmap, eTimer, ePicLoad
+from enigma import ePixmap, ePicLoad, eTimer, eEPGCache
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
 from Components.config import config
-import re
 from Tools.Directories import fileExists
+import re
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pass
 
-class xtraPoster(Renderer):
+class xtraBanner(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
 		self.delayPicTime = 100
-
+		self.timer = eTimer()
+		self.timer.callback.append(self.showPicture)
+		
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
 		for attrib, value in self.skinAttributes:
-			if attrib == 'delayPic':          # delay time(ms) for poster showing...
+			if attrib == 'delayPic':          # delay time(ms) for banner showing...
 				self.delayPicTime = int(value)
-			
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 
@@ -35,7 +36,7 @@ class xtraPoster(Renderer):
 			return
 		else:
 			if what[0] != self.CHANGED_CLEAR:
-				self.delay()
+				self.timer.start(self.delayPicTime, True)
 
 	def showPicture(self):
 		evnt = ''
@@ -46,7 +47,7 @@ class xtraPoster(Renderer):
 			if event:
 				evnt = event.getEventName()
 				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
-				pstrNm = "{}xtraEvent/poster/{}.jpg".format(pathLoc, evntNm)
+				pstrNm = "{}xtraEvent/banner/{}.jpg".format(pathLoc, evntNm)
 				if fileExists(pstrNm):
 					size = self.instance.size()
 					self.picload = ePicLoad()
@@ -64,11 +65,5 @@ class xtraPoster(Renderer):
 					self.instance.hide()
 			else:
 				self.instance.hide()
-			return
 		except:
 			pass
-
-	def delay(self):
-		self.timer = eTimer()
-		self.timer.callback.append(self.showPicture)
-		self.timer.start(self.delayPicTime, True)

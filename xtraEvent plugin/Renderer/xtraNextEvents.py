@@ -30,6 +30,8 @@ class xtraNextEvents(Renderer):
 		self.nxEvntUsed = ""
 		self.delayPicTime = 100
 		self.epgcache = eEPGCache.getInstance()
+		self.timer = eTimer()
+		self.timer.callback.append(self.showPicture)
 
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
@@ -52,7 +54,7 @@ class xtraNextEvents(Renderer):
 			return
 		else:
 			if what[0] != self.CHANGED_CLEAR:
-				self.delay()
+				self.timer.start(self.delayPicTime, True)
 
 	def showPicture(self):
 		evnt = ''
@@ -84,9 +86,3 @@ class xtraNextEvents(Renderer):
 				self.instance.hide()
 		except:
 			pass
-
-	def delay(self):
-		self.timer = eTimer()
-		self.timer.callback.append(self.showPicture)
-		self.timer.start(self.delayPicTime, True)
-		

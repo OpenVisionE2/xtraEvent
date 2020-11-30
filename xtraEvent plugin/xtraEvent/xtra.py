@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# by digiteng...06.2020, 08.2020
+# by digiteng...06.2020, 11.2020
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
@@ -18,14 +18,12 @@ from Components.Sources.StaticText import StaticText
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from PIL import Image, ImageDraw, ImageFilter
 from Screens.LocationBox import LocationBox
-import socket
+# import socket
 import requests
-import thread
 import threading
 from Components.ProgressBar import ProgressBar
 from Screens.ChoiceBox import ChoiceBox
-# import download
-
+import shutil
 
 desktop_size = getDesktop(0).size().width()
 epgcache = eEPGCache.getInstance()
@@ -64,7 +62,6 @@ config.plugins.xtraEvent.timerMod = ConfigYesNo(default = False)
 
 config.plugins.xtraEvent.tmdb = ConfigYesNo(default = False)
 config.plugins.xtraEvent.tvdb = ConfigYesNo(default = False)
-# config.plugins.xtraEvent.omdb = ConfigYesNo(default = False)
 config.plugins.xtraEvent.maze = ConfigYesNo(default = False)
 config.plugins.xtraEvent.fanart = ConfigYesNo(default = False)
 config.plugins.xtraEvent.bing = ConfigYesNo(default = False)
@@ -93,7 +90,7 @@ config.plugins.xtraEvent.TVDBpostersize = ConfigSelection(default="thumbnail", c
 	("fileName", "original(680x1000)")])
 
 config.plugins.xtraEvent.TMDBbackdropsize = ConfigSelection(default="w300", choices = [
- 	("w300", "300x170"), 
+	("w300", "300x170"), 
 	("w780", "780x440"), 
 	("w1280", "1280x720"),
 	("original", "ORIGINAL")])
@@ -110,11 +107,8 @@ config.plugins.xtraEvent.FANART_Poster_Resize = ConfigSelection(default="10", ch
 	("1", "1000x1426")])
 
 config.plugins.xtraEvent.FANART_Backdrop_Resize = ConfigSelection(default="10", choices = [
-	("10", "192x108"), 
-	("5", "384x216"), 
-	("3", "634x357"), 
-	("2", "960x540"), 
-	("1", "1920x1080")])
+	("2", "original/2"), 
+	("1", "original")])
 
 config.plugins.xtraEvent.imdb_Poster_size = ConfigSelection(default="10", choices = [
 	("185", "185x278"), 
@@ -164,8 +158,7 @@ class xtra(Screen, ConfigListScreen):
 				skin = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/skins/xtra_1080_3.xml"
 		with open(skin, 'r') as f:
 			self.skin = f.read()
-		
-		# self.epgcache = eEPGCache.getInstance()
+
 		list = []
 		ConfigListScreen.__init__(self, list, session=session)
 
@@ -264,25 +257,25 @@ class xtra(Screen, ConfigListScreen):
 		list.append(getConfigListEntry("CONFIG MENU", config.plugins.xtraEvent.cnfg, _("adjust your settings and close ... your settings are valid ...")))
 		list.append(getConfigListEntry("—"*100))
 		if config.plugins.xtraEvent.cnfg.value:
-			list.append(getConfigListEntry("    LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
-			list.append(getConfigListEntry("    SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
+			list.append(getConfigListEntry("	LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
+			list.append(getConfigListEntry("	SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
 			
-			list.append(getConfigListEntry("    OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
+			list.append(getConfigListEntry("	OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
 			if config.plugins.xtraEvent.opt_Images.value:
 				list.append(getConfigListEntry("\tOPTIMIZE IMAGES SELECT", config.plugins.xtraEvent.cnfgSel, _("'OK' select for optimize images...")))
-			list.append(getConfigListEntry("    YOUR API'S", config.plugins.xtraEvent.apis, _("...")))
+			list.append(getConfigListEntry("	YOUR API'S", config.plugins.xtraEvent.apis, _("...")))
 			if config.plugins.xtraEvent.apis.value:
-				list.append(getConfigListEntry("    TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("    TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("    OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("    FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("	TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("	TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("	OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("	FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
 			list.append(getConfigListEntry("—"*100))
 
-			list.append(getConfigListEntry("    SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))		
-			list.append(getConfigListEntry("    SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
+			list.append(getConfigListEntry("	SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))		
+			list.append(getConfigListEntry("	SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
 
-			list.append(getConfigListEntry("    SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
-			list.append(getConfigListEntry("    TIMER", config.plugins.xtraEvent.timerMod, _("select timer update for events..")))
+			list.append(getConfigListEntry("	SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
+			list.append(getConfigListEntry("	TIMER", config.plugins.xtraEvent.timerMod, _("select timer update for events..")))
 			if config.plugins.xtraEvent.timerMod.value == True:
 				list.append(getConfigListEntry("\tTIMER(hours)", config.plugins.xtraEvent.timer, _("..."),))
 		list.append(getConfigListEntry("—"*100))
@@ -292,39 +285,39 @@ class xtra(Screen, ConfigListScreen):
 # poster__________________________________________________________________________________________________________________
 		list.append(getConfigListEntry("POSTER", config.plugins.xtraEvent.poster, _("...")))
 		if config.plugins.xtraEvent.poster.value == True:
-			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _("source for poster..."),))
+			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _(""),))
 			if config.plugins.xtraEvent.tmdb.value :
-				list.append(getConfigListEntry("\tTMDB POSTER SIZE", config.plugins.xtraEvent.TMDBpostersize, _("Choose poster sizes for TMDB")))
+				list.append(getConfigListEntry("\tTMDB POSTER SIZE", config.plugins.xtraEvent.TMDBpostersize, _("")))
 				list.append(getConfigListEntry("-"*100))
 			list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _("source for poster...")))
 			if config.plugins.xtraEvent.tvdb.value :
-				list.append(getConfigListEntry("\tTVDB POSTER SIZE", config.plugins.xtraEvent.TVDBpostersize, _("Choose poster sizes for TVDB")))
+				list.append(getConfigListEntry("\tTVDB POSTER SIZE", config.plugins.xtraEvent.TVDBpostersize, _("")))
 				list.append(getConfigListEntry("_"*100))
 			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("source for poster...")))	
 			if config.plugins.xtraEvent.fanart.value:
-				list.append(getConfigListEntry("\tFANART POSTER SIZE", config.plugins.xtraEvent.FANART_Poster_Resize, _("Choose poster sizes for FANART")))
+				list.append(getConfigListEntry("\tFANART POSTER SIZE", config.plugins.xtraEvent.FANART_Poster_Resize, _("")))
 				list.append(getConfigListEntry("—"*100))
-			list.append(getConfigListEntry("\tMAZE(TV SHOWS)", config.plugins.xtraEvent.maze, _("source for tv shows...")))
+			list.append(getConfigListEntry("\tMAZE(TV SHOWS)", config.plugins.xtraEvent.maze, _("")))
 # banner__________________________________________________________________________________________________________________
-		list.append(getConfigListEntry("BANNER", config.plugins.xtraEvent.banner, _("tvdb and fanart for BANNER...")))
+		list.append(getConfigListEntry("BANNER", config.plugins.xtraEvent.banner, _("")))
 
 # backdrop_______________________________________________________________________________________________________________
-		list.append(getConfigListEntry("BACKDROP", config.plugins.xtraEvent.backdrop, _("source for backdrop...")))
+		list.append(getConfigListEntry("BACKDROP", config.plugins.xtraEvent.backdrop, _("")))
 		if config.plugins.xtraEvent.backdrop.value == True:
-			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _("source for backdrop...")))
+			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _("")))
 			if config.plugins.xtraEvent.tmdb.value :
-				list.append(getConfigListEntry("\tTMDB BACKDROP SIZE", config.plugins.xtraEvent.TMDBbackdropsize, _("Choose backdrop sizes for TMDB")))
+				list.append(getConfigListEntry("\tTMDB BACKDROP SIZE", config.plugins.xtraEvent.TMDBbackdropsize, _("")))
 				list.append(getConfigListEntry("_"*100))
-			list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _("source for backdrop...")))
+			list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _("")))
 			if config.plugins.xtraEvent.tvdb.value :
-				list.append(getConfigListEntry("\tTVDB BACKDROP SIZE", config.plugins.xtraEvent.TVDBbackdropsize, _("Choose backdrop sizes for TVDB")))
+				list.append(getConfigListEntry("\tTVDB BACKDROP SIZE", config.plugins.xtraEvent.TVDBbackdropsize, _("")))
 				list.append(getConfigListEntry("_"*100))
-			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("source for backdrop...")))
+			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("")))
 			if config.plugins.xtraEvent.fanart.value:
-				list.append(getConfigListEntry("\tFANART BACKDROP SIZE", config.plugins.xtraEvent.FANART_Backdrop_Resize, _("Choose backdrop sizes for FANART")))
+				list.append(getConfigListEntry("\tFANART BACKDROP SIZE", config.plugins.xtraEvent.FANART_Backdrop_Resize, _("")))
 				list.append(getConfigListEntry("_"*100))
-			list.append(getConfigListEntry("\tEXTRA", config.plugins.xtraEvent.extra, _("tvmovie.de, bing search images...")))
-			list.append(getConfigListEntry("\tEXTRA-2", config.plugins.xtraEvent.extra2, _("google search images...")))
+			list.append(getConfigListEntry("\tEXTRA", config.plugins.xtraEvent.extra, _("source tvmovie.de...")))
+			list.append(getConfigListEntry("\tEXTRA-2", config.plugins.xtraEvent.extra2, _("source google search images...")))
 			list.append(getConfigListEntry("—"*100))
 # info___________________________________________________________________________________________________________________
 		list.append(getConfigListEntry("INFO", config.plugins.xtraEvent.info, _("Program information with OMDB...")))
@@ -538,7 +531,7 @@ class manuelSearch(Screen, ConfigListScreen):
 
 	def intCheck(self):
 		try:
-			socket.setdefaulttimeout(0.5)
+			socket.setdefaulttimeout(5)
 			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
 			return True
 		except:
@@ -664,38 +657,31 @@ class manuelSearch(Screen, ConfigListScreen):
 				os.remove(pathLoc + "mSearch/" + f)
 		except:
 			return
+		if config.plugins.xtraEvent.PB.value == "posters":
+			if config.plugins.xtraEvent.imgs.value == "TMDB":
+				threading.Thread(target=self.tmdb).start()
+			if config.plugins.xtraEvent.imgs.value == "TVDB":
+				threading.Thread(target=self.tvdb).start()
+			if config.plugins.xtraEvent.imgs.value == "FANART":
+				threading.Thread(target=self.fanart).start()
+			if config.plugins.xtraEvent.imgs.value == "IMDB(poster)":
+				threading.Thread(target=self.imdb).start()
+			if config.plugins.xtraEvent.imgs.value == "Bing":
+				threading.Thread(target=self.bing).start()
+			if config.plugins.xtraEvent.imgs.value == "Google":
+				threading.Thread(target=self.google).start()
 
-		if self.intCheck():
-
-			if config.plugins.xtraEvent.PB.value == "posters":
-				if config.plugins.xtraEvent.imgs.value == "TMDB":
-					threading.Thread(target=self.tmdb).start()
-				if config.plugins.xtraEvent.imgs.value == "TVDB":
-					threading.Thread(target=self.tvdb).start()
-				if config.plugins.xtraEvent.imgs.value == "FANART":
-					threading.Thread(target=self.fanart).start()
-				if config.plugins.xtraEvent.imgs.value == "IMDB(poster)":
-					threading.Thread(target=self.imdb).start()
-				if config.plugins.xtraEvent.imgs.value == "Bing":
-					threading.Thread(target=self.bing).start()
-				if config.plugins.xtraEvent.imgs.value == "Google":
-					threading.Thread(target=self.google).start()
-
-			if config.plugins.xtraEvent.PB.value == "backdrops":
-				if config.plugins.xtraEvent.imgs.value == "TMDB":
-					threading.Thread(target=self.tmdb).start()
-				if config.plugins.xtraEvent.imgs.value == "TVDB":
-					threading.Thread(target=self.tvdb).start()
-				if config.plugins.xtraEvent.imgs.value == "FANART":
-					threading.Thread(target=self.fanart).start()
-				if config.plugins.xtraEvent.imgs.value == "Bing":
-					threading.Thread(target=self.bing).start()
-				if config.plugins.xtraEvent.imgs.value == "Google":
-					threading.Thread(target=self.google).start()
-
-		else:
-			Tools.Notifications.AddNotification(MessageBox, _("NO INTERNET CONNECTION !.."), MessageBox.TYPE_INFO, timeout = 10)
-			return
+		if config.plugins.xtraEvent.PB.value == "backdrops":
+			if config.plugins.xtraEvent.imgs.value == "TMDB":
+				threading.Thread(target=self.tmdb).start()
+			if config.plugins.xtraEvent.imgs.value == "TVDB":
+				threading.Thread(target=self.tvdb).start()
+			if config.plugins.xtraEvent.imgs.value == "FANART":
+				threading.Thread(target=self.fanart).start()
+			if config.plugins.xtraEvent.imgs.value == "Bing":
+				threading.Thread(target=self.bing).start()
+			if config.plugins.xtraEvent.imgs.value == "Google":
+				threading.Thread(target=self.google).start()
 
 	def pc(self):
 		try:
@@ -750,7 +736,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			im = Image.open(pb_path)
 			pb_res = im.size
 
-			self['info'].setText(_("{}/{}    {}    {} ".format(cur,tot,pb_sz,pb_res)))
+			self['info'].setText(_("{}/{}	 {}	   {} ".format(cur,tot,pb_sz,pb_res)))
 		except:
 			return
 
@@ -808,7 +794,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			id = requests.get(url).json()['results'][0]['id']
 			url = "https://api.themoviedb.org/3/{}/{}?api_key={}&append_to_response=images".format(self.srch, int(id), tmdb_api)
 			if config.plugins.xtraEvent.searchLang.value != "":
-				url += "&language={}".format(config.plugins.xtraEvent.searchLang.value)			
+				url += "&language={}".format(config.plugins.xtraEvent.searchLang.value)
 			if config.plugins.xtraEvent.PB.value == "posters":
 				sz = config.plugins.xtraEvent.TMDBpostersize.value
 			else:
@@ -979,26 +965,28 @@ class manuelSearch(Screen, ConfigListScreen):
 			pass
 
 	def bing(self):
-		try:
-			url="https://www.bing.com/search?q={}+poster+jpg".format(self.title.replace(" ", "+"))
-			headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
-			ff = requests.get(url, stream=True, headers=headers).text
-			p = re.findall('ihk=\"\/th\?id=(.*?)&', ff)
-			n = len(p)
-			downloaded = 0
-			if n > 0:
-				for i in range(n):
-					url = "https://www.bing.com/th?id={}".format(p[i])
-					dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
-					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+		self['status'].setText(_("Download : No"))
+		pass
+		# try:
+			# url="https://www.bing.com/search?q={}+poster+jpg".format(self.title.replace(" ", "+"))
+			# headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+			# ff = requests.get(url, stream=True, headers=headers).text
+			# p = re.findall('ihk=\"\/th\?id=(.*?)&', ff)
+			# n = len(p)
+			# downloaded = 0
+			# if n > 0:
+				# for i in range(n):
+					# url = "https://www.bing.com/th?id={}".format(p[i])
+					# dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i+1)
+					# open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 
-					downloaded += 1
-					self.prgrs(downloaded, n)
-			else:
-				self['status'].setText(_("Download : No"))
-			config.plugins.xtraEvent.imgNmbr.value = 0
-		except:
-			pass
+					# downloaded += 1
+					# self.prgrs(downloaded, n)
+			# else:
+				# self['status'].setText(_("Download : No"))
+			# config.plugins.xtraEvent.imgNmbr.value = 0
+		# except:
+			# pass
 
 	def google(self):
 		try:
@@ -1121,22 +1109,21 @@ class selBouquets(Screen):
 			for p in self.sources:
 				serviceHandler = eServiceCenter.getInstance()
 				refs = chList(p)
-				# open(pathLoc + "bqts", "w").write(str(refs))
-				# self.refs = refs
+
 				eventlist=[]
 				for ref in refs:
 					open(pathLoc + "bqts", "a+").write("%s\n"% str(ref))
-					try:
-						events = epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
-						n = config.plugins.xtraEvent.searchNUMBER.value
-						for i in range(int(n)):
-							title = events[i][4]
-							evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
-							eventlist.append(evntNm)
-						open(pathLoc+"events","w").write(str(eventlist))
+					# try:
+						# events = epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
+						# n = config.plugins.xtraEvent.searchNUMBER.value
+						# for i in range(int(n)):
+							# title = events[i][4]
+							# evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
+							# eventlist.append(evntNm)
+						# open(pathLoc+"events","w").write(str(eventlist))
 					
-					except:
-						pass
+					# except:
+						# pass
 
 			else:
 				list = [(_('With Plugin Download'), self.withPluginDownload), (_('With Timer Download'), self.withTimerDownload), (_('No(Exit)'), self.cancel)]
@@ -1146,6 +1133,7 @@ class selBouquets(Screen):
 			pass
 
 	def withPluginDownload(self):
+		import download
 		self.session.open(download.downloads)
 
 	def withTimerDownload(self):

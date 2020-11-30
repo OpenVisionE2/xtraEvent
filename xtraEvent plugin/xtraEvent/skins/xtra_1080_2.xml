@@ -4,7 +4,8 @@
     <widget source="help" position="1260,840" size="600,100" render="Label" font="Regular;28" foregroundColor="#f3fc92" backgroundColor="#30000000" halign="left" valign="center" transparent="1" />
     <widget name="status" position="1260,140" size="600,45" transparent="1" font="Regular;33" foregroundColor="#92f1fc" backgroundColor="#30000000" />
     <widget name="info" position="1260,220" size="600,600" transparent="1" font="Regular;33" foregroundColor="#ffffff" backgroundColor="#30000000" halign="left" valign="top" />
-    <eLabel name="new eLabel" position="60,975" size="10,45" backgroundColor="#d90000" zPosition="2" />
+    <widget name="int_statu" position="1819,55" size="40,40" transparent="1" text="●" font="Regular; 36" foregroundColor="#1edb76" backgroundColor="#23262e" zPosition="2" halign="center" />
+	<eLabel name="new eLabel" position="60,975" size="10,45" backgroundColor="#d90000" zPosition="2" />
     <eLabel name="new eLabel" position="342,975" size="10,45" backgroundColor="#2db300" zPosition="2" />
     <eLabel name="new eLabel" position="620,975" size="10,45" backgroundColor="#ffd24c" zPosition="2" />
     <eLabel name="new eLabel" position="900,975" size="10,45" backgroundColor="#00a3d9" zPosition="2" />

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# by digiteng...06.2020 - 08.2020,
-# <widget source="session.Event_Now" render="xtraBanner" delayPic="500" position="0,0" size="762,141" zPosition="1" />
+# by digiteng...04.2020 - 11.2020
+# <widget source="session.Event_Now" render="xtraBackdrop" delayPic="500" position="0,0" size="300,169" zPosition="1" />
 from Renderer import Renderer
 from enigma import ePixmap, ePicLoad, eTimer, eEPGCache
 from Components.AVSwitch import AVSwitch
@@ -14,8 +14,7 @@ try:
 except:
 	pass
 
-class xtraBanner(Renderer):
-
+class xtraBackdrop(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
 		self.delayPicTime = 100
@@ -23,8 +22,9 @@ class xtraBanner(Renderer):
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
 		for attrib, value in self.skinAttributes:
-			if attrib == 'delayPic':          # delay time(ms) for banner showing...
+			if attrib == 'delayPic':          # delay time(ms) for backdrop showing...
 				self.delayPicTime = int(value)
+			
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 
@@ -45,7 +45,7 @@ class xtraBanner(Renderer):
 			if event:
 				evnt = event.getEventName()
 				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
-				pstrNm = "{}xtraEvent/banner/{}.jpg".format(pathLoc, evntNm)
+				pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 				if fileExists(pstrNm):
 					size = self.instance.size()
 					self.picload = ePicLoad()
@@ -66,7 +66,9 @@ class xtraBanner(Renderer):
 		except:
 			pass
 
+
 	def delay(self):
 		self.timer = eTimer()
 		self.timer.callback.append(self.showPicture)
 		self.timer.start(self.delayPicTime, True)
+		
