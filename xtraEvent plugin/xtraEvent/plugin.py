@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-# by digiteng...
-# digiteng@gmail.com
+# by digiteng...(digiteng@gmail.com)
 # https://github.com/digiteng/
-# 06.2020 - 11.2020
+# 06.2020 - 11.2020(v2.0)
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
 import threading
