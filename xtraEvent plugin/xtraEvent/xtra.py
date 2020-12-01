@@ -18,7 +18,7 @@ from Components.Sources.StaticText import StaticText
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from PIL import Image, ImageDraw, ImageFilter
 from Screens.LocationBox import LocationBox
-# import socket
+import socket
 import requests
 import threading
 from Components.ProgressBar import ProgressBar
@@ -186,11 +186,22 @@ class xtra(Screen, ConfigListScreen):
 		self.setTitle(_("xtraEvent..."))
 		self['status'] = Label()
 		self['info'] = Label()
+		self['int_statu'] = Label()
 		self["help"] = StaticText()
 		
 		self.timer = eTimer()
 		self.timer.callback.append(self.xtraList)
 		self.onLayoutFinish.append(self.xtraList)
+		self.intCheck()
+		
+	def intCheck(self):
+		try:
+			socket.setdefaulttimeout(2)
+			socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(("8.8.8.8", 53))
+			self['int_statu'].setText("●")
+			# return True
+		except:
+			return False
 
 	def strg(self):
 		try:
@@ -736,7 +747,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			im = Image.open(pb_path)
 			pb_res = im.size
 
-			self['info'].setText(_("{}/{}	 {}	   {} ".format(cur,tot,pb_sz,pb_res)))
+			self['info'].setText(_("{}/{}    {}    {}".format(cur,tot,pb_sz,pb_res)))
 		except:
 			return
 
@@ -1121,7 +1132,7 @@ class selBouquets(Screen):
 							# evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
 							# eventlist.append(evntNm)
 						# open(pathLoc+"events","w").write(str(eventlist))
-					
+
 					# except:
 						# pass
 

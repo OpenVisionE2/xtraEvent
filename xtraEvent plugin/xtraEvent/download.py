@@ -106,6 +106,7 @@ class downloads(Screen):
 					evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
 					titles.append(str(evntNm))
 				self.titles = list(dict.fromkeys(titles))
+				# threading.Thread(target=self.down, daemon=True).start()
 				self.download()
 		except:
 			pass
@@ -121,16 +122,14 @@ class downloads(Screen):
 				try:
 					events = epgcache.lookupEvent(['IBDCTSERNX', (ref, 1, -1, -1)])
 					n = config.plugins.xtraEvent.searchNUMBER.value
-					
 					for i in range(int(n)):
 						title = events[i][4]
 						evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", title).rstrip()
 						eventlist.append(evntNm)
-					self.titles = eventlist
-					# open("/tmp/evntsssss", "a+").write("%s\n"% str(self.titles))
 				except:
-					pass		
-			self.download()		
+					pass
+			self.titles = list(dict.fromkeys(eventlist))
+			self.download()
 			
 	def intCheck(self):
 		try:
@@ -151,7 +150,6 @@ class downloads(Screen):
 		with open("/tmp/up_report", "a+") as f:
 			f.write(str("\n\nstart : {}\n".format(dt)))
 		try:
-			# if self.intCheck() == True:
 			tmdb_poster_downloaded = 0
 			tvdb_poster_downloaded = 0
 			maze_poster_downloaded = 0
@@ -319,7 +317,22 @@ class downloads(Screen):
 						except:
 							pass
 # backdrop() #################################################################
+
 				if config.plugins.xtraEvent.backdrop.value == True:
+					if config.plugins.xtraEvent.extra.value == True:
+						dwnldFile = "{}backdrop/{}.jpg".format(pathLoc, title)
+						if not os.path.exists(dwnldFile):
+							url = "http://capi.tvmovie.de/v1/broadcasts/search?q={}&page=1&rows=1".format(title.replace(" ", "+"))
+							try:
+								url = requests.get(url).json()['results'][0]['images'][0]['filepath']['android-image-320-180']
+							except:
+								pass
+							open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
+							extra_downloaded += 1
+							downloaded = extra_downloaded
+							self.prgrs(downloaded, n)
+							self['info'].setText(_("{}, backdrop downloaded from EXTRA...".format(title.upper())))
+							self.brokenImageRemove()
 					if config.plugins.xtraEvent.tmdb.value == True:
 						dwnldFile = pathLoc + "backdrop/{}.jpg".format(title)
 						if not os.path.exists(dwnldFile):				
@@ -341,6 +354,7 @@ class downloads(Screen):
 									self['info'].setText(str("TMDB backdrop : exists "+title))
 							except:
 								pass
+
 					if config.plugins.xtraEvent.tvdb.value == True:
 						dwnldFile = pathLoc + "backdrop/{}.jpg".format(title)
 						if not os.path.exists(dwnldFile):
@@ -408,20 +422,6 @@ class downloads(Screen):
 											pass
 							except:
 								pass
-					if config.plugins.xtraEvent.extra.value == True:
-						dwnldFile = "{}backdrop/{}.jpg".format(pathLoc, title)
-						if not os.path.exists(dwnldFile):
-							url = "http://capi.tvmovie.de/v1/broadcasts/search?q={}&page=1&rows=1".format(title.replace(" ", "+"))
-							try:
-								url = requests.get(url).json()['results'][0]['images'][0]['filepath']['android-image-320-180']
-							except:
-								pass
-							open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-							extra_downloaded += 1
-							downloaded = extra_downloaded
-							self.prgrs(downloaded, n)
-							self['info'].setText(_("{}, backdrop downloaded from EXTRA...".format(title.upper())))
-							self.brokenImageRemove()
 
 					if config.plugins.xtraEvent.extra2.value == True:
 						dwnldFile = "{}backdrop/{}.jpg".format(pathLoc, title)
