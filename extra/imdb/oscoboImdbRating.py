@@ -28,7 +28,7 @@ class oscoboImdbRating(Converter, object):
 					else:
 						ffilm = re.sub('\s+', '+', evnt)
 					url = 'https://www.oscobo.com/search.php?q=%s+imdb+rating' % ffilm
-					req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
+					req = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
 					resp = urllib2.urlopen(req).read(15000)
 					p = '(</b> (.*?)) ((\d+)\.(\d+))'
 					parse = re.search(p, str(resp))

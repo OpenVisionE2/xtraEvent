@@ -296,11 +296,11 @@ class xtra(Screen, ConfigListScreen):
 		list.append(getConfigListEntry("POSTER", config.plugins.xtraEvent.poster, _("...")))
 		if config.plugins.xtraEvent.poster.value == True:
 			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _(""),))
-			if config.plugins.xtraEvent.tmdb.value :
+			if config.plugins.xtraEvent.tmdb.value:
 				list.append(getConfigListEntry("\tTMDB POSTER SIZE", config.plugins.xtraEvent.TMDBpostersize, _("")))
 				list.append(getConfigListEntry("-"*100))
 			list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _("source for poster...")))
-			if config.plugins.xtraEvent.tvdb.value :
+			if config.plugins.xtraEvent.tvdb.value:
 				list.append(getConfigListEntry("\tTVDB POSTER SIZE", config.plugins.xtraEvent.TVDBpostersize, _("")))
 				list.append(getConfigListEntry("_"*100))
 			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("source for poster...")))	
@@ -315,11 +315,11 @@ class xtra(Screen, ConfigListScreen):
 		list.append(getConfigListEntry("BACKDROP", config.plugins.xtraEvent.backdrop, _("")))
 		if config.plugins.xtraEvent.backdrop.value == True:
 			list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _("")))
-			if config.plugins.xtraEvent.tmdb.value :
+			if config.plugins.xtraEvent.tmdb.value:
 				list.append(getConfigListEntry("\tTMDB BACKDROP SIZE", config.plugins.xtraEvent.TMDBbackdropsize, _("")))
 				list.append(getConfigListEntry("_"*100))
 			list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _("")))
-			if config.plugins.xtraEvent.tvdb.value :
+			if config.plugins.xtraEvent.tvdb.value:
 				list.append(getConfigListEntry("\tTVDB BACKDROP SIZE", config.plugins.xtraEvent.TVDBbackdropsize, _("")))
 				list.append(getConfigListEntry("_"*100))
 			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("")))
@@ -1040,7 +1040,7 @@ def chList(bqtNm):
 	channels = []
 	serviceHandler = eServiceCenter.getInstance()
 	chlist = serviceHandler.list(eServiceReference('1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'))
-	if chlist :
+	if chlist:
 		while True:
 			chh = chlist.getNext()
 			if not chh.valid():

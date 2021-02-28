@@ -33,7 +33,7 @@ class pstrRndr(Renderer):
 	def changed(self, what):
 		try:
 			eventName = self.source.text
-			if eventName :
+			if eventName:
 				posterNm = re.sub('\s+', '+', eventName)
 				pstrNm = "/media/hdd/" + self.path + posterNm + ".jpg"
 				if os.path.exists(pstrNm):

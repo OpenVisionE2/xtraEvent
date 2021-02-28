@@ -23,7 +23,7 @@ class imdbCnvrtR(Converter, object):
 				film = re.sub('\s+', '+', evnt)
 				try:
 					url = 'https://www.oscobo.com/search.php?q=%s+imdb' % film
-					req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
+					req = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
 					resp = urllib2.urlopen(req)
 					respData = resp.read()
 					p = 'https://www.imdb.com/title/(.*?)</div>'
