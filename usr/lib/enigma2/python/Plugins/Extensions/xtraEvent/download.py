@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
 from Components.Label import Label
@@ -281,7 +282,7 @@ class downloads(Screen):
 									m_type = (jp['results'][0]['media_type']) + "s"
 								else:
 									mm_type = m_type
-								print m_type
+								print(m_type)
 								if m_type == "movies":
 									url = "https://webservice.fanart.tv/v3/{}/{}?api_key={}".format(m_type, tvdb_id, fanart_api)
 									

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 from Components.Converter.Converter import Converter
 from Components.Element import cached
 import json
@@ -45,7 +46,7 @@ class imdbRtng(Converter, object):
 					except:
 						try:
 							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' %(api, ffilm)
-							print url
+							print(url)
 							js = json.load(urllib2.urlopen(url))
 							rtng = (js['imdbRating'])
 							if rtng:
@@ -95,7 +96,7 @@ class imdbRtng(Converter, object):
 					except:
 						try:
 							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' %(api, ffilm)
-							print url
+							print(url)
 							js = json.load(urllib2.urlopen(url))
 							#open("/tmp/url.txt", "w").write(str(js)+"\n\n"+url)
 							rtng = (js['imdbRating'])
