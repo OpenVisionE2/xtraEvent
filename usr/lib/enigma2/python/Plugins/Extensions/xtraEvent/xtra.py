@@ -77,58 +77,58 @@ config.plugins.xtraEvent.cnfg = ConfigYesNo(default=False)
 config.plugins.xtraEvent.cnfgSel = ConfigSelection(default="poster", choices=[("poster"), ("banner"), ("backdrop"), ("EMC")])
 
 config.plugins.xtraEvent.TMDBpostersize = ConfigSelection(default="w185", choices=[
-	("w92", "92x138"), 
-	("w154", "154x231"), 
-	("w185", "185x278"), 
-	("w342", "342x513"), 
-	("w500", "500x750"), 
-	("w780", "780x1170"), 
+	("w92", "92x138"),
+	("w154", "154x231"),
+	("w185", "185x278"),
+	("w342", "342x513"),
+	("w500", "500x750"),
+	("w780", "780x1170"),
 	("original", "ORIGINAL")])
 config.plugins.xtraEvent.TVDBpostersize = ConfigSelection(default="thumbnail", choices=[
-	("thumbnail", "340x500"), 
+	("thumbnail", "340x500"),
 	("fileName", "original(680x1000)")])
 
 config.plugins.xtraEvent.TMDBbackdropsize = ConfigSelection(default="w300", choices=[
-	("w300", "300x170"), 
-	("w780", "780x440"), 
+	("w300", "300x170"),
+	("w780", "780x440"),
 	("w1280", "1280x720"),
 	("original", "ORIGINAL")])
 
 config.plugins.xtraEvent.TVDBbackdropsize = ConfigSelection(default="thumbnail", choices=[
-	("thumbnail", "640x360"), 
+	("thumbnail", "640x360"),
 	("fileName", "original(1920x1080)")])
 
 config.plugins.xtraEvent.FANART_Poster_Resize = ConfigSelection(default="10", choices=[
-	("10", "100x142"), 
-	("5", "200x285"), 
-	("3", "333x475"), 
-	("2", "500x713"), 
+	("10", "100x142"),
+	("5", "200x285"),
+	("3", "333x475"),
+	("2", "500x713"),
 	("1", "1000x1426")])
 
 config.plugins.xtraEvent.FANART_Backdrop_Resize = ConfigSelection(default="10", choices=[
-	("2", "original/2"), 
+	("2", "original/2"),
 	("1", "original")])
 
 config.plugins.xtraEvent.imdb_Poster_size = ConfigSelection(default="10", choices=[
-	("185", "185x278"), 
-	("344", "344x510"), 
+	("185", "185x278"),
+	("344", "344x510"),
 	("500", "500x750")])
 
 config.plugins.xtraEvent.PB = ConfigSelection(default="posters", choices=[
-	("posters", "Poster"), 
+	("posters", "Poster"),
 	("backdrops", "Backdrop")])
 
 config.plugins.xtraEvent.imgs = ConfigSelection(default="TMDB", choices=[
-	('TMDB', 'TMDB'), 
-	('TVDB', 'TVDB'), 
-	('FANART', 'FANART'), 
-	('IMDB(poster)', 'IMDB(poster)'), 
-	('Bing', 'Bing'), 
+	('TMDB', 'TMDB'),
+	('TVDB', 'TVDB'),
+	('FANART', 'FANART'),
+	('IMDB(poster)', 'IMDB(poster)'),
+	('Bing', 'Bing'),
 	('Google', 'Google')])
 
 config.plugins.xtraEvent.searchType = ConfigSelection(default="tv", choices=[
-	('tv', 'TV'), 
-	('movie', 'MOVIE'), 
+	('tv', 'TV'),
+	('movie', 'MOVIE'),
 	('multi', 'MULTI')])
 
 config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choices=[
@@ -182,18 +182,18 @@ class xtra(Screen, ConfigListScreen):
 			"info": self.strg,
 			"menu": self.menuS
 		}, -1)
-		
+
 		self.setTitle(_("xtraEvent..."))
 		self['status'] = Label()
 		self['info'] = Label()
 		self['int_statu'] = Label()
 		self["help"] = StaticText()
-		
+
 		self.timer = eTimer()
 		self.timer.callback.append(self.xtraList)
 		self.onLayoutFinish.append(self.xtraList)
 		self.intCheck()
-		
+
 	def intCheck(self):
 		try:
 			socket.setdefaulttimeout(2)
@@ -209,7 +209,7 @@ class xtra(Screen, ConfigListScreen):
 			path_banner = pathLoc + "banner/"
 			path_backdrop = pathLoc + "backdrop/"
 			path_info = pathLoc + "infos/"
-			
+
 			folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_poster, fname)), files)) for path_poster, folders, files in os.walk(path_poster)])
 			posters_sz = "%0.1f" % (folder_size / (1024 * 1024.0))
 			poster_nmbr = len(os.listdir(path_poster))
@@ -225,10 +225,10 @@ class xtra(Screen, ConfigListScreen):
 			folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_info, fname)), files)) for path_info, folders, files in os.walk(path_info)])
 			infos_sz = "%0.1f" % (folder_size / (1024 * 1024.0))
 			info_nmbr = len(os.listdir(path_info))
-			
+
 			self['status'].setText(_("Storage ;"))
 			self['info'].setText(_(
-				"Poster : {} poster {} MB".format(poster_nmbr, posters_sz) + 
+				"Poster : {} poster {} MB".format(poster_nmbr, posters_sz) +
 				"\nBanner : {} banner {} MB".format(banner_nmbr, banners_sz) +
 				"\nBackdrop : {} backdrop {} MB".format(backdrop_nmbr, backdrops_sz) +
 				"\nInfo : {} info {} MB".format(info_nmbr, infos_sz)))
@@ -270,7 +270,7 @@ class xtra(Screen, ConfigListScreen):
 		if config.plugins.xtraEvent.cnfg.value:
 			list.append(getConfigListEntry("	LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
 			list.append(getConfigListEntry("	SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
-			
+
 			list.append(getConfigListEntry("	OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
 			if config.plugins.xtraEvent.opt_Images.value:
 				list.append(getConfigListEntry("\tOPTIMIZE IMAGES SELECT", config.plugins.xtraEvent.cnfgSel, _("'OK' select for optimize images...")))
@@ -282,7 +282,7 @@ class xtra(Screen, ConfigListScreen):
 				list.append(getConfigListEntry("	FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
 			list.append(getConfigListEntry("—" * 100))
 
-			list.append(getConfigListEntry("	SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))		
+			list.append(getConfigListEntry("	SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))
 			list.append(getConfigListEntry("	SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
 
 			list.append(getConfigListEntry("	SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
@@ -304,7 +304,7 @@ class xtra(Screen, ConfigListScreen):
 			if config.plugins.xtraEvent.tvdb.value:
 				list.append(getConfigListEntry("\tTVDB POSTER SIZE", config.plugins.xtraEvent.TVDBpostersize, _("")))
 				list.append(getConfigListEntry("_" * 100))
-			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("source for poster...")))	
+			list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _("source for poster...")))
 			if config.plugins.xtraEvent.fanart.value:
 				list.append(getConfigListEntry("\tFANART POSTER SIZE", config.plugins.xtraEvent.FANART_Poster_Resize, _("")))
 				list.append(getConfigListEntry("—" * 100))
@@ -432,7 +432,7 @@ class xtra(Screen, ConfigListScreen):
 			for i in b:
 				bb = pathLoc + "{}/".format(i)
 				fc = os.path.isdir(bb)
-				if fc != False:	
+				if fc != False:
 					for f in os.listdir(bb):
 						if f.endswith('.jpg'):
 							try:
@@ -516,13 +516,13 @@ class manuelSearch(Screen, ConfigListScreen):
 				"yellow": self.append,
 				"blue": self.vk
 			}, -2)
-		
+
 		self['status'] = Label()
 		self['info'] = Label()
 		self["Picture"] = Pixmap()
 		self['progress'] = ProgressBar()
 		self['progress'].setRange((0, 100))
-		self['progress'].setValue(0)		
+		self['progress'].setValue(0)
 
 		self.timer = eTimer()
 		self.timer.callback.append(self.msList)
@@ -555,7 +555,7 @@ class manuelSearch(Screen, ConfigListScreen):
 		for x in self["config"].list:
 			if len(x) > 1:
 				x[1].save()
-	
+
 		list = []
 		list.append(getConfigListEntry(_("CH / EMC-MoviePlayer"), config.plugins.xtraEvent.searchModManuel))
 		list.append(getConfigListEntry(_("Events Next"), config.plugins.xtraEvent.searchMANUELnmbr))
@@ -574,27 +574,27 @@ class manuelSearch(Screen, ConfigListScreen):
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.TMDBpostersize))
 			else:
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.TMDBbackdropsize))
-				
+
 		if config.plugins.xtraEvent.imgs.value == "TVDB":
 			if config.plugins.xtraEvent.PB.value == "posters":
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.TVDBpostersize))
 			else:
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.TVDBbackdropsize))
-		
+
 		if config.plugins.xtraEvent.imgs.value == "FANART":
 			list.append(getConfigListEntry(_("\tSearch Type"), config.plugins.xtraEvent.FanartSearchType))
 			if config.plugins.xtraEvent.PB.value == "posters":
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.FANART_Poster_Resize))
 			else:
 				list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.FANART_Backdrop_Resize))
-		
+
 		if config.plugins.xtraEvent.imgs.value == "IMDB(poster)":
 			list.append(getConfigListEntry(_("\tSize"), config.plugins.xtraEvent.imdb_Poster_size))
 
 		list.append(getConfigListEntry("—" * 50))
 		list.append(getConfigListEntry(_("Show Images"), config.plugins.xtraEvent.imgNmbr))
 		list.append(getConfigListEntry("—" * 50))
-		
+
 		self["config"].list = list
 		self["config"].l.setList(list)
 
@@ -603,7 +603,7 @@ class manuelSearch(Screen, ConfigListScreen):
 		if self['config'].getCurrent()[0] == 'Events Next':
 			self.curEpg()
 		self.delay()
-		
+
 	def keyRight(self):
 		ConfigListScreen.keyRight(self)
 		if self['config'].getCurrent()[0] == 'Events Next':
@@ -719,7 +719,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				else:
 					self["Picture"].instance.setScale(1)
 					self["Picture"].instance.resize(eSize(300, 170))
-					self["Picture"].instance.move(ePoint(1400, 600))				
+					self["Picture"].instance.move(ePoint(1400, 600))
 
 			self['Picture'].show()
 			self.inf()
@@ -740,7 +740,7 @@ class manuelSearch(Screen, ConfigListScreen):
 					n += 1
 			tot = n
 			cur = config.plugins.xtraEvent.imgNmbr.value
-			
+
 			pb_path = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, self.iNmbr)
 			pb_sz = "{} KB".format(os.path.getsize(pb_path) / 1024)
 
@@ -769,15 +769,15 @@ class manuelSearch(Screen, ConfigListScreen):
 						target = pathLoc + "backdrop/{}.jpg".format(evntNm)
 				else:
 					target = pathLoc + "EMC/{}-backdrop.jpg".format(self.title)
-			
+
 			import shutil
 			if os.path.exists(self.path):
 				shutil.copyfile(self.path, target)
-				
+
 				if os.path.exists(target):
 					if config.plugins.xtraEvent.PB.value == "backdrops":
 						if not config.plugins.xtraEvent.searchModManuel.value == "TV List":
-							im1 = Image.open(target) 
+							im1 = Image.open(target)
 							im1 = im1.resize((1280, 720))
 							im1 = im1.save(target)
 							if os.path.exists(target):
@@ -822,7 +822,7 @@ class manuelSearch(Screen, ConfigListScreen):
 						url_poster = "https://image.tmdb.org/t/p/{}{}".format(sz, poster)
 						dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i + 1)
 						open(dwnldFile, 'wb').write(requests.get(url_poster, stream=True, allow_redirects=True).content)
-						
+
 						downloaded += 1
 						self.prgrs(downloaded, n)
 			else:
@@ -841,7 +841,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			url = "https://thetvdb.com/api/GetSeries.php?seriesname={}".format(quote(self.title))
 			if self.year != 0:
 				url += "%20{}".format(self.year)
-			
+
 			url_read = requests.get(url).text
 			series_id = re.findall('<seriesid>(.*?)</seriesid>', url_read)[0]
 			if config.plugins.xtraEvent.PB.value == "posters":
@@ -915,26 +915,26 @@ class manuelSearch(Screen, ConfigListScreen):
 						pb_no = fjs['moviebackground']
 						n = len(pb_no)
 				if n > 0:
-					downloaded = 0				
+					downloaded = 0
 					for i in range(int(n)):
 						if config.plugins.xtraEvent.PB.value == "posters":
 							if config.plugins.xtraEvent.FanartSearchType.value == "tv":
 								url = (fjs['tvposter'][i]['url'])
 							else:
 								url = (fjs['movieposter'][i]['url'])
-						
+
 						if config.plugins.xtraEvent.PB.value == "backdrops":
 							if config.plugins.xtraEvent.FanartSearchType.value == "tv":
 								url = (fjs['showbackground'][i]['url'])
 							else:
 								url = (fjs['moviebackground'][i]['url'])
-								
+
 						if url:
 							dwnldFile = pathLoc + "mSearch/{}-{}-{}.jpg".format(self.title, self.pb, i + 1)
 							open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 							downloaded += 1
 							self.prgrs(downloaded, n)
-							
+
 							scl = 1
 							im = Image.open(dwnldFile)
 							if config.plugins.xtraEvent.PB.value == "posters":
@@ -949,7 +949,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				config.plugins.xtraEvent.imgNmbr.value = 0
 			except:
 				pass
-	
+
 		except:
 			pass
 
@@ -1036,7 +1036,7 @@ def bqtList():
 			if info:
 				bouquets.append((info.getName(bqt), bqt))
 		return bouquets
-	return 
+	return
 
 
 def chList(bqtNm):
@@ -1063,7 +1063,7 @@ def chList(bqtNm):
 
 
 class selBouquets(Screen):
-	
+
 	def __init__(self, session):
 		self.session = session
 		Screen.__init__(self, session)
@@ -1107,7 +1107,7 @@ class selBouquets(Screen):
 		self["key_green"] = Label(_("Save"))
 		self["key_yellow"] = Label(_("Select(OK)"))
 		self["key_blue"] = Label(_("All Select"))
-		
+
 		self['status'] = Label()
 		self['info'] = Label()
 
@@ -1191,7 +1191,7 @@ class pathLocation():
 					os.makedirs(pathLoc + "EMC")
 			except:
 				pass
-		else:	
+		else:
 			pathLoc = config.plugins.xtraEvent.loc.value + "xtraEvent/"
 			try:
 				if not os.path.isdir(pathLoc):

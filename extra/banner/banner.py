@@ -85,7 +85,7 @@ class banner(Renderer):
 			os.makedirs(path_folder)
 		try:
 			url_tvdb = "https://thetvdb.com/api/GetSeries.php?seriesname=%s" % (self.evntNm)
-			url_read = urllib2.urlopen(url_tvdb).read()			
+			url_read = urllib2.urlopen(url_tvdb).read()
 			series_id = re.findall('<seriesid>(.*?)</seriesid>', url_read, re.I)[0]
 			if series_id:
 				self.url_banner = "https://artworks.thetvdb.com/banners/graphical/%s-g_t.jpg" % (series_id)

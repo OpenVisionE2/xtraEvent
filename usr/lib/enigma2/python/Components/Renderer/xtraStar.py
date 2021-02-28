@@ -44,7 +44,7 @@ class xtraStar(VariableValue, Renderer):
 					else:
 						rtng = 0
 				else:
-					rtng = 0			
+					rtng = 0
 			else:
 				rtng = 0
 		except:

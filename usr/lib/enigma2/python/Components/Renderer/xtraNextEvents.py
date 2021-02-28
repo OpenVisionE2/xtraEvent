@@ -37,7 +37,7 @@ class xtraNextEvents(Renderer):
 				self.nxEvntUsed = value
 			elif attrib == 'delayPic':          # delay time(ms) for poster-banner-backdrop showing...
 				self.delayPicTime = int(value)
-			
+
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 
@@ -61,7 +61,7 @@ class xtraNextEvents(Renderer):
 				evnt = events[self.nxEvnt][4]
 				evntNm = re.sub("([\(\[]).*?([\)\]])|(: odc.\d+)|(\d+: odc.\d+)|(\d+ odc.\d+)|(:)|( -(.*?).*)|(,)|!", "", evnt).rstrip()
 				pstrNm = "{}xtraEvent/{}/{}.jpg".format(pathLoc, self.nxEvntUsed, evntNm)
-				if fileExists(pstrNm):	
+				if fileExists(pstrNm):
 					size = self.instance.size()
 					self.picload = ePicLoad()
 					sc = AVSwitch().getFramebufferScale()

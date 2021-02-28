@@ -53,7 +53,7 @@ class xtraInfo(Converter, object):
 						for type in self.types:
 							type.strip()
 							if read_json["Response"] == "True":
-								
+
 								if type == self.Title:
 									title = read_json['Title']
 									if title:

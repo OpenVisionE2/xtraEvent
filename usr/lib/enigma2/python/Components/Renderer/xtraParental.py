@@ -82,7 +82,7 @@ class xtraParental(Renderer):
 						rate = "0"
 					else:
 						pass
-					if rate:	
+					if rate:
 						parentName = str(rate)
 
 				if parentName:
@@ -91,4 +91,4 @@ class xtraParental(Renderer):
 					self.instance.show()
 				else:
 					self.instance.hide()
-			return			
+			return

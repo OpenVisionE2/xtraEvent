@@ -30,7 +30,7 @@ class imdbCnvrtR(Converter, object):
 					p = 'https://www.imdb.com/title/(.*?)</div>'
 					parse = re.search(p, str(respData))
 					id = parse.group(1)
-					
+
 					f = open("/media/hdd/data.tsv", "r")
 					m = f.readlines()
 					f.close()
@@ -38,8 +38,8 @@ class imdbCnvrtR(Converter, object):
 						m = i.split()
 						if m[0] == id:
 							mtotal = str(m[1])
-							mtotal = ("%s") % mtotal 
-							
+							mtotal = ("%s") % mtotal
+
 							return mtotal
 				except:
 					pass

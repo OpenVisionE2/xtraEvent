@@ -32,7 +32,7 @@ class tmdbRtng(Converter, object):
 		event = self.source.event
 		if event is None:
 			return ""
-		
+
 		if not event is None:
 			if self.type == "RATING":
 				self.evnt = event.getEventName()
@@ -59,5 +59,5 @@ class tmdbRtng(Converter, object):
 					pass
 		else:
 			return ""
-	
+
 	text = property(getText)

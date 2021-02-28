@@ -24,7 +24,7 @@ class xtraBackdrop(Renderer):
 		for attrib, value in self.skinAttributes:
 			if attrib == 'delayPic':          # delay time(ms) for backdrop showing...
 				self.delayPicTime = int(value)
-			
+
 		self.skinAttributes = attribs
 		return Renderer.applySkin(self, desktop, parent)
 

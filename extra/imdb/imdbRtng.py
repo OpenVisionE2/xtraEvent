@@ -87,7 +87,7 @@ class imdbRtng(Converter, object):
 
 						url = 'https://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' % (api, ffilm, yr)
 						js = json.load(urllib2.urlopen(url))
-						
+
 						rtng = (js['imdbRating'])
 						if rtng:
 							return "imdb : %s" % (str(rtng))

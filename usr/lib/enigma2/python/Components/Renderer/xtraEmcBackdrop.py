@@ -21,7 +21,7 @@ class xtraEmcBackdrop(Renderer):
 		self.delayPicTime = 100
 		self.timer = eTimer()
 		self.timer.callback.append(self.showPicture)
-		
+
 	def applySkin(self, desktop, parent):
 		attribs = self.skinAttributes[:]
 		for (attrib, value) in self.skinAttributes:

@@ -11,7 +11,7 @@ class xtraNxtEvnt(Renderer, VariableText):
 	def __init__(self):
 		Renderer.__init__(self)
 		VariableText.__init__(self)
-		
+
 		# self.nxEvnt = 0
 		self.snglEvnt = 0
 		self.epgcache = eEPGCache.getInstance()

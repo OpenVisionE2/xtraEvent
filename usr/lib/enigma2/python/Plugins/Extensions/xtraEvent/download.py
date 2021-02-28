@@ -39,7 +39,7 @@ if config.plugins.xtraEvent.omdbAPI.value != "":
 else:
 	omdb_apis = ["6a4c9432", "a8834925", "550a7c40", "8ec53e6b"]
 	omdb_api = random.choice(omdb_apis)
-	
+
 epgcache = eEPGCache.getInstance()
 pathLoc = config.plugins.xtraEvent.loc.value + "xtraEvent/"
 desktop_size = getDesktop(0).size().width()
@@ -75,7 +75,7 @@ class downloads(Screen):
 		# self['key_yellow'] = Label(_('Download'))
 		# self['key_blue'] = Label(_('Manuel Search'))
 		self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {'cancel': self.close, 'red': self.close, 'ok': self.save, 'green': self.save}, -2)
-		
+
 		self['progress'] = ProgressBar()
 		self['progress'].setRange((0, 100))
 		self['progress'].setValue(0)
@@ -85,7 +85,7 @@ class downloads(Screen):
 			self.currentChEpgs()
 		if config.plugins.xtraEvent.searchMOD.value == "Bouquets":
 			self.selBouquets()
-			
+
 	def currentChEpgs(self):
 		events = None
 		import NavigationInstance
@@ -133,7 +133,7 @@ class downloads(Screen):
 					pass
 			self.titles = list(dict.fromkeys(eventlist))
 			self.download()
-			
+
 	def intCheck(self):
 		try:
 			socket.setdefaulttimeout(5)
@@ -141,7 +141,7 @@ class downloads(Screen):
 			return True
 		except:
 			return False
-			
+
 	def download(self):
 		threading.Thread(target=self.down).start()
 
@@ -192,7 +192,7 @@ class downloads(Screen):
 									self.brokenImageRemove()
 							except:
 								pass
-# tvdb_Poster() #################################################################								
+# tvdb_Poster() #################################################################
 					if config.plugins.xtraEvent.tvdb.value == True:
 						if not os.path.exists(dwnldFile):
 							try:
@@ -214,9 +214,9 @@ class downloads(Screen):
 									self.brokenImageRemove()
 							except:
 								pass
-# maze_Poster() #################################################################								
+# maze_Poster() #################################################################
 					if config.plugins.xtraEvent.maze.value == True:
-						if not os.path.exists(dwnldFile):		
+						if not os.path.exists(dwnldFile):
 							url_maze = "http://api.tvmaze.com/search/shows?q={}".format(quote(title))
 							try:
 								url = requests.get(url_maze).json()[0]['show']['image']['medium']
@@ -228,9 +228,9 @@ class downloads(Screen):
 								self.brokenImageRemove()
 							except:
 								pass
-# fanart_Poster() #################################################################								
+# fanart_Poster() #################################################################
 					if config.plugins.xtraEvent.fanart.value == True:
-						if not os.path.exists(dwnldFile):				
+						if not os.path.exists(dwnldFile):
 							try:
 								srch = "multi"
 								url_tmdb = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}".format(srch, tmdb_api, quote(title))
@@ -262,7 +262,7 @@ class downloads(Screen):
 													self.prgrs(downloaded, n)
 													self['info'].setText(_("{} poster downloaded from FANART...".format(title.upper())))
 													self.brokenImageRemove()
-													
+
 													scl = 1
 													im = Image.open(dwnldFile)
 													scl = config.plugins.xtraEvent.FANARTresize.value
@@ -272,7 +272,7 @@ class downloads(Screen):
 											pass
 							except:
 								pass
-# banner() #################################################################	
+# banner() #################################################################
 				if config.plugins.xtraEvent.banner.value == True:
 					dwnldFile = pathLoc + "banner/{}.jpg".format(title)
 					if not os.path.exists(dwnldFile):
@@ -289,7 +289,7 @@ class downloads(Screen):
 								print(m_type)
 								if m_type == "movies":
 									url = "https://webservice.fanart.tv/v3/{}/{}?api_key={}".format(m_type, tvdb_id, fanart_api)
-									
+
 									fjs = requests.get(url).json()
 									url = fjs["moviebanner"][0]["url"]
 									if url:
@@ -338,7 +338,7 @@ class downloads(Screen):
 							self.brokenImageRemove()
 					if config.plugins.xtraEvent.tmdb.value == True:
 						dwnldFile = pathLoc + "backdrop/{}.jpg".format(title)
-						if not os.path.exists(dwnldFile):				
+						if not os.path.exists(dwnldFile):
 							srch = "multi"
 							lang = config.plugins.xtraEvent.searchLang.value
 							url_tmdb = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}&language={}".format(srch, tmdb_api, quote(title), lang)
@@ -384,7 +384,7 @@ class downloads(Screen):
 								pass
 					if config.plugins.xtraEvent.fanart.value == True:
 						dwnldFile = pathLoc + "backdrop/{}.jpg".format(title)
-						if not os.path.exists(dwnldFile):				
+						if not os.path.exists(dwnldFile):
 							try:
 								srch = "multi"
 								url = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}".format(srch, tmdb_api, quote(title))
@@ -415,7 +415,7 @@ class downloads(Screen):
 													self.prgrs(downloaded, n)
 													self['info'].setText(_("{}, backdrop downloaded from FANART...".format(title.upper())))
 													self.brokenImageRemove()
-													
+
 													scl = config.plugins.xtraEvent.FANART_Backdrop_Resize.value
 													im = Image.open(dwnldFile)
 													scl = config.plugins.xtraEvent.FANART_Backdrop_Resize.value
@@ -463,7 +463,7 @@ class downloads(Screen):
 							ff = requests.get(url, stream=True, headers=headers).text
 							p = 'https://www.imdb.com/title/(.*?)</div>'
 							parse = re.search(p, ff)
-							imdb_id = parse.group(1)	
+							imdb_id = parse.group(1)
 							if imdb_id:
 								# omdb info(english)
 								url = 'https://www.omdbapi.com/?apikey={}&i={}'.format(str(omdb_api), str(imdb_id))
@@ -473,7 +473,7 @@ class downloads(Screen):
 								downloaded = info_downloaded
 								self.prgrs(downloaded, n)
 								self['info'].setText(_("{}, downloaded from INFO(OMDB)...".format(title.upper())))
-								
+
 								# tvdb info(other languages support, just for series)
 								type = info_omdb["Type"]
 								if type == "series":
@@ -503,14 +503,14 @@ class downloads(Screen):
 				\nposter; tmdb :{}, tvdb :{}, maze :{}, fanart :{}\
 				\nbackdrop; tmdb :{}, tvdb :{}, fanart :{}, extra :{}, extra2 :{}\
 				\nbanner :{}\
-				\ninfos :{}".format(dt, str(tmdb_poster_downloaded), str(tvdb_poster_downloaded), str(maze_poster_downloaded), str(fanart_poster_downloaded), 
-				str(tmdb_backdrop_downloaded), str(tvdb_backdrop_downloaded), str(fanart_backdrop_downloaded), 
+				\ninfos :{}".format(dt, str(tmdb_poster_downloaded), str(tvdb_poster_downloaded), str(maze_poster_downloaded), str(fanart_poster_downloaded),
+				str(tmdb_backdrop_downloaded), str(tvdb_backdrop_downloaded), str(fanart_backdrop_downloaded),
 				str(extra_downloaded), str(extra2_downloaded),
-				str(banner_downloaded), 
+				str(banner_downloaded),
 				str(info_downloaded))
 			self['info'].setText("downloads finished...")
 			self['info2'].setText(report)
-			
+
 			with open("/tmp/up_report", "a+") as f:
 				f.write(report)
 			return
@@ -519,13 +519,13 @@ class downloads(Screen):
 			# self.close()
 		except:
 			pass
-			
+
 ####################################################################################################################################
 
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
 		self['progress'].setValue(int(100 * downloaded / n))
-		
+
 	def brokenImageRemove(self):
 		b = os.listdir(pathLoc)
 		rmvd = 0
@@ -533,7 +533,7 @@ class downloads(Screen):
 			for i in b:
 				bb = pathLoc + "{}/".format(i)
 				fc = os.path.isdir(bb)
-				if fc != False:	
+				if fc != False:
 					for f in os.listdir(bb):
 						if f.endswith('.jpg'):
 							try:
