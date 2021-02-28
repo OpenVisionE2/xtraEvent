@@ -73,7 +73,7 @@ class downloads(Screen):
 		self['key_green'] = Label(_('Download'))
 		# self['key_yellow'] = Label(_('Download'))
 		# self['key_blue'] = Label(_('Manuel Search'))
-		self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {'cancel': self.close, 'red': self.close, 'ok':self.save,'green':self.save}, -2)
+		self['actions'] = ActionMap(['SetupActions', 'ColorActions'], {'cancel': self.close, 'red': self.close, 'ok': self.save, 'green': self.save}, -2)
 		
 		self['progress'] = ProgressBar()
 		self['progress'].setRange((0, 100))
@@ -439,7 +439,7 @@ class downloads(Screen):
 								# pass
 							try:
 								url = "https://www.google.com/search?q={}&tbm=isch&tbs=sbd:0".format(title.replace(" ", "+"))
-								headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+								headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 								ff = requests.get(url, stream=True, headers=headers).text
 								p = re.findall('"https://(.*?).jpg",(\d*),(\d*)', ff)
 								url = "https://" + p[i + 1][0] + ".jpg"
@@ -458,7 +458,7 @@ class downloads(Screen):
 					if not os.path.exists(info_files):
 						try:
 							url = 'https://www.oscobo.com/search.php?q={}+imdb'.format(title.replace(" ", "+"))
-							headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+							headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 							ff = requests.get(url, stream=True, headers=headers).text
 							p = 'https://www.imdb.com/title/(.*?)</div>'
 							parse = re.search(p, ff)

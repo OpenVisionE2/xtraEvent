@@ -848,7 +848,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			else:
 				keyType = "fanart"
 			url = 'https://api.thetvdb.com/series/{}/images/query?keyType={}'.format(series_id, keyType)
-			u = requests.get(url, headers={"Accept-Language":"{}".format(config.plugins.xtraEvent.searchLang.value)})
+			u = requests.get(url, headers={"Accept-Language": "{}".format(config.plugins.xtraEvent.searchLang.value)})
 			try:
 				pb_no = u.json()["data"]
 				n = len(pb_no)
@@ -1001,7 +1001,7 @@ class manuelSearch(Screen, ConfigListScreen):
 	def google(self):
 		try:
 			url = "https://www.google.com/search?q={}&tbm=isch&tbs=sbd:0".format(self.title.replace(" ", "+"))
-			headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+			headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 			ff = requests.get(url, stream=True, headers=headers).text
 			p = re.findall('"https://(.*?).jpg",(\d*),(\d*)', ff)
 			n = 9
