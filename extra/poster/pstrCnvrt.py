@@ -15,7 +15,7 @@ try:
 			for file in files:
 				filename = os.path.join(path, file)
 				folder_size += os.path.getsize(filename)
-		posterP_sz = "%0.f" % (folder_size/(1024*1024.0))
+		posterP_sz = "%0.f" % (folder_size / (1024 * 1024.0))
 		if posterP_sz >= 10: # '/media/hdd/poster' folder remove size(10MB)...
 			import shutil
 			shutil.rmtree('/media/hdd/poster')
@@ -49,7 +49,7 @@ class pstrCnvrt(Converter, object):
 					else:
 						self.evntNm = quote(self.evnt)
 					self.evntNmPstr = self.evntNm + ".jpg"
-					if not os.path.exists("/media/hdd/poster/%s.jpg"%(self.evntNm)):
+					if not os.path.exists("/media/hdd/poster/%s.jpg" % (self.evntNm)):
 						ses_ep = self.sessionEpisode(event)
 						if ses_ep != "" and len(ses_ep) > 0:
 							self.srch = "tv"
@@ -67,11 +67,11 @@ class pstrCnvrt(Converter, object):
 	text = property(getText)
 
 	def searchPoster(self):
-		url_json = "https://api.themoviedb.org/3/search/%s?api_key=3c3efcf47c3577558812bb9d64019d65&query=%s"%(self.srch, self.evntNm)
+		url_json = "https://api.themoviedb.org/3/search/%s?api_key=3c3efcf47c3577558812bb9d64019d65&query=%s" % (self.srch, self.evntNm)
 		jp = json.load(urllib2.urlopen(url_json))
 		imgP = (jp['results'][0]['poster_path'])
-		url_poster = "https://image.tmdb.org/t/p/w185_and_h278_bestv2%s"%(imgP)
-		dwn_poster = "/media/hdd/poster/%s.jpg"%(self.evntNm)
+		url_poster = "https://image.tmdb.org/t/p/w185_and_h278_bestv2%s" % (imgP)
+		dwn_poster = "/media/hdd/poster/%s.jpg" % (self.evntNm)
 		if not os.path.exists(dwn_poster):
 			with open(dwn_poster, 'wb') as f:
 				f.write(urllib2.urlopen(url_poster).read())
@@ -85,7 +85,7 @@ class pstrCnvrt(Converter, object):
 			seg = re.search(i, fd)
 			if seg:
 				if re.search("Episodio", i):
-					return "S"+seg.group(2).zfill(2)+"E"+seg.group(1).zfill(2)
+					return "S" + seg.group(2).zfill(2) + "E" + seg.group(1).zfill(2)
 				else:
-					return "S"+seg.group(1).zfill(2)+"E"+seg.group(2).zfill(2)
+					return "S" + seg.group(1).zfill(2) + "E" + seg.group(2).zfill(2)
 		return ""

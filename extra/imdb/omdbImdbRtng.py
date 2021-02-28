@@ -31,11 +31,11 @@ class omdbImdbRtng(Converter, object):
 						ffilm = re.sub('\s+', '+', jr)
 					else:
 						ffilm = re.sub('\s+', '+', evnt)
-					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' %(ffilm, api)
+					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' % (ffilm, api)
 					jjj = json.load(urllib2.urlopen(url))
 					rtng = (jjj['imdbRating'])
 					if rtng:
-						return "imdb : %s" %(str(rtng))
+						return "imdb : %s" % (str(rtng))
 				except:
 					pass
 		else:

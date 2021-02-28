@@ -36,21 +36,21 @@ class imdbRtng(Converter, object):
 						if year != "":
 							yr = self.yearPr(event)
 
-						url = 'https://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' %(api, ffilm, yr)
+						url = 'https://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' % (api, ffilm, yr)
 						js = json.load(urllib2.urlopen(url))
 						open("/tmp/url.txt", "w").write(url)
 						rtng = (js['imdbRating'])
 						if rtng:
-							return int(10*(float(rtng)))
+							return int(10 * (float(rtng)))
 
 					except:
 						try:
-							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' %(api, ffilm)
+							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' % (api, ffilm)
 							print(url)
 							js = json.load(urllib2.urlopen(url))
 							rtng = (js['imdbRating'])
 							if rtng:
-								return int(10*(float(rtng)))
+								return int(10 * (float(rtng)))
 						except:
 							pass
 			else:
@@ -84,24 +84,24 @@ class imdbRtng(Converter, object):
 						if year != "":
 							yr = self.yearPr(event)
 
-						url = 'https://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' %(api, ffilm, yr)
+						url = 'https://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' % (api, ffilm, yr)
 						js = json.load(urllib2.urlopen(url))
 						
 						rtng = (js['imdbRating'])
 						if rtng:
-							return "imdb : %s" %(str(rtng))
+							return "imdb : %s" % (str(rtng))
 						else:
 							return "imdb : N/A"
 
 					except:
 						try:
-							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' %(api, ffilm)
+							url = 'https://www.omdbapi.com/?apikey=%s&t=%s&' % (api, ffilm)
 							print(url)
 							js = json.load(urllib2.urlopen(url))
 							#open("/tmp/url.txt", "w").write(str(js)+"\n\n"+url)
 							rtng = (js['imdbRating'])
 							if rtng:
-								return "imdb : %s" %(str(rtng))
+								return "imdb : %s" % (str(rtng))
 						except:
 							pass
 			else:
@@ -118,5 +118,5 @@ class imdbRtng(Converter, object):
 			yr = re.search(i, fd)
 			if yr:
 				jr = yr.group(1)
-				return "%s"%jr
+				return "%s" % jr
 		return ""

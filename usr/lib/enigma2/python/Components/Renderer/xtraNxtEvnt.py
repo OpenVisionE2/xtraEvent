@@ -34,13 +34,13 @@ class xtraNxtEvnt(Renderer, VariableText):
 			nextEvent = self.epgcache.lookupEvent(['IBDCTM', (ref.toString(), 0, 1, -1)])
 			if nextEvent and self.snglEvnt == "":
 				for i in xrange(int(self.nxEvnt)):
-					evnts = nextEvent[i+1][4]
-					bt = localtime(nextEvent[i+1][1])
-					self.text = self.text + "%02d:%02d - %s\n"%(bt[3], bt[4], evnts)
+					evnts = nextEvent[i + 1][4]
+					bt = localtime(nextEvent[i + 1][1])
+					self.text = self.text + "%02d:%02d - %s\n" % (bt[3], bt[4], evnts)
 			if nextEvent and self.snglEvnt != "":
 				evnts = nextEvent[int(self.snglEvnt)][4]
 				bt = localtime(nextEvent[int(self.snglEvnt)][1])
-				self.text = self.text + "%02d:%02d - %s\n"%(bt[3], bt[4], evnts)
+				self.text = self.text + "%02d:%02d - %s\n" % (bt[3], bt[4], evnts)
 			else:
 				return ""
 		except:

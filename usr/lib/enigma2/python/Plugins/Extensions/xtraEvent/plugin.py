@@ -11,7 +11,7 @@ def ddwn():
 		download.downloads("").save()
 	if config.plugins.xtraEvent.timerMod.value == True:
 		tmr = config.plugins.xtraEvent.timer.value
-		t = threading.Timer(3600*int(tmr), ddwn) # 1h=3600
+		t = threading.Timer(3600 * int(tmr), ddwn) # 1h=3600
 		t.start()
 if config.plugins.xtraEvent.timerMod.value == True:
 	threading.Timer(30, ddwn).start()

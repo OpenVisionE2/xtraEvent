@@ -118,7 +118,7 @@ class downloads(Screen):
 			with open(pathLoc + "bqts", "r") as f:
 				refs = f.readlines()
 			nl = len(refs)
-			eventlist=[]
+			eventlist = []
 			for i in range(nl):
 				ref = refs[i]
 				try:
@@ -353,7 +353,7 @@ class downloads(Screen):
 									self['info'].setText(_("{}, backdrop downloaded from TMDB...".format(title.upper())))
 									self.brokenImageRemove()
 								else:
-									self['info'].setText(str("TMDB backdrop : exists "+title))
+									self['info'].setText(str("TMDB backdrop : exists " + title))
 							except:
 								pass
 
@@ -442,7 +442,7 @@ class downloads(Screen):
 								headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 								ff = requests.get(url, stream=True, headers=headers).text
 								p = re.findall('"https://(.*?).jpg",(\d*),(\d*)', ff)
-								url = "https://" + p[i+1][0] + ".jpg"
+								url = "https://" + p[i + 1][0] + ".jpg"
 							except:
 								pass
 							open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
@@ -523,7 +523,7 @@ class downloads(Screen):
 
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
-		self['progress'].setValue(int(100*downloaded/n))
+		self['progress'].setValue(int(100 * downloaded / n))
 		
 	def brokenImageRemove(self):
 		b = os.listdir(pathLoc)
@@ -536,11 +536,11 @@ class downloads(Screen):
 					for f in os.listdir(bb):
 						if f.endswith('.jpg'):
 							try:
-								img = Image.open(bb+f)
+								img = Image.open(bb + f)
 								img.verify()
 							except:
 								try:
-									os.remove(bb+f)
+									os.remove(bb + f)
 									rmvd += 1
 								except:
 									pass

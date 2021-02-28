@@ -32,7 +32,7 @@ class oscoboImdbRating(Converter, object):
 					resp = urllib2.urlopen(req).read(15000)
 					p = '(</b> (.*?)) ((\d+)\.(\d+))'
 					parse = re.search(p, str(resp))
-					return "IMDB : %s" %(parse.group(3))
+					return "IMDB : %s" % (parse.group(3))
 				except:
 					pass
 		else:

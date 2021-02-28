@@ -34,11 +34,11 @@ class Rtng(Converter, object):
 					if year != "":
 						yr = self.yearPr(event)
 
-					url = 'http://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' %(api, ffilm, yr)
+					url = 'http://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' % (api, ffilm, yr)
 					js = json.load(urllib2.urlopen(url))
 					rtng = (js['imdbRating'])
 					if rtng:
-						return int(10*(float(rtng)))
+						return int(10 * (float(rtng)))
 					else:
 						pass
 				except:
@@ -68,12 +68,12 @@ class Rtng(Converter, object):
 					if year != "":
 						yr = self.yearPr(event)
 
-					url = 'http://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' %(api, ffilm, yr)
+					url = 'http://www.omdbapi.com/?apikey=%s&t=%s&y=%s&' % (api, ffilm, yr)
 					open("/tmp/url.txt", "w").write(url)
 					js = json.load(urllib2.urlopen(url))
 					rtng = (js['imdbRating'])
 					if rtng:
-						return "imdb : %s" %(str(rtng))
+						return "imdb : %s" % (str(rtng))
 					else:
 						pass
 				except:
@@ -90,5 +90,5 @@ class Rtng(Converter, object):
 			yr = re.search(i, fd)
 			if yr:
 				jr = yr.group(1)
-				return "%s"%jr
+				return "%s" % jr
 		return ""

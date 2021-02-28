@@ -33,13 +33,13 @@ class omdbImdbRtngPlus(Converter, object):
 					else:
 						ffilm = re.sub('\s+', '+', evnt)
 
-					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' %(ffilm, api)
+					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' % (ffilm, api)
 					#open("/tmp/url.txt","w").write(url)
 					jjj = json.load(urllib2.urlopen(url))
 					rtng = (jjj['imdbRating'])
 					#open("/tmp/rtng.txt","w").write(rtng)
 					if rtng:
-						return "imdb : %s" %(str(rtng))
+						return "imdb : %s" % (str(rtng))
 						os.system("echo 1 > /proc/sys/vm/drop_caches")
 				except:
 					try:
@@ -49,11 +49,11 @@ class omdbImdbRtngPlus(Converter, object):
 						p = 'https://www.imdb.com/title/(.*?)</div>'
 						parse = re.search(p, str(resp))
 						id = parse.group(1)
-						url = 'https://www.omdbapi.com/?i=%s&apikey=%s' %(id, api)
+						url = 'https://www.omdbapi.com/?i=%s&apikey=%s' % (id, api)
 						jjj = json.load(urllib2.urlopen(url))
 						jj = (jjj['imdbRating'])
 						if jj:
-							return "imdb : %s" %(str(jj))
+							return "imdb : %s" % (str(jj))
 							os.system("echo 1 > /proc/sys/vm/drop_caches")
 					except:
 						pass

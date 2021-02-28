@@ -21,9 +21,9 @@ class tmdbRtng(Converter, object):
 			seg = re.search(i, fd)
 			if seg:
 				if re.search("Episodio", i):
-					return "S"+seg.group(2).zfill(2)+"E"+seg.group(1).zfill(2)
+					return "S" + seg.group(2).zfill(2) + "E" + seg.group(1).zfill(2)
 				else:
-					return "S"+seg.group(1).zfill(2)+"E"+seg.group(2).zfill(2)
+					return "S" + seg.group(1).zfill(2) + "E" + seg.group(2).zfill(2)
 		return ""
 
 	@cached
@@ -49,11 +49,11 @@ class tmdbRtng(Converter, object):
 					else:
 						self.srch = "multi"
 
-					url_json = "https://api.themoviedb.org/3/search/%s?api_key=3c3efcf47c3577558812bb9d64019d65&query=%s"%(self.srch, self.evntNm)
+					url_json = "https://api.themoviedb.org/3/search/%s?api_key=3c3efcf47c3577558812bb9d64019d65&query=%s" % (self.srch, self.evntNm)
 					jp = json.load(urllib2.urlopen(url_json))
 					rtng = (jp['results'][0]['vote_average'])
 					if rtng:
-						return "tmdb : %s" %(str(rtng))
+						return "tmdb : %s" % (str(rtng))
 				except:
 					pass
 		else:

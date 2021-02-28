@@ -38,7 +38,7 @@ class xtraStar(VariableValue, Renderer):
 					with open(rating_json) as f:
 						rating = json.load(f)['imdbRating']
 					if rating:
-						rtng = int(10*(float(rating)))
+						rtng = int(10 * (float(rating)))
 					else:
 						rtng = 0
 				else:

@@ -29,11 +29,11 @@ class ImdbRtngStar(Converter, object):
 						ffilm = re.sub('\s+', '+', jr)
 					else:
 						ffilm = re.sub('\s+', '+', evnt)
-					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' %(ffilm, api)
+					url = 'https://www.omdbapi.com/?t=%s&apikey=%s' % (ffilm, api)
 					js = json.load(urllib2.urlopen(url))
 					rtng = (js['imdbRating'])
 					if rtng:
-						return int(10*(float(rtng)))
+						return int(10 * (float(rtng)))
 
 				except:
 					pass
