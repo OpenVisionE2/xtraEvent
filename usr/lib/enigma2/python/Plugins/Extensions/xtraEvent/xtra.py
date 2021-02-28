@@ -6,7 +6,8 @@ from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-import os, re
+import os
+import re
 from Components.SelectionList import SelectionList, SelectionEntryComponent
 from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory
 from Components.ConfigList import ConfigListScreen

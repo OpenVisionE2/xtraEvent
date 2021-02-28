@@ -11,7 +11,10 @@ from ServiceReference import ServiceReference
 from Screens.MessageBox import MessageBox
 import requests
 from requests.utils import quote
-import os, re, random, json
+import os
+import re
+import random
+import json
 from PIL import Image
 import socket
 import xtra
