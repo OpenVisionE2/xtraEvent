@@ -47,7 +47,7 @@ class omdbImdbRtngPlus(Converter, object):
 						req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
 						resp = urllib2.urlopen(req).read(5000)
 						p = 'https://www.imdb.com/title/(.*?)</div>'
-						parse = re.search(p,str(resp))
+						parse = re.search(p, str(resp))
 						id = parse.group(1)
 						url = 'https://www.omdbapi.com/?i=%s&apikey=%s' %(id, api)
 						jjj = json.load(urllib2.urlopen(url))

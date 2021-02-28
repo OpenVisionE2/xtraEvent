@@ -30,7 +30,7 @@ class imdbRtng(Converter, object):
 							ffilm = e1.group(1)
 						except:
 							w = re.sub("([\(\[]).*?([\)\]])", " ", evnt)
-							ffilm = re.sub('\W+','+', w)
+							ffilm = re.sub('\W+', '+', w)
 
 						year = self.yearPr(event)
 						if year != "":
@@ -78,7 +78,7 @@ class imdbRtng(Converter, object):
 							ffilm = e1.group(1)
 						except:
 							w = re.sub("([\(\[]).*?([\)\]])", " ", evnt)
-							ffilm = re.sub('\W+','+', w)
+							ffilm = re.sub('\W+', '+', w)
 
 						year = self.yearPr(event)
 						if year != "":

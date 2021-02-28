@@ -464,7 +464,7 @@ class downloads(Screen):
 								# omdb info(english)
 								url = 'https://www.omdbapi.com/?apikey={}&i={}'.format(str(omdb_api), str(imdb_id))
 								info_omdb = requests.get(url).json()
-								open(info_files,"wb").write(json.dumps(info_omdb))
+								open(info_files, "wb").write(json.dumps(info_omdb))
 								info_downloaded += 1
 								downloaded = info_downloaded
 								self.prgrs(downloaded, n)

@@ -16,7 +16,7 @@ class xtraEmcBackdrop(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
-		self.piconsize = (0,0)
+		self.piconsize = (0, 0)
 		self.delayPicTime = 100
 		self.timer = eTimer()
 		self.timer.callback.append(self.showPicture)

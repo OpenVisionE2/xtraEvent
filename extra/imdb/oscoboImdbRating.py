@@ -31,7 +31,7 @@ class oscoboImdbRating(Converter, object):
 					req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
 					resp = urllib2.urlopen(req).read(15000)
 					p = '(</b> (.*?)) ((\d+)\.(\d+))'
-					parse = re.search(p,str(resp))
+					parse = re.search(p, str(resp))
 					return "IMDB : %s" %(parse.group(3))
 				except:
 					pass

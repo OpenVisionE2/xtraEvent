@@ -150,6 +150,6 @@ class banner(Renderer):
 				pass
 
 	def saveBanner(self):
-		with open(self.dwn_banner,'wb') as f:
+		with open(self.dwn_banner, 'wb') as f:
 			f.write(urllib2.urlopen(self.url_banner).read())
 			f.close()

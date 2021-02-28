@@ -27,7 +27,7 @@ class imdbCnvrtR(Converter, object):
 					resp = urllib2.urlopen(req)
 					respData = resp.read()
 					p = 'https://www.imdb.com/title/(.*?)</div>'
-					parse = re.search(p,str(respData))
+					parse = re.search(p, str(respData))
 					id = parse.group(1)
 					
 					f = open("/media/hdd/data.tsv", "r")

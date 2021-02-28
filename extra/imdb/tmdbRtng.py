@@ -20,7 +20,7 @@ class tmdbRtng(Converter, object):
 		for i in pattern:
 			seg = re.search(i, fd)
 			if seg:
-				if re.search("Episodio",i):
+				if re.search("Episodio", i):
 					return "S"+seg.group(2).zfill(2)+"E"+seg.group(1).zfill(2)
 				else :
 					return "S"+seg.group(1).zfill(2)+"E"+seg.group(2).zfill(2)
@@ -37,7 +37,7 @@ class tmdbRtng(Converter, object):
 				self.evnt = event.getEventName()
 				try:
 					p = '((.*?)).\(.*?(.*?)\)'
-					e1 = re.search(p,self.evnt)
+					e1 = re.search(p, self.evnt)
 					if e1:
 						jr = e1.group(1)
 						self.evntNm = quote(jr)
