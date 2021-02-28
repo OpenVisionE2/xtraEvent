@@ -13,6 +13,7 @@ try:
 except:
 	pass
 
+
 class xtraNextEvents(Renderer):
 
 	def __init__(self):
@@ -41,6 +42,7 @@ class xtraNextEvents(Renderer):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

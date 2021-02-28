@@ -5,6 +5,7 @@ from Components.Element import cached
 import re
 import urllib2
 
+
 class oscoboImdbRating(Converter, object):
 
 	def __init__(self, type):

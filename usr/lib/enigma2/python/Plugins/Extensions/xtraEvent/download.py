@@ -44,6 +44,7 @@ epgcache = eEPGCache.getInstance()
 pathLoc = config.plugins.xtraEvent.loc.value + "xtraEvent/"
 desktop_size = getDesktop(0).size().width()
 
+
 class downloads(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)

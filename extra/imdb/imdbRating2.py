@@ -6,6 +6,7 @@ import urllib2
 import re
 from urllib import quote
 
+
 class imdbRating2(Converter, object):
 
 	def __init__(self, type):

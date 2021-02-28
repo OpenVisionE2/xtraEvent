@@ -9,6 +9,7 @@ import urllib2
 
 api = 'your api key'
 
+
 class omdbImdbRtng(Converter, object):
 
 	def __init__(self, type):

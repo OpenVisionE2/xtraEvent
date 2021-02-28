@@ -23,6 +23,7 @@ try:
 except:
 	pass
 
+
 class banner(Renderer):
 
 	def __init__(self):
@@ -30,6 +31,7 @@ class banner(Renderer):
 		self.bannerName = ''
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		try:
 			if not self.instance:

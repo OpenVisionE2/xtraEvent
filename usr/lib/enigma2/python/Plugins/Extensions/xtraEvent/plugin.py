@@ -6,6 +6,7 @@ import threading
 import xtra
 import download
 
+
 def ddwn():
 	if config.plugins.xtraEvent.timerMod.value == True:
 		download.downloads("").save()
@@ -13,8 +14,11 @@ def ddwn():
 		tmr = config.plugins.xtraEvent.timer.value
 		t = threading.Timer(3600 * int(tmr), ddwn) # 1h=3600
 		t.start()
+
+
 if config.plugins.xtraEvent.timerMod.value == True:
 	threading.Timer(30, ddwn).start()
+
 
 def main(session, **kwargs):
 	reload(xtra)
@@ -24,6 +28,7 @@ def main(session, **kwargs):
 	except:
 		import traceback
 		traceback.print_exc()
+
 
 def Plugins(**kwargs):
 	return [PluginDescriptor(name="xtraEvent", description="xtraEvent plugin for Open Vision", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]

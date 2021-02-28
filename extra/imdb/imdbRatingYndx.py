@@ -6,6 +6,7 @@ import urllib2
 import re
 from urllib import pathname2url
 
+
 class imdbRatingYndx(Converter, object):
 
 	def __init__(self, type):

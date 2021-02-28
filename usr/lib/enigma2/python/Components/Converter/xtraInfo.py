@@ -33,7 +33,6 @@ class xtraInfo(Converter, object):
 	Type = "Type"
 	totalSeasons = "totalSeasons"
 
-
 	def __init__(self, type):
 		Converter.__init__(self, type)
 		self.types = str(type).split(",")

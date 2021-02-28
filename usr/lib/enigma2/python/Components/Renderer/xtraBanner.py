@@ -13,6 +13,7 @@ try:
 except:
 	pass
 
+
 class xtraBanner(Renderer):
 
 	def __init__(self):
@@ -30,6 +31,7 @@ class xtraBanner(Renderer):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

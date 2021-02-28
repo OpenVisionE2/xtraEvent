@@ -14,6 +14,7 @@ except:
 
 pratePath = resolveFilename(SCOPE_CURRENT_SKIN, 'parental')
 
+
 class xtraParental(Renderer):
 
 	def __init__(self):
@@ -21,6 +22,7 @@ class xtraParental(Renderer):
 		self.rateNm = ''
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

@@ -10,6 +10,7 @@ import urllib2
 
 api = 'b1538d0b'
 
+
 class imdbRtng(Converter, object):
 
 	def __init__(self, type):

@@ -5,6 +5,7 @@ from enigma import eLabel, eEPGCache
 from Components.VariableText import VariableText
 from time import localtime
 
+
 class xtraNxtEvnt(Renderer, VariableText):
 
 	def __init__(self):
@@ -27,6 +28,7 @@ class xtraNxtEvnt(Renderer, VariableText):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = eLabel
+
 	def changed(self, what):
 		self.text = ''
 		try:

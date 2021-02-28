@@ -25,6 +25,7 @@ except:
 if not os.path.isdir('/media/hdd/poster'):
 	os.mkdir('/media/hdd/poster')
 
+
 class pstrCnvrt(Converter, object):
 
 	def __init__(self, type):

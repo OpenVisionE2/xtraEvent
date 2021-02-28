@@ -12,6 +12,7 @@ try:
 except:
 	pass
 
+
 class xtraEmcBackdrop(Renderer):
 
 	def __init__(self):
@@ -32,6 +33,7 @@ class xtraEmcBackdrop(Renderer):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

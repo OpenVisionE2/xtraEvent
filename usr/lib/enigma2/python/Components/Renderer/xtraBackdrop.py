@@ -13,6 +13,7 @@ try:
 except:
 	pass
 
+
 class xtraBackdrop(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
@@ -28,6 +29,7 @@ class xtraBackdrop(Renderer):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return
@@ -64,7 +66,6 @@ class xtraBackdrop(Renderer):
 				self.instance.hide()
 		except:
 			pass
-
 
 	def delay(self):
 		self.timer = eTimer()

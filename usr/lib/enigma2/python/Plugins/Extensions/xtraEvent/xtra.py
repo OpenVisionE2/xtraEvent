@@ -135,6 +135,7 @@ config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choice
 	('tv', 'TV'),
 	('movies', 'MOVIE')])
 
+
 class xtra(Screen, ConfigListScreen):
 
 	def __init__(self, session):
@@ -467,6 +468,7 @@ class xtra(Screen, ConfigListScreen):
 		configfile.save()
 		self.close()
 
+
 class manuelSearch(Screen, ConfigListScreen):
 
 	def __init__(self, session):
@@ -526,7 +528,6 @@ class manuelSearch(Screen, ConfigListScreen):
 		self.timer.callback.append(self.msList)
 		self.timer.callback.append(self.pc)
 		self.onLayoutFinish.append(self.msList)
-
 
 	def keyOK(self):
 		if self['config'].getCurrent()[1] is config.plugins.xtraEvent.EMCloc:
@@ -1021,6 +1022,7 @@ class manuelSearch(Screen, ConfigListScreen):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
 		self['progress'].setValue(int(100 * downloaded / n))
 
+
 def bqtList():
 	bouquets = []
 	serviceHandler = eServiceCenter.getInstance()
@@ -1035,6 +1037,7 @@ def bqtList():
 				bouquets.append((info.getName(bqt), bqt))
 		return bouquets
 	return 
+
 
 def chList(bqtNm):
 	channels = []
@@ -1057,6 +1060,7 @@ def chList(bqtNm):
 					channels.append((chhh.toString()))
 		return channels
 	return
+
 
 class selBouquets(Screen):
 	
@@ -1168,6 +1172,7 @@ class selBouquets(Screen):
 	def cancel(self):
 		self.close(self.session, False)
 
+
 class pathLocation():
 	def __init__(self):
 		self.location()
@@ -1200,6 +1205,8 @@ class pathLocation():
 				pass
 
 		return pathLoc
+
+
 pathLoc = pathLocation().location()
 
 if config.plugins.xtraEvent.tmdbAPI.value != "":
