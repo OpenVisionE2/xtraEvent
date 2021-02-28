@@ -275,25 +275,25 @@ class xtra(Screen, ConfigListScreen):
 		list.append(getConfigListEntry("CONFIG MENU", config.plugins.xtraEvent.cnfg, _("adjust your settings and close ... your settings are valid ...")))
 		list.append(getConfigListEntry("—" * 100))
 		if config.plugins.xtraEvent.cnfg.value:
-			list.append(getConfigListEntry("	LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
-			list.append(getConfigListEntry("	SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
+			list.append(getConfigListEntry("    LOCATION", config.plugins.xtraEvent.loc, _("'OK' select location downloads...")))
+			list.append(getConfigListEntry("    SKIN", config.plugins.xtraEvent.skinSelect, _("* reOpen plugin...")))
 			list.append(getConfigListEntry("    Delete Poster After", config.plugins.xtraEvent.rmposter, _("'OK' select Delete Poster After...")))
-			list.append(getConfigListEntry("	OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
+			list.append(getConfigListEntry("    OPTIMIZE IMAGES", config.plugins.xtraEvent.opt_Images, _("optimize images...")))
 			if config.plugins.xtraEvent.opt_Images.value:
 				list.append(getConfigListEntry("\tOPTIMIZE IMAGES SELECT", config.plugins.xtraEvent.cnfgSel, _("'OK' select for optimize images...")))
-			list.append(getConfigListEntry("	YOUR API'S", config.plugins.xtraEvent.apis, _("...")))
+			list.append(getConfigListEntry("    YOUR API'S", config.plugins.xtraEvent.apis, _("...")))
 			if config.plugins.xtraEvent.apis.value:
-				list.append(getConfigListEntry("	TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("	TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("	OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
-				list.append(getConfigListEntry("	FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    TMDB API", config.plugins.xtraEvent.tmdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    TVDB API", config.plugins.xtraEvent.tvdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    OMDB API", config.plugins.xtraEvent.omdbAPI, _("enter your own api key...")))
+				list.append(getConfigListEntry("    FANART API", config.plugins.xtraEvent.fanartAPI, _("enter your own api key...")))
 			list.append(getConfigListEntry("—" * 100))
 
-			list.append(getConfigListEntry("	SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))
-			list.append(getConfigListEntry("	SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
+			list.append(getConfigListEntry("    SEARCH MODE", config.plugins.xtraEvent.searchMOD, _("select search mode...")))
+			list.append(getConfigListEntry("    SEARCH NEXT EVENTS", config.plugins.xtraEvent.searchNUMBER, _("enter the number of next events...")))
 
-			list.append(getConfigListEntry("	SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
-			list.append(getConfigListEntry("	TIMER", config.plugins.xtraEvent.timerMod, _("select timer update for events..")))
+			list.append(getConfigListEntry("    SEARCH LANGUAGE", config.plugins.xtraEvent.searchLang, _("select search language...")))
+			list.append(getConfigListEntry("    TIMER", config.plugins.xtraEvent.timerMod, _("select timer update for events..")))
 			if config.plugins.xtraEvent.timerMod.value == True:
 				list.append(getConfigListEntry("\tTIMER(hours)", config.plugins.xtraEvent.timer, _("..."),))
 		list.append(getConfigListEntry("—" * 100))
