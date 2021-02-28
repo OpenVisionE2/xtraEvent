@@ -26,4 +26,4 @@ def main(session, **kwargs):
 		traceback.print_exc()
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name="xtraEvent", description="xtraEvent plugin for Open Vision", where = PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
+	return [PluginDescriptor(name="xtraEvent", description="xtraEvent plugin for Open Vision", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
