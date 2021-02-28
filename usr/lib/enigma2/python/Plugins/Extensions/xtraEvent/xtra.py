@@ -1028,7 +1028,8 @@ def bqtList():
 	if list:
 		while True:
 			bqt = list.getNext()
-			if not bqt.valid(): break
+			if not bqt.valid():
+				break
 			info = serviceHandler.info(bqt)
 			if info:
 				bouquets.append((info.getName(bqt), bqt))
@@ -1042,7 +1043,8 @@ def chList(bqtNm):
 	if chlist :
 		while True:
 			chh = chlist.getNext()
-			if not chh.valid(): break
+			if not chh.valid():
+				break
 			info = serviceHandler.info(chh)
 			if chh.flags & eServiceReference.isDirectory:
 				info = serviceHandler.info(chh)
@@ -1050,7 +1052,8 @@ def chList(bqtNm):
 				chlist = serviceHandler.list(chh)
 				while True:
 					chhh = chlist.getNext()
-					if not chhh.valid(): break
+					if not chhh.valid():
+						break
 					channels.append((chhh.toString()))
 		return channels
 	return
