@@ -136,10 +136,10 @@ config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choice
 	('movies', 'MOVIE')])
 
 config.plugins.xtraEvent.rmposter = ConfigSelection(default="No", choices=[
-	('No', 'No'), 
-	('50MB', '50MB'), 
-	('100MB', '100MB'), 
-	('200MB', '200MB'), 
+	('No', 'No'),
+	('50MB', '50MB'),
+	('100MB', '100MB'),
+	('200MB', '200MB'),
 	('500MB', '500MB')])
 
 
