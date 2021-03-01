@@ -5,7 +5,9 @@ from enigma import ePixmap, eTimer, ePicLoad
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
 from Components.config import config
-import re, os, gettext
+import re
+import os
+import gettext
 from Tools.Directories import fileExists
 from Components.Console import Console
 
