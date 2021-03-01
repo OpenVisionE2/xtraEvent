@@ -11,11 +11,11 @@ import gettext
 from Tools.Directories import fileExists
 from Components.Console import Console
 
-REDC =  '\033[31m'
+REDC = '\033[31m'
 ENDC = '\033[m'
 
 def cprint(text):
-    print(REDC+"[xtraEvent] "+text+ENDC)
+    print(REDC + "[xtraEvent] " + text + ENDC)
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
@@ -24,8 +24,8 @@ try:
 	foldersize = config.plugins.xtraEvent.rmposter.value
 	cprint("foldersize = %s" % foldersize)
 
-	folder_size=sum([sum(map(lambda fname: os.path.getsize(os.path.join(PosterPath, fname)), files)) for PosterPath, folders, files in os.walk(PosterPath)])
-	posters_sz = "%0.f" % (folder_size/(1024*1024.0))
+	folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(PosterPath, fname)), files)) for PosterPath, folders, files in os.walk(PosterPath)])
+	posters_sz = "%0.f" % (folder_size / (1024 * 1024.0))
 	cprint("posters_sz = %s" % posters_sz)
 	CMD = "rm -f %s/*" % PosterPath
 	if foldersize == "50MB":
