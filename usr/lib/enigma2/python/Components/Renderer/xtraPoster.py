@@ -11,12 +11,9 @@ import gettext
 from Tools.Directories import fileExists
 from Components.Console import Console
 
-REDC = '\033[31m'
-ENDC = '\033[m'
-
 
 def cprint(text):
-    print(REDC + "[xtraEvent] " + text + ENDC)
+    print("[xtraEvent] " + text)
 
 
 try:
