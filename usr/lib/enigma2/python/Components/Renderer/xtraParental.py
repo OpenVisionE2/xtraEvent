@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from Renderer import Renderer
 from enigma import ePixmap, loadPNG
-from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN, fileExists
+from Tools.Directories import resolveFilename, SCOPE_GUISKIN, fileExists
 from Components.config import config
 import re
 import json
@@ -12,7 +12,7 @@ try:
 except:
 	pass
 
-pratePath = resolveFilename(SCOPE_CURRENT_SKIN, 'parental')
+pratePath = resolveFilename(SCOPE_GUISKIN, 'parental')
 
 
 class xtraParental(Renderer):
