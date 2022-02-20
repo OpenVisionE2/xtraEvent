@@ -459,7 +459,7 @@ class xtra(Screen, ConfigListScreen):
 		ret and ret[1]()
 
 	def search(self):
-		import download
+		from . import download
 		if config.plugins.xtraEvent.searchMOD.value == "Current Channel":
 			self.session.open(download.downloads)
 		if config.plugins.xtraEvent.searchMOD.value == "Bouquets":
@@ -1157,7 +1157,7 @@ class selBouquets(Screen):
 			pass
 
 	def withPluginDownload(self):
-		import download
+		from . import download
 		self.session.open(download.downloads)
 
 	def withTimerDownload(self):

@@ -3,8 +3,8 @@
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
 import threading
-import xtra
-import download
+from . import xtra
+from . import download
 
 
 def ddwn():

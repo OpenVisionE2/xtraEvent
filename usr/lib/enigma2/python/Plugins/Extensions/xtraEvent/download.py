@@ -17,7 +17,7 @@ import random
 import json
 from PIL import Image
 import socket
-import xtra
+from . import xtra
 from datetime import datetime
 import threading
 from Components.ProgressBar import ProgressBar
