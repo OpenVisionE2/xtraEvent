@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG, eTimer
 from Tools.Directories import fileExists
 from Components.Sources.CurrentService import CurrentService

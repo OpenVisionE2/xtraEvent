@@ -3,6 +3,9 @@
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
 import threading
+from six import PY3
+if PY3:
+	from importlib import reload
 from . import xtra
 from . import download
 

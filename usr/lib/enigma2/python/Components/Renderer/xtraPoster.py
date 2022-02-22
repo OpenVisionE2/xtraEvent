@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from Renderer import Renderer
+from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, eTimer, ePicLoad
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
