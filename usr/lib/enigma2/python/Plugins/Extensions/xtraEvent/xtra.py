@@ -728,7 +728,7 @@ class manuelSearch(Screen, ConfigListScreen):
 		self.timer.start(100, True)
 
 	def msList(self):
-		self["Picture2"].instance.setPixmapFromFile(NoImage = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film2.jpg"))
+		self["Picture2"].instance.setPixmapFromFile(NoImage=resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film2.jpg"))
 		self["Picture2"].instance.setScale(1)
 		self["Picture2"].show()
 		for x in self["config"].list:
