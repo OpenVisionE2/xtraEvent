@@ -23,6 +23,7 @@ try:
 		setclk = dt.replace(day=dt.day + 1, hour=tc[0], minute=tc[1], second=0, microsecond=0)
 		ds = setclk - dt
 		secs = ds.seconds + 1
+
 		def startDownload():
 			from . import download
 			download.downloads("").save()
@@ -33,6 +34,7 @@ try:
 except Exception as err:
 	with open("/tmp/xtraEvent.log", "a+") as f:
 		f.write("plugin timer clock, %s\n" % (err))
+
 
 def ddwn():
 	try:
@@ -45,12 +47,14 @@ def ddwn():
 		with open("/tmp/xtra_error.log", "a+") as f:
 			f.write("xtra plugin ddwn, %s\n\n" % err)
 
+
 try:
 	if config.plugins.xtraEvent.timerMod.value == "Period":
 		threading.Timer(30, ddwn).start()
 except Exception as err:
 	with open("/tmp/xtra_error.log", "a+") as f:
 		f.write("xtra plugin timer start, %s\n\n" % err)
+
 
 def main(session, **kwargs):
 	try:
@@ -60,6 +64,7 @@ def main(session, **kwargs):
 	except:
 		import traceback
 		traceback.print_exc()
+
 
 def Plugins(**kwargs):
 	return [PluginDescriptor(name="xtraEvent {}".format(xtra.version), description="Poster, Baskdrop, Banner, Info...Etc, Support...", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]

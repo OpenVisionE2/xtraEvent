@@ -47,6 +47,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraParental(Renderer):
 
 	def __init__(self):
@@ -54,6 +55,7 @@ class xtraParental(Renderer):
 		self.rateNm = ''
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

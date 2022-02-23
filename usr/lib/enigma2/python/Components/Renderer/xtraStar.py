@@ -42,6 +42,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraStar(VariableValue, Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
@@ -50,6 +51,7 @@ class xtraStar(VariableValue, Renderer):
 		self.__end = 100
 
 	GUI_WIDGET = eSlider
+
 	def changed(self, what):
 		rtng = 0
 		if what[0] == self.CHANGED_CLEAR:

@@ -41,6 +41,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraEmcPoster(Renderer):
 
 	def __init__(self):
@@ -48,6 +49,7 @@ class xtraEmcPoster(Renderer):
 		self.piconsize = (0, 0)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

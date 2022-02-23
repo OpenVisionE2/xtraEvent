@@ -53,12 +53,14 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraPoster(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
 
 	GUI_WIDGET = ePixmap
+
 	def changed(self, what):
 		if not self.instance:
 			return

@@ -52,6 +52,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraBackdropList2(Renderer):
 	def __init__(self):
 		Renderer.__init__(self)
@@ -79,6 +80,7 @@ class xtraBackdropList2(Renderer):
 		return Renderer.applySkin(self, desktop, screen)
 
 	GUI_WIDGET = eWidget
+
 	def changed(self, what):
 		if not self.instance:
 			return

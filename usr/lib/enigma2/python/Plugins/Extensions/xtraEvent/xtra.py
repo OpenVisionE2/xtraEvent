@@ -230,6 +230,7 @@ config.plugins.xtraEvent.rmposter = ConfigSelection(default="No", choices=[
 	('200', '200'),
 	('500', '500')])
 
+
 class xtra(Screen, ConfigListScreen):
 
 	def __init__(self, session):
@@ -390,7 +391,6 @@ class xtra(Screen, ConfigListScreen):
 					elif config.plugins.xtraEvent.timerMod.value == "Clock":
 						list.append(getConfigListEntry(lng.get(lang, '46'), config.plugins.xtraEvent.timerClock, _(lng.get(lang, '67'))))
 
-
 				list.append(getConfigListEntry("—" * 100))
 			list.append(getConfigListEntry(" ▀ {}".format(lng.get(lang, '28'))))
 			list.append(getConfigListEntry("_" * 100))
@@ -444,8 +444,6 @@ class xtra(Screen, ConfigListScreen):
 			list.append(getConfigListEntry("_" * 100))
 		else:
 			list.append(getConfigListEntry("{}◙ \\c00?????? {}".format(off_color, lng.get(lang, '0')), config.plugins.xtraEvent.onoff, _(lng.get(lang, '0'))))
-
-
 
 		# self["config"].l.setItemHeight(50)
 		self["config"].list = list
@@ -572,7 +570,6 @@ class xtra(Screen, ConfigListScreen):
 				f.write("compressImg, %s\n" % (err))
 			self['info'].setText(str(err))
 
-
 	def brokenImageRemove(self):
 		b = os.listdir(pathLoc)
 		rmvd = 0
@@ -645,6 +642,7 @@ class xtra(Screen, ConfigListScreen):
 				setclk = dt.replace(day=dt.day + 1, hour=tc[0], minute=tc[1], second=0, microsecond=0)
 				ds = setclk - dt
 				secs = ds.seconds + 1
+
 				def startDownload():
 					from . import download
 					download.downloads("").save()
@@ -655,6 +653,7 @@ class xtra(Screen, ConfigListScreen):
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
 				f.write("timer clock, %s\n" % (err))
+
 
 class manuelSearch(Screen, ConfigListScreen):
 	def __init__(self, session):
@@ -1201,7 +1200,6 @@ class manuelSearch(Screen, ConfigListScreen):
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
 		self['progress'].setValue(int(100 * downloaded // n))
-
 
 
 class selBouquets(Screen):

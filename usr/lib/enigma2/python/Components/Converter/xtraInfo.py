@@ -49,6 +49,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class xtraInfo(Converter, object):
 
 	Title = "Title"
@@ -383,7 +384,6 @@ class xtraInfo(Converter, object):
 								year = read_json["Year"]
 								if year:
 									evnt.append("{}".format(year))
-
 
 						if type != self.Compact:
 							tc = "\n".join(evnt)

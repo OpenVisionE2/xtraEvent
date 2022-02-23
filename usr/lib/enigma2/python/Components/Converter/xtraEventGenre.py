@@ -92,12 +92,14 @@ subtype[11] = [_('Original Language'),
  _('Unpublished'),
  _('Live Broadcast')]
 
+
 def getGenreStringMain(hn, ln):
 	if hn == 15:
 		return _('User defined')
 	if 0 < hn < len(maintype):
 		return maintype[hn]
 	return ''
+
 
 def getGenreStringSub(hn, ln):
 	if 0 < hn < len(maintype):

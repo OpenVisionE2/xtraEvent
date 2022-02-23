@@ -111,6 +111,7 @@ REGEX = re.compile(
 		r'\s(ч|ч\.|с\.|с)\s\d{1,3}.+|'
 		r'\d{1,3}(-я|-й|\sс-н).+|', re.DOTALL)
 
+
 class downloads(Screen):
 	def __init__(self, session):
 		Screen.__init__(self, session)
@@ -235,6 +236,7 @@ class downloads(Screen):
 
 
 ####################################################
+
 	def downloadEvents(self):
 		dwnldFile = ""
 		self.title = ""
@@ -1120,6 +1122,7 @@ class downloads(Screen):
 			self.cleanRam()
 			return
 ####################################################################################################################################
+
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
 		self['progress'].setValue(int(100 * downloaded // n))

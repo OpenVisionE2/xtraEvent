@@ -15,6 +15,7 @@ try:
 except:
 	pass
 
+
 class xtraNxtEvnt(Renderer, VariableText):
 
 	def __init__(self):
@@ -37,6 +38,7 @@ class xtraNxtEvnt(Renderer, VariableText):
 		return Renderer.applySkin(self, desktop, parent)
 
 	GUI_WIDGET = eLabel
+
 	def changed(self, what):
 		self.text = ''
 		try:
