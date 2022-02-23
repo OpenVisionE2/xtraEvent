@@ -106,4 +106,3 @@ def getGenreStringSub(hn, ln):
 		if ln < len(subtype[hn]):
 			return subtype[hn][ln]
 	return ''
-

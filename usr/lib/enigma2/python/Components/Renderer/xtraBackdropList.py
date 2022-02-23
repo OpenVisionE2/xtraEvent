@@ -287,4 +287,3 @@ class xtraBackdropList(Renderer):
 		self.eventPxmp1 = ePixmap(self.instance)
 		self.eventPxmp2 = ePixmap(self.instance)
 		self.eventPxmp3 = ePixmap(self.instance)
-

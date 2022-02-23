@@ -112,4 +112,3 @@ class xtraStar2(VariableValue, Renderer):
 	def GUIcreate(self, parent):
 		self.instance = eWidget(parent)
 		self.star = eSlider(self.instance)
-

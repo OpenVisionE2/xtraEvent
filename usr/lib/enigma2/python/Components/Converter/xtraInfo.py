@@ -433,4 +433,3 @@ class xtraInfo(Converter, object):
 
 	value = property(getValue)
 	range = 100
-
