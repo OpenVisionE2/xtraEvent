@@ -398,11 +398,11 @@ class xtra(Screen, ConfigListScreen):
 			list.append(getConfigListEntry("POSTER", config.plugins.xtraEvent.poster, _("...")))
 			if config.plugins.xtraEvent.poster.value == True:
 				list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _(" "),))
-				if config.plugins.xtraEvent.tmdb.value :
+				if config.plugins.xtraEvent.tmdb.value:
 					list.append(getConfigListEntry("\t	Tmdb Poster {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.TMDBpostersize, _(" ")))
 					list.append(getConfigListEntry("\t	  {}".format(lng.get(lang, '63')), config.plugins.xtraEvent.searchType, _(" ")))
 				list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _(lng.get(lang, '29'))))
-				if config.plugins.xtraEvent.tvdb.value :
+				if config.plugins.xtraEvent.tvdb.value:
 					list.append(getConfigListEntry("\t	Tvdb Poster {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.TVDBpostersize, _(" ")))
 				list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _(lng.get(lang, '29'))))
 				if config.plugins.xtraEvent.fanart.value:
@@ -413,21 +413,21 @@ class xtra(Screen, ConfigListScreen):
 			list.append(getConfigListEntry("BANNER", config.plugins.xtraEvent.banner, _(" ")))
 			if config.plugins.xtraEvent.banner.value == True:
 				list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _(" ")))
-				if config.plugins.xtraEvent.tvdb.value :
+				if config.plugins.xtraEvent.tvdb.value:
 					list.append(getConfigListEntry("\t	Tvdb Banner {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.TVDB_Banner_Size, _(" ")))
 				list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _(" ")))
-				if config.plugins.xtraEvent.fanart.value :
+				if config.plugins.xtraEvent.fanart.value:
 					list.append(getConfigListEntry("\t	Fanart Banner {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.FANART_Banner_Size, _(" ")))
 				list.append(getConfigListEntry("_"*100))
 	# backdrop_______________________________________________________________________________________________________________
 			list.append(getConfigListEntry("BACKDROP", config.plugins.xtraEvent.backdrop, _(" ")))
 			if config.plugins.xtraEvent.backdrop.value == True:
 				list.append(getConfigListEntry("\tTMDB", config.plugins.xtraEvent.tmdb, _(" ")))
-				if config.plugins.xtraEvent.tmdb.value :
+				if config.plugins.xtraEvent.tmdb.value:
 					list.append(getConfigListEntry("\t	Tmdb Backdrop {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.TMDBbackdropsize, _(" ")))
 					list.append(getConfigListEntry("\t	  {}".format(lng.get(lang, '63')), config.plugins.xtraEvent.searchType, _(" ")))
 				list.append(getConfigListEntry("\tTVDB", config.plugins.xtraEvent.tvdb, _(" ")))
-				if config.plugins.xtraEvent.tvdb.value :
+				if config.plugins.xtraEvent.tvdb.value:
 					list.append(getConfigListEntry("\t	Tvdb Backdrop {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.TVDBbackdropsize, _(" ")))
 				list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _(" ")))
 				if config.plugins.xtraEvent.fanart.value:
@@ -913,7 +913,7 @@ class manuelSearch(Screen, ConfigListScreen):
 					n += 1
 			tot = n
 			cur = config.plugins.xtraEvent.imgNmbr.value
-			pb_path = "{}mSearch/{}-{}-{}.jpg".format(pathLoc , self.title, config.plugins.xtraEvent.PB.value, self.iNmbr)
+			pb_path = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, self.iNmbr)
 			pb_sz = "{} KB".format(os.path.getsize(pb_path)//1024)
 			im = Image.open(pb_path)
 			pb_res = im.size
@@ -1303,7 +1303,7 @@ class selBouquets(Screen):
 			channels = []
 			serviceHandler = eServiceCenter.getInstance()
 			chlist = serviceHandler.list(eServiceReference('1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'))
-			if chlist :
+			if chlist:
 				while True:
 					chh = chlist.getNext()
 					if not chh.valid():
@@ -1331,7 +1331,7 @@ class selBouquets(Screen):
 			channels = []
 			serviceHandler = eServiceCenter.getInstance()
 			chlist = serviceHandler.list(eServiceReference('%s FROM PROVIDERS ORDER BY name' % (service_types_tv)))
-			if chlist :
+			if chlist:
 				while True:
 					chh = chlist.getNext()
 					if not chh.valid():
