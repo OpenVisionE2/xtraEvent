@@ -483,7 +483,7 @@ class xtra(Screen, ConfigListScreen):
 
 	def menuS(self):
 		if config.plugins.xtraEvent.onoff.value:
-			list = [(_(lng.get(lang, '50')), self.brokenImageRemove), (_(lng.get(lang, '73')), self.removeImagesAll),\
+			list = [(_(lng.get(lang, '50')), self.brokenImageRemove), (_(lng.get(lang, '73')), self.removeImagesAll),
 			(_(lng.get(lang, "75")), self.update), (_(lng.get(lang, '35')), self.exit)]
 			self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('xtraEvent...'), list=list)
 		else:
@@ -1306,7 +1306,8 @@ class selBouquets(Screen):
 			if chlist :
 				while True:
 					chh = chlist.getNext()
-					if not chh.valid(): break
+					if not chh.valid():
+						break
 					info = serviceHandler.info(chh)
 					if chh.flags & eServiceReference.isDirectory:
 						info = serviceHandler.info(chh)
@@ -1314,7 +1315,8 @@ class selBouquets(Screen):
 						chlist = serviceHandler.list(chh)
 						while True:
 							chhh = chlist.getNext()
-							if not chhh.valid(): break
+							if not chhh.valid():
+								break
 							channels.append((chhh.toString()))
 				# open("/tmp/chList", "w").write(str(channels))
 				return channels
@@ -1332,7 +1334,8 @@ class selBouquets(Screen):
 			if chlist :
 				while True:
 					chh = chlist.getNext()
-					if not chh.valid(): break
+					if not chh.valid():
+						break
 					info = serviceHandler.info(chh)
 					if chh.flags & eServiceReference.isDirectory:
 						info = serviceHandler.info(chh)
@@ -1340,7 +1343,8 @@ class selBouquets(Screen):
 						chlist = serviceHandler.list(chh)
 						while True:
 							chhh = chlist.getNext()
-							if not chhh.valid(): break
+							if not chhh.valid():
+								break
 							channels.append((chhh.toString()))
 				# open("/tmp/chList", "w").write(str(channels))
 				return channels
