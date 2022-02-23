@@ -86,7 +86,7 @@ except:
 epgcache = eEPGCache.getInstance()
 pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
 desktop_size = getDesktop(0).size().width()
-headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 REGEX = re.compile(
 		r'([\(\[]).*?([\)\]])|'
 		r'(: odc.\d+)|'
@@ -140,10 +140,10 @@ class downloads(Screen):
 		{
 		'cancel': self.close,
 		'red': self.close,
-		'ok':self.save,
-		'green':self.save,
+		'ok': self.save,
+		'green': self.save,
 		# 'yellow':self.ir,
-		'blue':self.showhide
+		'blue': self.showhide
 		}, -2)
 		self['progress'] = ProgressBar()
 		self['progress'].setRange((0, 100))
@@ -1015,14 +1015,14 @@ class downloads(Screen):
 							url = "https://m.imdb.com/title/{}/?ref_=fn_al_tt_0".format(imdbID)
 							ff = requests.get(url).text
 							try:
-								rtng = re.findall('"aggregateRating":{(.*?)}',ff)[0] #ratingValue":8.4
+								rtng = re.findall('"aggregateRating":{(.*?)}', ff)[0] #ratingValue":8.4
 								imdbRating = rtng.partition('ratingValue":')[2].partition('}')[0].strip()
 								if Rated == None:
 									Rated = ff.partition('contentRating":"')[2].partition('","')[0].replace("+", "").strip() # "contentRating":"18+","genre":["Crime","Drama","Thriller"],"datePublished":"2019-10-04"
 								glist = []
 								genre = ff.partition('genre":[')[2].partition('],')[0].strip().split(",")
 								for i in genre:
-									genre = (i.replace('"',''))
+									genre = (i.replace('"', ''))
 									glist.append(genre)
 								if Genre == None:
 									Genre = ", ".join(glist)
@@ -1066,7 +1066,7 @@ class downloads(Screen):
 							"Year": Year,
 							"imdbRating": imdbRating,
 							"Rated": Rated,
-							"Released":Released,
+							"Released": Released,
 							"Genre": Genre,
 							"Duration": Duration,
 							"Country": Country,
@@ -1132,13 +1132,13 @@ class downloads(Screen):
 				self["Picture"].setScale(1)
 				self["Picture"].show()
 				if desktop_size <= 1280:
-					self["Picture"].resize(eSize(185,278))
-					self["Picture"].move(ePoint(955,235))
+					self["Picture"].resize(eSize(185, 278))
+					self["Picture"].move(ePoint(955, 235))
 					self["Picture"].setScale(1)
 				else:
 					self["Picture"].setScale(1)
-					self["Picture"].resize(eSize(185,278))
-					self["Picture"].move(ePoint(1450,400))
+					self["Picture"].resize(eSize(185, 278))
+					self["Picture"].move(ePoint(1450, 400))
 
 	def showBackdrop(self, dwnldFile):
 		if config.plugins.xtraEvent.onoff.value:
@@ -1146,13 +1146,13 @@ class downloads(Screen):
 				self["Picture2"].hide()
 				self["Picture"].setPixmap(loadJPG(dwnldFile))
 				if desktop_size <= 1280:
-					self["Picture"].resize(eSize(300,170))
-					self["Picture"].move(ePoint(895,280))
+					self["Picture"].resize(eSize(300, 170))
+					self["Picture"].move(ePoint(895, 280))
 					self["Picture"].setScale(1)
 				else:
 					self["Picture"].setScale(1)
-					self["Picture"].resize(eSize(300,170))
-					self["Picture"].move(ePoint(1400,400))
+					self["Picture"].resize(eSize(300, 170))
+					self["Picture"].move(ePoint(1400, 400))
 
 	def showBanner(self, dwnldFile):
 		if config.plugins.xtraEvent.onoff.value:
@@ -1160,14 +1160,14 @@ class downloads(Screen):
 				self["Picture2"].hide()
 				self["Picture"].setPixmap(loadJPG(dwnldFile))
 				if desktop_size <= 1280:
-					self["Picture"].resize(eSize(400,80))
-					self["Picture"].move(ePoint(845,320))
+					self["Picture"].resize(eSize(400, 80))
+					self["Picture"].move(ePoint(845, 320))
 					self["Picture"].setScale(1)
 					self["Picture"].setZPosition(10)
 				else:
 					self["Picture"].setScale(1)
-					self["Picture"].resize(eSize(400,90))
-					self["Picture"].move(ePoint(1400,400))
+					self["Picture"].resize(eSize(400, 90))
+					self["Picture"].move(ePoint(1400, 400))
 
 	def showFilm(self):
 		self["Picture2"].instance.setPixmapFromFile("/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/film2.png")

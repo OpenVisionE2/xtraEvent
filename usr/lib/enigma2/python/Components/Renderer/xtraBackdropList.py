@@ -113,7 +113,7 @@ class xtraBackdropList(Renderer):
 					if os.path.exists(pstrNm):
 						self.eventPxmp1.setPixmap(loadJPG(pstrNm))
 						self.eventPxmp1.resize(eSize(px, py))
-						self.eventPxmp1.move(ePoint(0,0))
+						self.eventPxmp1.move(ePoint(0, 0))
 						self.eventPxmp1.setTransparent(0)
 						self.eventPxmp1.setZPosition(9)
 						self.eventPxmp1.setScale(1)
@@ -258,7 +258,7 @@ class xtraBackdropList(Renderer):
 				if os.path.exists(pstrNm):
 					self.eventPxmp1.setPixmap(loadJPG(pstrNm))
 					self.eventPxmp1.resize(eSize(px, py))
-					self.eventPxmp1.move(ePoint(0,0))
+					self.eventPxmp1.move(ePoint(0, 0))
 					self.eventPxmp1.setTransparent(0)
 					self.eventPxmp1.setZPosition(9)
 					self.eventPxmp1.setScale(1)

@@ -107,15 +107,15 @@ config.plugins.xtraEvent.onoff = ConfigYesNo(default=False)
 config.plugins.xtraEvent.skinSelect = ConfigSelection(default="skin_1", choices=[("skin_1"), ("skin_2")])
 config.plugins.xtraEvent.skinSelectColor = ConfigSelection(default="#3478c1", choices=[
 	("#3478c1", "Blue"),
-	("#4682B4","Steel Blue"),
-	("#ea5b5b","Red"),
-	("#8B0000","Dark Red"),
-	("#8B4513","Saddle Brown"),
-	("#008080","Teal"),
-	("#4F4F4F","Gray31"),
-	("#4f5b66","Space Gray"),
-	("#008B8B","Dark Cyan"),
-	("#2E8B57","SeaGreen"),
+	("#4682B4", "Steel Blue"),
+	("#ea5b5b", "Red"),
+	("#8B0000", "Dark Red"),
+	("#8B4513", "Saddle Brown"),
+	("#008080", "Teal"),
+	("#4F4F4F", "Gray31"),
+	("#4f5b66", "Space Gray"),
+	("#008B8B", "Dark Cyan"),
+	("#2E8B57", "SeaGreen"),
 	])
 config.plugins.xtraEvent.loc = ConfigDirectory(default='')
 config.plugins.xtraEvent.searchMOD = ConfigSelection(default=lng.get(lang, '14'), choices=[(lng.get(lang, '13')), (lng.get(lang, '14')), (lng.get(lang, '14a'))])
@@ -268,7 +268,7 @@ class xtra(Screen, ConfigListScreen):
 			"ok": self.keyOK,
 			"info": self.strg,
 			"menu": self.menuS
-		},-1)
+		}, -1)
 
 		self.setTitle(_("xtraEvent {}".format(version)))
 		self['status'] = Label()
@@ -879,21 +879,21 @@ class manuelSearch(Screen, ConfigListScreen):
 			if desktop_size <= 1280:
 				if config.plugins.xtraEvent.PB.value == "posters":
 					self["Picture"].instance.setScale(1)
-					self["Picture"].instance.resize(eSize(185,278))
-					self["Picture"].instance.move(ePoint(930,325))
+					self["Picture"].instance.resize(eSize(185, 278))
+					self["Picture"].instance.move(ePoint(930, 325))
 				else:
 					self["Picture"].instance.setScale(1)
-					self["Picture"].instance.resize(eSize(300,170))
-					self["Picture"].instance.move(ePoint(890,375))
+					self["Picture"].instance.resize(eSize(300, 170))
+					self["Picture"].instance.move(ePoint(890, 375))
 			else:
 				if config.plugins.xtraEvent.PB.value == "posters":
 					self["Picture"].instance.setScale(1)
-					self["Picture"].instance.resize(eSize(185,278))
-					self["Picture"].instance.move(ePoint(1450,550))
+					self["Picture"].instance.resize(eSize(185, 278))
+					self["Picture"].instance.move(ePoint(1450, 550))
 				else:
 					self["Picture"].instance.setScale(1)
-					self["Picture"].instance.resize(eSize(300,170))
-					self["Picture"].instance.move(ePoint(1400,600))
+					self["Picture"].instance.resize(eSize(300, 170))
+					self["Picture"].instance.move(ePoint(1400, 600))
 			self['Picture'].show()
 			self.inf()
 		except:
@@ -946,7 +946,7 @@ class manuelSearch(Screen, ConfigListScreen):
 					if config.plugins.xtraEvent.PB.value == "backdrops":
 						if not config.plugins.xtraEvent.searchModManuel.value == lng.get(lang, '16'):
 							im1 = Image.open(target)
-							im1 = im1.resize((1280,720))
+							im1 = im1.resize((1280, 720))
 							im1 = im1.save(target)
 							if os.path.exists(target):
 								im1 = Image.open(target)
@@ -1017,7 +1017,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				keyType = "fanart"
 			url = 'https://api.thetvdb.com/series/{}/images/query?keyType={}'.format(series_id, keyType)
 			if config.plugins.xtraEvent.searchLang.value:
-				u = requests.get(url, headers={"Accept-Language":"{}".format(lang)})
+				u = requests.get(url, headers={"Accept-Language": "{}".format(lang)})
 			try:
 				pb_no = u.json()["data"]
 				n = len(pb_no)
@@ -1095,7 +1095,7 @@ class manuelSearch(Screen, ConfigListScreen):
 								url = (fjs['showbackground'][i]['url'])
 							else:
 								url = (fjs['moviebackground'][i]['url'])
-						open("/tmp/url","a+").write("%s\n" % url)
+						open("/tmp/url", "a+").write("%s\n" % url)
 						dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 						open(dwnldFile, 'wb').write(requests.get(url, verify=False).content)
 						downloaded += 1
@@ -1148,7 +1148,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				url += "+poster"
 			else:
 				url += "+backdrop"
-			headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+			headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 			try:
 				ff = requests.get(url, stream=True, headers=headers).text
 				p = re.findall('ihk=\"\/th\?id=(.*?)&', ff)
@@ -1176,7 +1176,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				url += "+poster"
 			else:
 				url += "+backdrop"
-			headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+			headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 			try:
 				ff = requests.get(url, stream=True, headers=headers).text
 				p = re.findall('\],\["https://(.*?)",\d+,\d+]', ff)
@@ -1360,7 +1360,7 @@ class selBouquets(Screen):
 
 			bE = "{}bqts".format(pathLoc)
 			blist = []
-			for idx,item in enumerate(self["list"].list):
+			for idx, item in enumerate(self["list"].list):
 				item = self["list"].list[idx][0]
 				if item[3]:
 					blist.append(item[0])

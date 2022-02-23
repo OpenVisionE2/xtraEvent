@@ -45,7 +45,7 @@ class xtraEmcPoster(Renderer):
 
 	def __init__(self):
 		Renderer.__init__(self)
-		self.piconsize = (0,0)
+		self.piconsize = (0, 0)
 
 	GUI_WIDGET = ePixmap
 	def changed(self, what):
