@@ -62,4 +62,4 @@ def main(session, **kwargs):
 		traceback.print_exc()
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name="xtraEvent {}".format(xtra.version), description="Poster, Baskdrop, Banner, Info...Etc, Support...", where = PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
+	return [PluginDescriptor(name="xtraEvent {}".format(xtra.version), description="Poster, Baskdrop, Banner, Info...Etc, Support...", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]

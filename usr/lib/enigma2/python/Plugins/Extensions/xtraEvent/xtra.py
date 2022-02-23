@@ -103,9 +103,9 @@ epgcache = eEPGCache.getInstance()
 
 
 config.plugins.xtraEvent = ConfigSubsection()
-config.plugins.xtraEvent.onoff = ConfigYesNo(default = False)
-config.plugins.xtraEvent.skinSelect = ConfigSelection(default = "skin_1", choices = [("skin_1"), ("skin_2")])
-config.plugins.xtraEvent.skinSelectColor = ConfigSelection(default = "#3478c1", choices = [
+config.plugins.xtraEvent.onoff = ConfigYesNo(default=False)
+config.plugins.xtraEvent.skinSelect = ConfigSelection(default="skin_1", choices=[("skin_1"), ("skin_2")])
+config.plugins.xtraEvent.skinSelectColor = ConfigSelection(default="#3478c1", choices=[
 	("#3478c1", "Blue"),
 	("#4682B4","Steel Blue"),
 	("#ea5b5b","Red"),
@@ -118,7 +118,7 @@ config.plugins.xtraEvent.skinSelectColor = ConfigSelection(default = "#3478c1", 
 	("#2E8B57","SeaGreen"),
 	])
 config.plugins.xtraEvent.loc = ConfigDirectory(default='')
-config.plugins.xtraEvent.searchMOD = ConfigSelection(default = lng.get(lang, '14'), choices = [(lng.get(lang, '13')), (lng.get(lang, '14')), (lng.get(lang, '14a'))])
+config.plugins.xtraEvent.searchMOD = ConfigSelection(default=lng.get(lang, '14'), choices=[(lng.get(lang, '13')), (lng.get(lang, '14')), (lng.get(lang, '14a'))])
 config.plugins.xtraEvent.searchNUMBER = ConfigSelectionNumber(0, 999, 1, default=0)
 
 # config.plugins.xtraEvent.timerMod = ConfigYesNo(default = False)
@@ -133,11 +133,11 @@ config.plugins.xtraEvent.timerHour = ConfigSelectionNumber(1, 168, 1, default=1)
 config.plugins.xtraEvent.timerClock = ConfigClock(default=0)
 
 config.plugins.xtraEvent.searchMANUELnmbr = ConfigSelectionNumber(0, 999, 1, default=1)
-config.plugins.xtraEvent.searchMANUELyear = ConfigInteger(default = 0, limits=(0, 9999))
+config.plugins.xtraEvent.searchMANUELyear = ConfigInteger(default=0, limits=(0, 9999))
 config.plugins.xtraEvent.imgNmbr = ConfigSelectionNumber(0, 999, 1, default=1)
-config.plugins.xtraEvent.searchModManuel = ConfigSelection(default = lng.get(lang, '16'), choices = [(lng.get(lang, '16')), (lng.get(lang, '17'))])
+config.plugins.xtraEvent.searchModManuel = ConfigSelection(default=lng.get(lang, '16'), choices=[(lng.get(lang, '16')), (lng.get(lang, '17'))])
 config.plugins.xtraEvent.EMCloc = ConfigDirectory(default='')
-config.plugins.xtraEvent.apis = ConfigYesNo(default = False)
+config.plugins.xtraEvent.apis = ConfigYesNo(default=False)
 config.plugins.xtraEvent.tmdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
 config.plugins.xtraEvent.tvdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
 config.plugins.xtraEvent.omdbAPI = ConfigText(default="", visible_width=100, fixed_size=False)
@@ -146,25 +146,25 @@ config.plugins.xtraEvent.searchMANUEL_EMC = ConfigText(default="movies name", vi
 config.plugins.xtraEvent.searchMANUEL = ConfigText(default="event name", visible_width=100, fixed_size=False)
 # config.plugins.xtraEvent.searchLang = ConfigText(default="", visible_width=100, fixed_size=False)
 
-config.plugins.xtraEvent.searchLang = ConfigYesNo(default = False)
-config.plugins.xtraEvent.tmdb = ConfigYesNo(default = False)
-config.plugins.xtraEvent.tvdb = ConfigYesNo(default = False)
-config.plugins.xtraEvent.maze = ConfigYesNo(default = False)
-config.plugins.xtraEvent.fanart = ConfigYesNo(default = False)
-config.plugins.xtraEvent.bing = ConfigYesNo(default = False)
-config.plugins.xtraEvent.extra = ConfigYesNo(default = False)
-config.plugins.xtraEvent.extra2 = ConfigYesNo(default = False)
-config.plugins.xtraEvent.extra3 = ConfigYesNo(default = False)
-config.plugins.xtraEvent.poster = ConfigYesNo(default = False)
-config.plugins.xtraEvent.banner = ConfigYesNo(default = False)
-config.plugins.xtraEvent.backdrop = ConfigYesNo(default = False)
-config.plugins.xtraEvent.info = ConfigYesNo(default = False)
-config.plugins.xtraEvent.infoOmdb = ConfigYesNo(default = False)
-config.plugins.xtraEvent.infoImdb = ConfigYesNo(default = False)
-config.plugins.xtraEvent.opt_Images = ConfigYesNo(default = False)
-config.plugins.xtraEvent.cnfg = ConfigYesNo(default = False)
-config.plugins.xtraEvent.cnfgSel = ConfigSelection(default = "poster", choices = [("poster"), ("banner"), ("backdrop"), ("EMC")])
-config.plugins.xtraEvent.TMDBpostersize = ConfigSelection(default="w185", choices = [
+config.plugins.xtraEvent.searchLang = ConfigYesNo(default=False)
+config.plugins.xtraEvent.tmdb = ConfigYesNo(default=False)
+config.plugins.xtraEvent.tvdb = ConfigYesNo(default=False)
+config.plugins.xtraEvent.maze = ConfigYesNo(default=False)
+config.plugins.xtraEvent.fanart = ConfigYesNo(default=False)
+config.plugins.xtraEvent.bing = ConfigYesNo(default=False)
+config.plugins.xtraEvent.extra = ConfigYesNo(default=False)
+config.plugins.xtraEvent.extra2 = ConfigYesNo(default=False)
+config.plugins.xtraEvent.extra3 = ConfigYesNo(default=False)
+config.plugins.xtraEvent.poster = ConfigYesNo(default=False)
+config.plugins.xtraEvent.banner = ConfigYesNo(default=False)
+config.plugins.xtraEvent.backdrop = ConfigYesNo(default=False)
+config.plugins.xtraEvent.info = ConfigYesNo(default=False)
+config.plugins.xtraEvent.infoOmdb = ConfigYesNo(default=False)
+config.plugins.xtraEvent.infoImdb = ConfigYesNo(default=False)
+config.plugins.xtraEvent.opt_Images = ConfigYesNo(default=False)
+config.plugins.xtraEvent.cnfg = ConfigYesNo(default=False)
+config.plugins.xtraEvent.cnfgSel = ConfigSelection(default="poster", choices=[("poster"), ("banner"), ("backdrop"), ("EMC")])
+config.plugins.xtraEvent.TMDBpostersize = ConfigSelection(default="w185", choices=[
 	("w92", "92x138"),
 	("w154", "154x231"),
 	("w185", "185x278"),
@@ -172,52 +172,52 @@ config.plugins.xtraEvent.TMDBpostersize = ConfigSelection(default="w185", choice
 	("w500", "500x750"),
 	("w780", "780x1170"),
 	("original", "ORIGINAL")])
-config.plugins.xtraEvent.TVDBpostersize = ConfigSelection(default="thumbnail", choices = [
+config.plugins.xtraEvent.TVDBpostersize = ConfigSelection(default="thumbnail", choices=[
 	("thumbnail", "340x500"),
 	("fileName", "original(680x1000)")])
-config.plugins.xtraEvent.TMDBbackdropsize = ConfigSelection(default="w300", choices = [
+config.plugins.xtraEvent.TMDBbackdropsize = ConfigSelection(default="w300", choices=[
 	("w300", "300x170"),
 	("w780", "780x440"),
 	("w1280", "1280x720"),
 	("original", "ORIGINAL")])
-config.plugins.xtraEvent.TVDBbackdropsize = ConfigSelection(default="thumbnail", choices = [
+config.plugins.xtraEvent.TVDBbackdropsize = ConfigSelection(default="thumbnail", choices=[
 	("thumbnail", "640x360"),
 	("fileName", "original(1920x1080)")])
-config.plugins.xtraEvent.FANART_Poster_Resize = ConfigSelection(default="10", choices = [
+config.plugins.xtraEvent.FANART_Poster_Resize = ConfigSelection(default="10", choices=[
 	("10", "100x142"),
 	("5", "200x285"),
 	("3", "333x475"),
 	("2", "500x713"),
 	("1", "1000x1426")])
-config.plugins.xtraEvent.FANART_Backdrop_Resize = ConfigSelection(default="2", choices = [
+config.plugins.xtraEvent.FANART_Backdrop_Resize = ConfigSelection(default="2", choices=[
 	("2", "original/2"),
 	("1", "original")])
-config.plugins.xtraEvent.imdb_Poster_size = ConfigSelection(default="185", choices = [
+config.plugins.xtraEvent.imdb_Poster_size = ConfigSelection(default="185", choices=[
 	("185", "185x278"),
 	("344", "344x510"),
 	("500", "500x750")])
-config.plugins.xtraEvent.PB = ConfigSelection(default="posters", choices = [
+config.plugins.xtraEvent.PB = ConfigSelection(default="posters", choices=[
 	("posters", "Poster"),
 	("backdrops", "Backdrop")])
-config.plugins.xtraEvent.srcs = ConfigSelection(default="TMDB", choices = [
+config.plugins.xtraEvent.srcs = ConfigSelection(default="TMDB", choices=[
 	('TMDB', 'TMDB'),
 	('TVDB', 'TVDB'),
 	('FANART', 'FANART'),
 	('IMDB(poster)', 'IMDB(poster)'),
 	('Bing', 'Bing'),
 	('Google', 'Google')])
-config.plugins.xtraEvent.searchType = ConfigSelection(default="tv", choices = [
+config.plugins.xtraEvent.searchType = ConfigSelection(default="tv", choices=[
 	('tv', 'TV'),
 	('movie', 'MOVIE'),
 	('multi', 'MULTI')])
-config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choices = [
+config.plugins.xtraEvent.FanartSearchType = ConfigSelection(default="tv", choices=[
 	('tv', 'TV'),
 	('movies', 'MOVIE')])
-config.plugins.xtraEvent.TVDB_Banner_Size = ConfigSelection(default="1", choices = [
+config.plugins.xtraEvent.TVDB_Banner_Size = ConfigSelection(default="1", choices=[
 	("1", "758x140"),
 	("2", "379x70"),
 	("4", "190x35")])
-config.plugins.xtraEvent.FANART_Banner_Size = ConfigSelection(default="1", choices = [
+config.plugins.xtraEvent.FANART_Banner_Size = ConfigSelection(default="1", choices=[
 	("1", "1000x185"),
 	("2", "500x92"),
 	("4", "250x46"),
@@ -596,7 +596,7 @@ class xtra(Screen, ConfigListScreen):
 			pass
 		self['info'].setText(_("Removed Broken Images : {}".format(str(rmvd))))
 
-	def menuCallback(self, ret = None):
+	def menuCallback(self, ret=None):
 		ret and ret[1]()
 
 	def search(self):
@@ -610,7 +610,7 @@ class xtra(Screen, ConfigListScreen):
 				elif config.plugins.xtraEvent.searchMOD.value == lng.get(lang, '14a'):
 					self.session.open(selBouquets)
 			else:
-				self.session.open(MessageBox, _(lng.get(lang, '4')), MessageBox.TYPE_INFO, timeout = 10)
+				self.session.open(MessageBox, _(lng.get(lang, '4')), MessageBox.TYPE_INFO, timeout=10)
 				self.session.open(selBouquets)
 		else:
 			self.exit()
@@ -620,7 +620,7 @@ class xtra(Screen, ConfigListScreen):
 			if pathLoc != "":
 				self.session.open(manuelSearch)
 			else:
-				self.session.open(MessageBox, _(lng.get(lang, '4')), MessageBox.TYPE_INFO, timeout = 10)
+				self.session.open(MessageBox, _(lng.get(lang, '4')), MessageBox.TYPE_INFO, timeout=10)
 		else:
 			self.exit()
 
@@ -811,7 +811,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			pass
 
 	def vk(self):
-		self.session.openWithCallback(self.vkEdit, VirtualKeyBoard, title=lng.get(lang, '39'), text = self.evnt)
+		self.session.openWithCallback(self.vkEdit, VirtualKeyBoard, title=lng.get(lang, '39'), text=self.evnt)
 
 	def vkEdit(self, text=None):
 		if text:
@@ -1389,11 +1389,11 @@ class selBouquets(Screen):
 
 	def withTimerDownload(self):
 		if config.plugins.xtraEvent.timerMod.value == False:
-			self.session.open(MessageBox, _(lng.get(lang, '52')), MessageBox.TYPE_INFO, timeout = 10)
+			self.session.open(MessageBox, _(lng.get(lang, '52')), MessageBox.TYPE_INFO, timeout=10)
 		else:
-			self.session.openWithCallback(self.restart, MessageBox, _(lng.get(lang, '47')), MessageBox.TYPE_YESNO, timeout = 20)
+			self.session.openWithCallback(self.restart, MessageBox, _(lng.get(lang, '47')), MessageBox.TYPE_YESNO, timeout=20)
 
-	def menuCallback(self, ret = None):
+	def menuCallback(self, ret=None):
 		ret and ret[1]()
 
 	def restart(self, answer):

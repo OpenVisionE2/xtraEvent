@@ -6,8 +6,8 @@ from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_
 from Tools.LoadPixmap import LoadPixmap
 import skin
 
-selectiononpng = LoadPixmap(cached=True, path = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_on.png")
-selectionoffpng = LoadPixmap(cached=True, path = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_off.png")
+selectiononpng = LoadPixmap(cached=True, path="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_on.png")
+selectionoffpng = LoadPixmap(cached=True, path="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_off.png")
 
 def xtraSelectionEntryComponent(description, value, index, selected):
 	dx, dy, dw, dh = skin.parameters.get("xtraSelectionListDescr", (50, 6, 650, 40))
