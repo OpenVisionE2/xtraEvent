@@ -4,6 +4,7 @@
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.CurrentService import CurrentService
 from Components.config import config
@@ -67,7 +68,7 @@ class xtraEmcBackdrop(Renderer):
 							self.instance.show()
 						else:
 							self.instance.setScale(2)
-							self.instance.setPixmap(loadJPG("/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/noMovie.jpg"))
+							self.instance.setPixmap(loadJPG(resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/noMovie.jpg")))
 							self.instance.show()
 					else:
 						self.instance.hide()

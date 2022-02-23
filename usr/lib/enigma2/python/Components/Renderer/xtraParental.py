@@ -5,11 +5,11 @@
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadPNG
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 import re
 import json
 import os
-
 try:
 	import sys
 	if sys.version_info[0] == 3:
@@ -17,7 +17,7 @@ try:
 except:
 	pass
 
-pratePath = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/parental/"
+pratePath = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/parental")
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:

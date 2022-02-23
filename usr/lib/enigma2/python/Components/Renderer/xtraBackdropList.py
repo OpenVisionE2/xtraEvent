@@ -6,13 +6,13 @@
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePoint, eWidget, eLabel, eSize, gFont, ePixmap, loadJPG, eEPGCache, eTimer
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 from skin import parseColor
 import re
 import os
 import json
 from time import localtime
-
 try:
 	import sys
 	if sys.version_info[0] == 3:
@@ -20,7 +20,7 @@ try:
 except:
 	pass
 
-NoImage = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/film.jpg"
+NoImage = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film.jpg")
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value

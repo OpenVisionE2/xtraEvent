@@ -10,10 +10,12 @@
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG, eTimer, eEPGCache
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 import os
 import re
-NoImage = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/film.jpg"
+
+NoImage = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film.jpg")
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:

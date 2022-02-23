@@ -9,18 +9,18 @@ from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from Components.VariableValue import VariableValue
 from enigma import ePoint, eWidget, eSize, eSlider, loadPNG
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 import re
 import json
 import os
-
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
 	pathLoc = ""
 
-star = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/star/star.png"
-starBackgrund = "/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/star/star_back.png"
+star = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/star/star.png")
+starBackgrund = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/star/star_back.png")
 
 REGEX = re.compile(
 		r'([\(\[]).*?([\)\]])|'

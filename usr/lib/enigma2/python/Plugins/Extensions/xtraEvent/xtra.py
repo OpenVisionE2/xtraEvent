@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # by digiteng...06.2020, 11.2020, 11.2021, 12.2021, 01.2022
 from __future__ import absolute_import
@@ -12,12 +12,10 @@ from Screens.Standby import TryQuitMainloop
 import Tools.Notifications
 import os
 import re
-from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, \
-getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, \
-ConfigDirectory, ConfigClock, NoSave
+from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory, ConfigClock, NoSave
 from Components.ConfigList import ConfigListScreen
-from enigma import eTimer, eLabel, ePixmap, eSize, ePoint, loadJPG, eEPGCache, \
-getDesktop, addFont, eServiceReference, eServiceCenter
+from enigma import eTimer, eLabel, ePixmap, eSize, ePoint, loadJPG, eEPGCache, getDesktop, addFont, eServiceReference, eServiceCenter
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Sources.StaticText import StaticText
 from Screens.VirtualKeyBoard import VirtualKeyBoard
 from PIL import Image
@@ -31,6 +29,7 @@ from .xtraSelectionList import xtraSelectionList, xtraSelectionEntryComponent
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
 from threading import Timer
 from datetime import datetime
+
 version = "v4.9"
 
 pathLoc = ""
@@ -79,7 +78,7 @@ except:
 	except:
 		lang = "en"
 
-lang_path = r"/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/languages"
+lang_path = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/languages")
 try:
 	lng = ConfigParser()
 	if infoPY == 3:
@@ -489,7 +488,7 @@ class xtra(Screen, ConfigListScreen):
 
 	def update(self):
 		try:
-			url = requests.get("https://api.github.com/repos/digiteng/xtra/releases/latest")
+			url = requests.get("https://api.github.com/repos/OpenVisionE2/xtraEvent/releases/latest")
 			new_version = url.json()["name"]
 			if version != new_version:
 				msg = url.json()["body"]
@@ -729,7 +728,7 @@ class manuelSearch(Screen, ConfigListScreen):
 		self.timer.start(100, True)
 
 	def msList(self):
-		self["Picture2"].instance.setPixmapFromFile("/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/film2.png")
+		self["Picture2"].instance.setPixmapFromFile(NoImage = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film2.jpg"))
 		self["Picture2"].instance.setScale(1)
 		self["Picture2"].show()
 		for x in self["config"].list:
@@ -949,7 +948,7 @@ class manuelSearch(Screen, ConfigListScreen):
 							im1 = im1.save(target)
 							if os.path.exists(target):
 								im1 = Image.open(target)
-								im2 = Image.open("/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/emc_background.jpg")
+								im2 = Image.open(resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/emc_background.png"))
 								mask = Image.new("L", im1.size, 80)
 								im = Image.composite(im1, im2, mask)
 								im.save(target)

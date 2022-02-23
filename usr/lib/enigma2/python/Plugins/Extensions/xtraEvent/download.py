@@ -8,6 +8,7 @@ from Components.Pixmap import Pixmap
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from enigma import eEPGCache, eTimer, getDesktop, ePixmap, ePoint, eSize, loadJPG
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 from ServiceReference import ServiceReference
 from Screens.MessageBox import MessageBox
@@ -65,7 +66,7 @@ except:
 	except:
 		lang = "en"
 
-lang_path = r"/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/languages"
+lang_path = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/languages")
 try:
 	lng = ConfigParser()
 	if PY3 == 3:
@@ -1174,7 +1175,7 @@ class downloads(Screen):
 					self["Picture"].move(ePoint(1400, 400))
 
 	def showFilm(self):
-		self["Picture2"].instance.setPixmapFromFile("/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/film2.png")
+		self["Picture2"].instance.setPixmapFromFile(resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film2.jpg"))
 		self["Picture2"].instance.setScale(1)
 		self["Picture2"].show()
 

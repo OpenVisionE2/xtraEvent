@@ -3,11 +3,12 @@
 from __future__ import absolute_import
 from Components.MenuList import MenuList
 from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
 import skin
 
-selectiononpng = LoadPixmap(cached=True, path="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_on.png")
-selectionoffpng = LoadPixmap(cached=True, path="/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/pic/icons/lock_off.png")
+selectiononpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/icons/lock_on.png"))
+selectionoffpng = LoadPixmap(cached=True, path=resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/icons/lock_off.png"))
 
 
 def xtraSelectionEntryComponent(description, value, index, selected):
