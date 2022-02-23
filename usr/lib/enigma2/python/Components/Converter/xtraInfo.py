@@ -270,7 +270,7 @@ class xtraInfo(Converter, object):
 								if totalSeasons:
 									evnt.append("Duration : {}min".format(Duration))
 							except:
-								drtn = round(event.getDuration()// 60)
+								drtn = round(event.getDuration() // 60)
 								if drtn > 0:
 									evnt.append("Duration : {}min".format(drtn))
 								else:
@@ -421,7 +421,7 @@ class xtraInfo(Converter, object):
 								try:
 									imdbRatingValue = read_json["imdbRating"]
 									if imdbRatingValue:
-										return int(10*(float(imdbRatingValue)))
+										return int(10 * (float(imdbRatingValue)))
 									else:
 										return 0
 								except:

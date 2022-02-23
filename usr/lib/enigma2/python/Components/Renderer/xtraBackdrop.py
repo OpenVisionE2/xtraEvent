@@ -75,7 +75,7 @@ class xtraBackdrop(Renderer):
 						self.showPicon()
 				except Exception as err:
 					with open("/tmp/xtra_error.log", "a+") as f:
-						f.write("xtraBackdrop(Renderer), %s, %s\n"%(evntNm, err))
+						f.write("xtraBackdrop(Renderer), %s, %s\n" % (evntNm, err))
 			else:
 				self.instance.hide()
 				return
@@ -83,7 +83,7 @@ class xtraBackdrop(Renderer):
 	def showPicon(self):
 		ref = ""
 		info = None
-		ChNm=""
+		ChNm = ""
 		try:
 			service = self.source.service
 			ref = service.toString()
@@ -119,4 +119,4 @@ class xtraBackdrop(Renderer):
 						self.instance.show()
 		except Exception as err:
 			with open("/tmp/xtra_error.log", "a+") as f:
-				f.write("xtraBackdrop(Renderer) /picon, %s\n\n"%err)
+				f.write("xtraBackdrop(Renderer) /picon, %s\n\n" % err)

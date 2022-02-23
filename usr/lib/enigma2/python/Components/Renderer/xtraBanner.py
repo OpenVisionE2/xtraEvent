@@ -65,7 +65,7 @@ class xtraBanner(Renderer):
 							self.picload = ePicLoad()
 							sc = AVSwitch().getFramebufferScale()
 							if self.picload:
-								self.picload.setPara((size.width(), size.height(),  sc[0], sc[1], False, 1, '#00000000'))
+								self.picload.setPara((size.width(), size.height(), sc[0], sc[1], False, 1, '#00000000'))
 							result = self.picload.startDecode(pstrNm, 0, 0, False)
 							if result == 0:
 								ptr = self.picload.getData()

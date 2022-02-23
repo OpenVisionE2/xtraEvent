@@ -83,16 +83,16 @@ lang_path = r"/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/languages"
 try:
 	lng = ConfigParser()
 	if infoPY == 3:
-		lng.read(lang_path,	 encoding='utf8')
+		lng.read(lang_path, encoding='utf8')
 	else:
 		lng.read(lang_path)
 	lng.get(lang, "0")
 except:
 	try:
-		lang="en"
+		lang = "en"
 		lng = ConfigParser()
 		if infoPY == 3:
-			lng.read(lang_path,	 encoding='utf8')
+			lng.read(lang_path, encoding='utf8')
 		else:
 			lng.read(lang_path)
 	except:
@@ -299,17 +299,17 @@ class xtra(Screen, ConfigListScreen):
 				path_banner = "{}banner/".format(pathLoc)
 				path_backdrop = "{}backdrop/".format(pathLoc)
 				path_info = "{}infos/".format(pathLoc)
-				folder_size=sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_poster, fname)), files)) for path_poster, folders, files in os.walk(path_poster)])
-				posters_sz = "%0.1f" % (folder_size//(1024*1024.0))
+				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_poster, fname)), files)) for path_poster, folders, files in os.walk(path_poster)])
+				posters_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				poster_nmbr = len(os.listdir(path_poster))
-				folder_size=sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_banner, fname)), files)) for path_banner, folders, files in os.walk(path_banner)])
-				banners_sz = "%0.1f" % (folder_size//(1024*1024.0))
+				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_banner, fname)), files)) for path_banner, folders, files in os.walk(path_banner)])
+				banners_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				banner_nmbr = len(os.listdir(path_banner))
-				folder_size=sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_backdrop, fname)), files)) for path_backdrop, folders, files in os.walk(path_backdrop)])
-				backdrops_sz = "%0.1f" % (folder_size//(1024*1024.0))
+				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_backdrop, fname)), files)) for path_backdrop, folders, files in os.walk(path_backdrop)])
+				backdrops_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				backdrop_nmbr = len(os.listdir(path_backdrop))
-				folder_size=sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_info, fname)), files)) for path_info, folders, files in os.walk(path_info)])
-				infos_sz = "%0.1f" % (folder_size//(1024*1024.0))
+				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_info, fname)), files)) for path_info, folders, files in os.walk(path_info)])
+				infos_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				info_nmbr = len(os.listdir(path_info))
 				self['status'].setText(_(lng.get(lang, '48')))
 				pstr = "Poster : {} poster {} MB".format(poster_nmbr, posters_sz)
@@ -320,7 +320,7 @@ class xtra(Screen, ConfigListScreen):
 				self['info'].setText(str(pbbi))
 			except Exception as err:
 				with open("/tmp/xtraEvent.log", "a+") as f:
-					f.write("xtra-info-strg, %s\n"%(err))
+					f.write("xtra-info-strg, %s\n" % (err))
 		else:
 			self.exit()
 
@@ -359,7 +359,7 @@ class xtra(Screen, ConfigListScreen):
 		if config.plugins.xtraEvent.onoff.value:
 			list.append(getConfigListEntry("{}◙ \\c00?????? {}".format(on_color, lng.get(lang, '0')), config.plugins.xtraEvent.onoff, _(lng.get(lang, '0'))))
 			list.append(getConfigListEntry("♥  {}".format(lng.get(lang, '1')), config.plugins.xtraEvent.cnfg, _(lng.get(lang, '2'))))
-			list.append(getConfigListEntry("—"*100))
+			list.append(getConfigListEntry("—" * 100))
 			if config.plugins.xtraEvent.cnfg.value:
 				if config.plugins.xtraEvent.loc.value:
 					list.append(getConfigListEntry("{}".format(lng.get(lang, '3')), config.plugins.xtraEvent.loc, _(lng.get(lang, '4'))))
@@ -378,7 +378,7 @@ class xtra(Screen, ConfigListScreen):
 					list.append(getConfigListEntry("	TVDB API", config.plugins.xtraEvent.tvdbAPI, _(lng.get(lang, '23'))))
 					list.append(getConfigListEntry("	OMDB API", config.plugins.xtraEvent.omdbAPI, _(lng.get(lang, '23'))))
 					list.append(getConfigListEntry("	FANART API", config.plugins.xtraEvent.fanartAPI, _(lng.get(lang, '23'))))
-				list.append(getConfigListEntry("—"*100))
+				list.append(getConfigListEntry("—" * 100))
 				list.append(getConfigListEntry(lng.get(lang, '8'), config.plugins.xtraEvent.searchMOD, _(lng.get(lang, '24'))))
 				list.append(getConfigListEntry(lng.get(lang, '9'), config.plugins.xtraEvent.searchNUMBER, _(lng.get(lang, '25'))))
 				list.append(getConfigListEntry(lng.get(lang, '10'), config.plugins.xtraEvent.searchLang, _(lng.get(lang, '26'))))
@@ -391,9 +391,9 @@ class xtra(Screen, ConfigListScreen):
 						list.append(getConfigListEntry(lng.get(lang, '46'), config.plugins.xtraEvent.timerClock, _(lng.get(lang, '67'))))
 
 
-				list.append(getConfigListEntry("—"*100))
+				list.append(getConfigListEntry("—" * 100))
 			list.append(getConfigListEntry(" ▀ {}".format(lng.get(lang, '28'))))
-			list.append(getConfigListEntry("_"*100))
+			list.append(getConfigListEntry("_" * 100))
 	# poster__________________________________________________________________________________________________________________
 			list.append(getConfigListEntry("POSTER", config.plugins.xtraEvent.poster, _("...")))
 			if config.plugins.xtraEvent.poster.value == True:
@@ -408,7 +408,7 @@ class xtra(Screen, ConfigListScreen):
 				if config.plugins.xtraEvent.fanart.value:
 					list.append(getConfigListEntry("\t	Fanart Poster {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.FANART_Poster_Resize, _(" ")))
 				list.append(getConfigListEntry("\tMAZE(TV SHOWS)", config.plugins.xtraEvent.maze, _(" ")))
-				list.append(getConfigListEntry("_"*100))
+				list.append(getConfigListEntry("_" * 100))
 	# banner__________________________________________________________________________________________________________________
 			list.append(getConfigListEntry("BANNER", config.plugins.xtraEvent.banner, _(" ")))
 			if config.plugins.xtraEvent.banner.value == True:
@@ -418,7 +418,7 @@ class xtra(Screen, ConfigListScreen):
 				list.append(getConfigListEntry("\tFANART", config.plugins.xtraEvent.fanart, _(" ")))
 				if config.plugins.xtraEvent.fanart.value:
 					list.append(getConfigListEntry("\t	Fanart Banner {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.FANART_Banner_Size, _(" ")))
-				list.append(getConfigListEntry("_"*100))
+				list.append(getConfigListEntry("_" * 100))
 	# backdrop_______________________________________________________________________________________________________________
 			list.append(getConfigListEntry("BACKDROP", config.plugins.xtraEvent.backdrop, _(" ")))
 			if config.plugins.xtraEvent.backdrop.value == True:
@@ -434,14 +434,14 @@ class xtra(Screen, ConfigListScreen):
 					list.append(getConfigListEntry("\t	Fanart Backdrop {}".format(lng.get(lang, '49')), config.plugins.xtraEvent.FANART_Backdrop_Resize, _(" ")))
 				list.append(getConfigListEntry("\tEXTRA", config.plugins.xtraEvent.extra, _(lng.get(lang, '30'))))
 				list.append(getConfigListEntry("\tEXTRA-2", config.plugins.xtraEvent.extra2, _(lng.get(lang, '31'))))
-				list.append(getConfigListEntry("_"*100))
+				list.append(getConfigListEntry("_" * 100))
 	# info___________________________________________________________________________________________________________________
 			list.append(getConfigListEntry("INFO", config.plugins.xtraEvent.info, _(lng.get(lang, '32'))))
 			# if config.plugins.xtraEvent.info.value == True:
 				# list.append(getConfigListEntry("\tOMDB", config.plugins.xtraEvent.infoOmdb, _(" ")))
 				# list.append(getConfigListEntry("\tIMDB", config.plugins.xtraEvent.infoImdb, _(" ")))
 			list.append(getConfigListEntry("EXTRA-3", config.plugins.xtraEvent.extra3, _(lng.get(lang, '64'))))
-			list.append(getConfigListEntry("_"*100))
+			list.append(getConfigListEntry("_" * 100))
 		else:
 			list.append(getConfigListEntry("{}◙ \\c00?????? {}".format(off_color, lng.get(lang, '0')), config.plugins.xtraEvent.onoff, _(lng.get(lang, '0'))))
 
@@ -502,12 +502,12 @@ class xtra(Screen, ConfigListScreen):
 		except Exception as err:
 			self['info'].setText(str(err))
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("update %s\n\n"%err)
+				f.write("update %s\n\n" % err)
 
 	def instalUpdate(self, url):
 		try:
 			update_url = url.json()["assets"][1]["browser_download_url"]
-			up_name	 = url.json()["assets"][1]["name"]
+			up_name = url.json()["assets"][1]["name"]
 			up_tmp = "/tmp/{}".format(up_name)
 			if not os.path.exists(up_tmp):
 				open(up_tmp, 'wb').write(requests.get(update_url, stream=True, allow_redirects=True).content)
@@ -527,7 +527,7 @@ class xtra(Screen, ConfigListScreen):
 		except Exception as err:
 			self['info'].setText(str(err))
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("instalUpdate %s\n\n"%err)
+				f.write("instalUpdate %s\n\n" % err)
 
 	def updateFinish(self):
 		for x in self["config"].list:
@@ -553,7 +553,7 @@ class xtra(Screen, ConfigListScreen):
 		try:
 			filepath = "{}{}".format(pathLoc, config.plugins.xtraEvent.cnfgSel.value)
 			folder_size = sum([sum([os.path.getsize(os.path.join(filepath, fname)) for fname in files]) for filepath, folders, files in os.walk(filepath)])
-			old_size = "%0.1f" % (folder_size//1024)
+			old_size = "%0.1f" % (folder_size // 1024)
 			if os.path.exists(filepath):
 				lstdr = os.listdir(filepath)
 				for j in lstdr:
@@ -565,11 +565,11 @@ class xtra(Screen, ConfigListScreen):
 					except:
 						pass
 				folder_size = sum([sum([os.path.getsize(os.path.join(filepath, fname)) for fname in files]) for filepath, folders, files in os.walk(filepath)])
-				new_size = "%0.1f" % (folder_size//1024)
+				new_size = "%0.1f" % (folder_size // 1024)
 				self['info'].setText(_("{} images optimization end...\nGain : {}KB to {}KB".format(len(lstdr), old_size, new_size)))
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("compressImg, %s\n"%(err))
+				f.write("compressImg, %s\n" % (err))
 			self['info'].setText(str(err))
 
 
@@ -630,7 +630,7 @@ class xtra(Screen, ConfigListScreen):
 			from six.moves import reload_module
 			reload_module(xtraSkins)
 			for x in self["config"].list:
-				if len(x)>1:
+				if len(x) > 1:
 					x[1].save()
 				configfile.save()
 			self.close()
@@ -642,7 +642,7 @@ class xtra(Screen, ConfigListScreen):
 			if config.plugins.xtraEvent.timerMod.value == "Clock":
 				tc = config.plugins.xtraEvent.timerClock.value
 				dt = datetime.today()
-				setclk = dt.replace(day=dt.day+1, hour=tc[0], minute=tc[1], second=0, microsecond=0)
+				setclk = dt.replace(day=dt.day + 1, hour=tc[0], minute=tc[1], second=0, microsecond=0)
 				ds = setclk - dt
 				secs = ds.seconds + 1
 				def startDownload():
@@ -654,7 +654,7 @@ class xtra(Screen, ConfigListScreen):
 			self.close()
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("timer clock, %s\n"%(err))
+				f.write("timer clock, %s\n" % (err))
 
 class manuelSearch(Screen, ConfigListScreen):
 	def __init__(self, session):
@@ -764,9 +764,9 @@ class manuelSearch(Screen, ConfigListScreen):
 				list.append(getConfigListEntry(_("\t{}".format(lng.get(lang, '49'))), config.plugins.xtraEvent.FANART_Backdrop_Resize))
 		if config.plugins.xtraEvent.srcs.value == "IMDB(poster)":
 			list.append(getConfigListEntry(_("\t{}".format(lng.get(lang, '49'))), config.plugins.xtraEvent.imdb_Poster_size))
-		list.append(getConfigListEntry("—"*50))
+		list.append(getConfigListEntry("—" * 50))
 		list.append(getConfigListEntry(_(lng.get(lang, '58')), config.plugins.xtraEvent.imgNmbr))
-		list.append(getConfigListEntry("—"*50))
+		list.append(getConfigListEntry("—" * 50))
 		self["config"].list = list
 		self["config"].l.setList(list)
 
@@ -914,7 +914,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			tot = n
 			cur = config.plugins.xtraEvent.imgNmbr.value
 			pb_path = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, self.iNmbr)
-			pb_sz = "{} KB".format(os.path.getsize(pb_path)//1024)
+			pb_sz = "{} KB".format(os.path.getsize(pb_path) // 1024)
 			im = Image.open(pb_path)
 			pb_res = im.size
 			self['info'].setText(_("{}/{} - {} - {}".format(cur, tot, pb_sz, pb_res)))
@@ -989,7 +989,7 @@ class manuelSearch(Screen, ConfigListScreen):
 					poster = p1['images'][config.plugins.xtraEvent.PB.value][i]['file_path']
 					if poster:
 						url_poster = "https://image.tmdb.org/t/p/{}{}".format(sz, poster)
-						dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i+1)
+						dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 						open(dwnldFile, 'wb').write(requests.get(url_poster, stream=True, allow_redirects=True).content)
 						downloaded += 1
 						self.prgrs(downloaded, n)
@@ -998,7 +998,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			config.plugins.xtraEvent.imgNmbr.value = 0
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("Manuel Search tmdb , %s, %s\n"%(self.title, err))
+				f.write("Manuel Search tmdb , %s, %s\n" % (self.title, err))
 
 	def tvdb(self):
 		self['progress'].setValue(0)
@@ -1032,7 +1032,7 @@ class manuelSearch(Screen, ConfigListScreen):
 					else:
 						img_pb = u.json()["data"][i]['{}'.format(config.plugins.xtraEvent.TVDBbackdropsize.value)]
 					url = "https://artworks.thetvdb.com/banners/{}".format(img_pb)
-					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i+1)
+					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 					downloaded += 1
 					self.prgrs(downloaded, n)
@@ -1052,7 +1052,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				id = (mj['externals']['thetvdb'])
 			except Exception as err:
 				with open("/tmp/xtraEvent.log", "a+") as f:
-					f.write("fanart maze man.search, %s, %s\n"%(self.title, err))
+					f.write("fanart maze man.search, %s, %s\n" % (self.title, err))
 		else:
 			try:
 				self.year = config.plugins.xtraEvent.searchMANUELyear.value
@@ -1062,7 +1062,7 @@ class manuelSearch(Screen, ConfigListScreen):
 				id = requests.get(url).json()['results'][0]['id']
 			except Exception as err:
 				with open("/tmp/xtraEvent.log", "a+") as f:
-					f.write("fanart tvdb id man.search, %s, %s\n"%(self.title, err))
+					f.write("fanart tvdb id man.search, %s, %s\n" % (self.title, err))
 		try:
 			m_type = config.plugins.xtraEvent.FanartSearchType.value
 			url_fanart = "https://webservice.fanart.tv/v3/{}/{}?api_key={}".format(m_type, id, fanart_api)
@@ -1095,8 +1095,8 @@ class manuelSearch(Screen, ConfigListScreen):
 								url = (fjs['showbackground'][i]['url'])
 							else:
 								url = (fjs['moviebackground'][i]['url'])
-						open("/tmp/url","a+").write("%s\n"%url)
-						dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i+1)
+						open("/tmp/url","a+").write("%s\n" % url)
+						dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 						open(dwnldFile, 'wb').write(requests.get(url, verify=False).content)
 						downloaded += 1
 						self.prgrs(downloaded, n)
@@ -1110,13 +1110,13 @@ class manuelSearch(Screen, ConfigListScreen):
 						im1.save(dwnldFile)
 					except Exception as err:
 						with open("/tmp/xtraEvent.log", "a+") as f:
-							f.write("fanart man.search save, %s, %s\n"%(self.title, err))
+							f.write("fanart man.search save, %s, %s\n" % (self.title, err))
 			else:
 				self['status'].setText(_(lng.get(lang, '56')))
 			config.plugins.xtraEvent.imgNmbr.value = 0
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("fanart man.search2, %s, %s\n"%(self.title, err))
+				f.write("fanart man.search2, %s, %s\n" % (self.title, err))
 
 	def imdb(self):
 		downloaded = 0
@@ -1159,7 +1159,7 @@ class manuelSearch(Screen, ConfigListScreen):
 			for i in range(n):
 				try:
 					url = re.findall(',&quot;murl&quot;:&quot;(.*?)&', ff)[i]
-					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i+1)
+					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 					downloaded += 1
 					self.prgrs(downloaded, n)
@@ -1186,8 +1186,8 @@ class manuelSearch(Screen, ConfigListScreen):
 			downloaded = 0
 			for i in range(n):
 				try:
-					url = "https://{}".format(p[i+1])
-					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i+1)
+					url = "https://{}".format(p[i + 1])
+					dwnldFile = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, i + 1)
 					open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 					downloaded += 1
 					self.prgrs(downloaded, n)
@@ -1200,7 +1200,7 @@ class manuelSearch(Screen, ConfigListScreen):
 
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
-		self['progress'].setValue(int(100*downloaded//n))
+		self['progress'].setValue(int(100 * downloaded // n))
 
 
 
@@ -1271,7 +1271,7 @@ class selBouquets(Screen):
 								bouquets.append((info.getName(s), s))
 					return bouquets
 			else:
-				bouquet_root = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'%(service_types_tv)
+				bouquet_root = '%s FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet' % (service_types_tv)
 				info = serviceHandler.info(bouquet_root)
 				if info:
 					bouquets.append((info.getName(bouquet_root), bouquet_root))
@@ -1279,7 +1279,7 @@ class selBouquets(Screen):
 			return None
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("getBouquetList, %s\n"%(err))
+				f.write("getBouquetList, %s\n" % (err))
 
 	def getProviderList(self):
 		try:
@@ -1296,7 +1296,7 @@ class selBouquets(Screen):
 
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("getProviderList, %s\n"%(err))
+				f.write("getProviderList, %s\n" % (err))
 
 	def buqChList(self, bqtNm):
 		try:
@@ -1323,7 +1323,7 @@ class selBouquets(Screen):
 			return
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("chList Bouquet, %s\n"%(err))
+				f.write("chList Bouquet, %s\n" % (err))
 
 	def provChList(self, prvNm):
 		try:
@@ -1351,7 +1351,7 @@ class selBouquets(Screen):
 			return
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("chList Bouquet, %s\n"%(err))
+				f.write("chList Bouquet, %s\n" % (err))
 
 	def bqtinchannels(self):
 		try:
@@ -1381,7 +1381,7 @@ class selBouquets(Screen):
 				self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('Download ?'), list=list)
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("bqtinchannels, %s\n"%(err))
+				f.write("bqtinchannels, %s\n" % (err))
 
 	def withPluginDownload(self):
 		from . import download

@@ -83,7 +83,7 @@ class xtraStar2(VariableValue, Renderer):
 							with open(rating_json) as f:
 								rating = json.load(f)['imdbRating']
 							if rating:
-								rtng = int(10*(float(rating)))
+								rtng = int(10 * (float(rating)))
 								self.star.setValue(rtng)
 								if self.pxmp is None or self.pxmp == "":
 									self.star.setPixmap(loadPNG(star))

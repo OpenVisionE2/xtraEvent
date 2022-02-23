@@ -68,23 +68,23 @@ lang_path = r"/usr/lib/enigma2/python/Plugins/Extensions/xtraEvent/languages"
 try:
 	lng = ConfigParser()
 	if PY3 == 3:
-		lng.read(lang_path,  encoding='utf8')
+		lng.read(lang_path, encoding='utf8')
 	else:
 		lng.read(lang_path)
 	lng.get(lang, "0")
 except:
 	try:
-		lang="en"
+		lang = "en"
 		lng = ConfigParser()
 		if PY3 == 3:
-			lng.read(lang_path,  encoding='utf8')
+			lng.read(lang_path, encoding='utf8')
 		else:
 			lng.read(lang_path)
 	except:
 		pass
 
 epgcache = eEPGCache.getInstance()
-pathLoc =  "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
+pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
 desktop_size = getDesktop(0).size().width()
 headers = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
 REGEX = re.compile(
@@ -211,14 +211,14 @@ class downloads(Screen):
 				start_new_thread(self.downloadEvents, ())
 			except Exception as err:
 				with open("/tmp/xtraEvent.log", "a+") as f:
-					f.write("currentChEpgs, %s\n"%(err))
+					f.write("currentChEpgs, %s\n" % (err))
 
 	def selBouquets(self):
 		if os.path.exists("{}bqts".format(pathLoc)):
 			with open("{}bqts".format(pathLoc), "r") as f:
 				refs = f.readlines()
 			nl = len(refs)
-			eventlist=[]
+			eventlist = []
 			for i in range(nl):
 				ref = refs[i]
 				try:
@@ -236,7 +236,7 @@ class downloads(Screen):
 
 ####################################################
 	def downloadEvents(self):
-		dwnldFile=""
+		dwnldFile = ""
 		self.title = ""
 		self['progress'].setValue(0)
 		lang = None
@@ -260,12 +260,12 @@ class downloads(Screen):
 		infs = {}
 		imdb_id = None
 		Year = ""
-		Rating=""
-		Rated=""
-		glist=""
-		Duration=""
-		description=""
-		Type=""
+		Rating = ""
+		Rated = ""
+		glist = ""
+		Duration = ""
+		description = ""
+		Type = ""
 		if config.plugins.xtraEvent.onoff.value:
 # elcinema(en) #################################################################
 			if config.plugins.xtraEvent.extra3.value == True:
@@ -297,17 +297,17 @@ class downloads(Screen):
 					n = len(titles)
 				except Exception as err:
 					with open("/tmp/xtraEvent.log", "a+") as f:
-						f.write("elcinema urlo, %s, %s\n"%(title, err))
+						f.write("elcinema urlo, %s, %s\n" % (title, err))
 				for title in titles:
 
 					try:
 						title = REGEX.sub('', title).strip()
 						dwnldFile = "{}poster/{}.jpg".format(pathLoc, title)
 						info_files = "{}infos/{}.json".format(pathLoc, title)
-						tid = re.findall('title="%s" href="/en/work/(.*?)/"'%title, urlor)[0]
+						tid = re.findall('title="%s" href="/en/work/(.*?)/"' % title, urlor)[0]
 						self.setTitle(_("{}".format(title)))
 						if not os.path.exists(dwnldFile):
-							turl =	"https://elcinema.com/en/work/{}/".format(tid)
+							turl = "https://elcinema.com/en/work/{}/".format(tid)
 							jurlo = requests.get(turl.strip(), stream=True, allow_redirects=True, headers=headers)
 							jurlo = jurlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
 							# poster elcinema
@@ -320,16 +320,16 @@ class downloads(Screen):
 							self.showPoster(dwnldFile)
 					except Exception as err:
 						with open("/tmp/xtraEvent.log", "a+") as f:
-							f.write("elcinema poster, %s, %s\n"%(title, err))
+							f.write("elcinema poster, %s, %s\n" % (title, err))
 					#info elcinema,
 					if not os.path.exists(info_files):
-						turl =	"https://elcinema.com/en/work/{}/".format(tid)
+						turl = "https://elcinema.com/en/work/{}/".format(tid)
 						jurlo = requests.get(turl.strip(), stream=True, allow_redirects=True, headers=headers)
 						jurlo = jurlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
 						try:
-							setime = urlor.partition('title="%s"'%title)[2].partition('</ul>')[0].strip()
+							setime = urlor.partition('title="%s"' % title)[2].partition('</ul>')[0].strip()
 							setime = re.findall("(\d\d\:\d\d) (.*?) - (\d\d\:\d\d) (.*?)</li>", setime)
-							setime = setime[0][0]+setime[0][1]+" - "+setime[0][2]+setime[0][3]
+							setime = setime[0][0] + setime[0][1] + " - " + setime[0][2] + setime[0][3]
 						except:
 							pass
 						try:
@@ -338,27 +338,27 @@ class downloads(Screen):
 						except:
 							pass
 						try:
-							glist=[]
+							glist = []
 							Genre = (jurlo.partition('<li>Genre:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")
-							for i in range(len(Genre)-1):
+							for i in range(len(Genre) - 1):
 								Genre = (jurlo.partition('<li>Genre:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")[i]
 								Genre = Genre.partition('">')[2].strip()
 								glist.append(Genre)
 						except:
 							pass
 						try:
-							llist=[]
+							llist = []
 							Language = (jurlo.partition('<li>Language:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")
-							for i in range(len(Language)-1):
+							for i in range(len(Language) - 1):
 								Language = (jurlo.partition('<li>Language:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")[i]
 								Language = Language.partition('">')[2].strip()
 								llist.append(Language)
 						except:
 							pass
 						try:
-							clist=[]
+							clist = []
 							Country = (jurlo.partition('<li>Country:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")
-							for i in range(len(Country)-1):
+							for i in range(len(Country) - 1):
 								Country = (jurlo.partition('<li>Country:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")[i]
 								Country = Country.partition('">')[2].strip()
 								clist.append(Country)
@@ -367,7 +367,7 @@ class downloads(Screen):
 						try:
 							Rating = re.findall("class='fa fa-star'></i> (.*?) </span><div", jurlo)[0]
 							Rated = jurlo.partition('<li>MPAA</li><li>')[2].partition('</li></ul></li>')[0].strip()
-							if Rated =="":
+							if Rated == "":
 								Rated = jurlo.partition('class="censorship purple" title="Censorship:')[2].partition('"><li>')[0].strip()
 						except:
 							pass
@@ -380,27 +380,27 @@ class downloads(Screen):
 						except:
 							pass
 						try:
-							dlist=[]
+							dlist = []
 							Director = (jurlo.partition('<li>Director:</li>')[2].partition('</ul>')[0]).strip().split('</a>')
-							for i in range(len(Director)-1):
+							for i in range(len(Director) - 1):
 								Director = (jurlo.partition('<li>Director:</li>')[2].partition('</ul>')[0]).strip().split('</a>')[i]
 								Director = Director.partition('/">')[2].strip()
 								dlist.append(Director)
 						except:
 							pass
 						try:
-							wlist=[]
+							wlist = []
 							Writer = (jurlo.partition('<li>Writer:</li>')[2].partition('</ul>')[0]).strip().split('</a>')
-							for i in range(len(Writer)-1):
+							for i in range(len(Writer) - 1):
 								Writer = (jurlo.partition('<li>Writer:</li>')[2].partition('</ul>')[0]).strip().split('</a>')[i]
 								Writer = Writer.partition('/">')[2].strip()
 								wlist.append(Writer)
 						except:
 							pass
 						try:
-							calist=[]
+							calist = []
 							Cast = (jurlo.partition('<li>Cast:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")
-							for i in range(len(Cast)-1):
+							for i in range(len(Cast) - 1):
 								Cast = (jurlo.partition('<li>Cast:</li>')[2].partition('</ul>')[0]).strip().split("</a> </li>")[i]
 								Cast = Cast.partition('">')[2].strip()
 								calist.append(Cast)
@@ -417,20 +417,20 @@ class downloads(Screen):
 								pass
 						try:
 							ej = {
-							"Title": "%s"%title,
-							"Start-End Time": "%s"%setime,
-							"Type": "%s"%Category,
-							"Year": "%s"%Year,
-							"imdbRating": "%s"%Rating,
-							"Rated": "%s"%Rated,
-							"Genre": "%s"%(', '.join(glist)),
-							"Duration": "%s min."%Duration,
-							"Language": "%s"%(', '.join(llist)),
-							"Country": "%s"%(', '.join(clist)),
-							"Director": "%s"%(', '.join(dlist)),
-							"Writer": "%s"%(', '.join(wlist)),
-							"Actors": "%s"%(', '.join(calist)),
-							"Plot": "%s"%Description,
+							"Title": "%s" % title,
+							"Start-End Time": "%s" % setime,
+							"Type": "%s" % Category,
+							"Year": "%s" % Year,
+							"imdbRating": "%s" % Rating,
+							"Rated": "%s" % Rated,
+							"Genre": "%s" % (', '.join(glist)),
+							"Duration": "%s min." % Duration,
+							"Language": "%s" % (', '.join(llist)),
+							"Country": "%s" % (', '.join(clist)),
+							"Director": "%s" % (', '.join(dlist)),
+							"Writer": "%s" % (', '.join(wlist)),
+							"Actors": "%s" % (', '.join(calist)),
+							"Plot": "%s" % Description,
 							}
 							open(info_files, "w").write(json.dumps(ej))
 
@@ -444,7 +444,7 @@ class downloads(Screen):
 
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("elcinema ej, %s, %s\n"%(title, err))
+								f.write("elcinema ej, %s, %s\n" % (title, err))
 					time.sleep(5)
 
 			n = len(self.titles)
@@ -481,14 +481,14 @@ class downloads(Screen):
 										img.verify()
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("deleted tmdb poster: %s.jpg\n"%title)
+											f.write("deleted tmdb poster: %s.jpg\n" % title)
 										try:
 											os.remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tmdb poster, %s, %s\n"%(title, err))
+									f.write("tmdb poster, %s, %s\n" % (title, err))
 		# tvdb_Poster() #################################################################
 					if config.plugins.xtraEvent.tvdb.value == True:
 						try:
@@ -496,7 +496,7 @@ class downloads(Screen):
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -528,14 +528,14 @@ class downloads(Screen):
 												img.verify()
 											except Exception as err:
 												with open("/tmp/xtraEvent.log", "a+") as f:
-													f.write("deleted tvdb poster: %s.jpg\n"%title)
+													f.write("deleted tvdb poster: %s.jpg\n" % title)
 												try:
 													os.remove(dwnldFile)
 												except:
 													pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tvdb poster, %s, %s\n"%(title, err))
+									f.write("tvdb poster, %s, %s\n" % (title, err))
 		# maze_Poster() #################################################################
 					if config.plugins.xtraEvent.maze.value == True:
 						try:
@@ -543,7 +543,7 @@ class downloads(Screen):
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -564,14 +564,14 @@ class downloads(Screen):
 										img.verify()
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("deleted maze poster: %s.jpg\n"%title)
+											f.write("deleted maze poster: %s.jpg\n" % title)
 										try:
 											os.remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("maze poster, %s, %s\n"%(title, err))
+									f.write("maze poster, %s, %s\n" % (title, err))
 		# fanart_Poster() #################################################################
 					if config.plugins.xtraEvent.fanart.value == True:
 						try:
@@ -579,7 +579,7 @@ class downloads(Screen):
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -626,14 +626,14 @@ class downloads(Screen):
 													img.verify()
 												except Exception as err:
 													with open("/tmp/xtraEvent.log", "a+") as f:
-														f.write("deleted fanart poster: %s.jpg\n"%title)
+														f.write("deleted fanart poster: %s.jpg\n" % title)
 													try:
 														os.remove(dwnldFile)
 													except:
 														pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("fanart poster, %s, %s\n"%(title, err))
+									f.write("fanart poster, %s, %s\n" % (title, err))
 	# backdrop() #################################################################
 				if config.plugins.xtraEvent.backdrop.value == True:
 					dwnldFile = "{}backdrop/{}.jpg".format(pathLoc, title)
@@ -657,21 +657,21 @@ class downloads(Screen):
 										img.verify()
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("deleted extra poster: %s.jpg\n"%title)
+											f.write("deleted extra poster: %s.jpg\n" % title)
 										try:
 											os.remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("extra, %s, %s\n"%(title, err))
+									f.write("extra, %s, %s\n" % (title, err))
 					if config.plugins.xtraEvent.tmdb.value == True:
 						try:
 							img = Image.open(dwnldFile)
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -700,21 +700,21 @@ class downloads(Screen):
 											img.verify()
 										except Exception as err:
 											with open("/tmp/xtraEvent.log", "a+") as f:
-												f.write("deleted tmdb backdrop: %s.jpg\n"%title)
+												f.write("deleted tmdb backdrop: %s.jpg\n" % title)
 											try:
 												os.remove(dwnldFile)
 											except:
 												pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tmdb-backdrop, %s, %s\n"%(title, err))
+									f.write("tmdb-backdrop, %s, %s\n" % (title, err))
 					if config.plugins.xtraEvent.tvdb.value == True:
 						try:
 							img = Image.open(dwnldFile)
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -744,21 +744,21 @@ class downloads(Screen):
 												img.verify()
 											except Exception as err:
 												with open("/tmp/xtraEvent.log", "a+") as f:
-													f.write("deleted tvdb backdrop: %s.jpg\n"%title)
+													f.write("deleted tvdb backdrop: %s.jpg\n" % title)
 												try:
 													os.remove(dwnldFile)
 												except:
 													pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tvdb-backdrop, %s, %s\n"%(title, err))
+									f.write("tvdb-backdrop, %s, %s\n" % (title, err))
 					if config.plugins.xtraEvent.extra2.value == True:
 						try:
 							img = Image.open(dwnldFile)
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -775,7 +775,7 @@ class downloads(Screen):
 								url = re.findall(p, ff)[0]
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("bing-backdrop, %s, %s\n"%(title, err))
+									f.write("bing-backdrop, %s, %s\n" % (title, err))
 								try:
 									url = "https://www.google.com/search?q={}&tbm=isch&tbs=sbd:0".format(title.replace(" ", "+"))
 									if config.plugins.xtraEvent.PB.value == "posters":
@@ -787,7 +787,7 @@ class downloads(Screen):
 									url = "https://{}".format(p)
 								except Exception as err:
 									with open("/tmp/xtraEvent.log", "a+") as f:
-										f.write("google-backdrop, %s, %s\n"%(title, err))
+										f.write("google-backdrop, %s, %s\n" % (title, err))
 							try:
 								open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
 								if os.path.exists(dwnldFile):
@@ -801,14 +801,14 @@ class downloads(Screen):
 										img.verify()
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("deleted extra2 backdrop: %s.jpg\n"%title)
+											f.write("deleted extra2 backdrop: %s.jpg\n" % title)
 										try:
 											os.remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("extra2 backdrop, %s, %s\n"%(title, err))
+									f.write("extra2 backdrop, %s, %s\n" % (title, err))
 	# banner() #################################################################
 				if config.plugins.xtraEvent.banner.value == True:
 					dwnldFile = "{}banner/{}.jpg".format(pathLoc, title)
@@ -817,7 +817,7 @@ class downloads(Screen):
 						img.verify()
 					except Exception as err:
 						with open("/tmp/xtraEvent.log", "a+") as f:
-							f.write("deleted : %s.jpg\n"%title)
+							f.write("deleted : %s.jpg\n" % title)
 						try:
 							os.remove(dwnldFile)
 						except:
@@ -844,7 +844,7 @@ class downloads(Screen):
 												img.verify()
 											except Exception as err:
 												with open("/tmp/xtraEvent.log", "a+") as f:
-													f.write("deleted extra2 backdrop: %s.jpg\n"%title)
+													f.write("deleted extra2 backdrop: %s.jpg\n" % title)
 												try:
 													os.remove(dwnldFile)
 												except:
@@ -856,14 +856,14 @@ class downloads(Screen):
 											im1.save(dwnldFile)
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tvdb banner, %s, %s\n"%(title, err))
+									f.write("tvdb banner, %s, %s\n" % (title, err))
 					if config.plugins.xtraEvent.fanart.value == True:
 						try:
 							img = Image.open(dwnldFile)
 							img.verify()
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("deleted : %s.jpg\n"%title)
+								f.write("deleted : %s.jpg\n" % title)
 							try:
 								os.remove(dwnldFile)
 							except:
@@ -898,7 +898,7 @@ class downloads(Screen):
 												img.verify()
 											except Exception as err:
 												with open("/tmp/xtraEvent.log", "a+") as f:
-													f.write("deleted fanart banner: %s.jpg\n"%title)
+													f.write("deleted fanart banner: %s.jpg\n" % title)
 												try:
 													os.remove(dwnldFile)
 												except:
@@ -915,7 +915,7 @@ class downloads(Screen):
 										tvdb_id = mj['externals']['thetvdb']
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("fanart maze banner2, %s, %s\n"%(title, err))
+											f.write("fanart maze banner2, %s, %s\n" % (title, err))
 									try:
 										if tvdb_id:
 											url = "https://webservice.fanart.tv/v3/tv/{}?api_key={}".format(tvdb_id, fanart_api)
@@ -923,7 +923,7 @@ class downloads(Screen):
 											url = fjs["tvbanner"][0]["url"]
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("fanart banner3, %s, %s\n"%(title, err))
+											f.write("fanart banner3, %s, %s\n" % (title, err))
 									try:
 										if url:
 											open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True, verify=False).content)
@@ -938,7 +938,7 @@ class downloads(Screen):
 													img.verify()
 												except Exception as err:
 													with open("/tmp/xtraEvent.log", "a+") as f:
-														f.write("deleted fanart banner: %s.jpg\n"%title)
+														f.write("deleted fanart banner: %s.jpg\n" % title)
 													try:
 														os.remove(dwnldFile)
 													except:
@@ -950,13 +950,13 @@ class downloads(Screen):
 												im1.save(dwnldFile)
 									except Exception as err:
 										with open("/tmp/xtraEvent.log", "a+") as f:
-											f.write("fanart banner4 end, %s, %s\n"%(title, err))
+											f.write("fanart banner4 end, %s, %s\n" % (title, err))
 							except Exception as err:
 								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("fanart maze banner1, %s, %s\n"%(title, err))
+									f.write("fanart maze banner1, %s, %s\n" % (title, err))
 # infos #################################################################
 				if config.plugins.xtraEvent.info.value == True:
-					Title=None
+					Title = None
 					Type = None
 					Genre = None
 					Language = None
@@ -966,15 +966,15 @@ class downloads(Screen):
 					Rated = None
 					Duration = None
 					Year = None
-					Released=None
+					Released = None
 					Director = None
 					Writer = None
 					Actors = None
-					Awards=None
+					Awards = None
 					Plot = ""
 					Description = None
 					Rating = ""
-					glist=[]
+					glist = []
 					data = {}
 
 					info_files = "{}infos/{}.json".format(pathLoc, title)
@@ -1012,17 +1012,17 @@ class downloads(Screen):
 							ff = requests.get(url_find).text
 							rc = re.compile('<a href="/title/(.*?)/"', re.DOTALL)
 							imdbID = rc.search(ff).group(1)
-							url= "https://m.imdb.com/title/{}/?ref_=fn_al_tt_0".format(imdbID)
+							url = "https://m.imdb.com/title/{}/?ref_=fn_al_tt_0".format(imdbID)
 							ff = requests.get(url).text
 							try:
 								rtng = re.findall('"aggregateRating":{(.*?)}',ff)[0] #ratingValue":8.4
 								imdbRating = rtng.partition('ratingValue":')[2].partition('}')[0].strip()
 								if Rated == None:
 									Rated = ff.partition('contentRating":"')[2].partition('","')[0].replace("+", "").strip() # "contentRating":"18+","genre":["Crime","Drama","Thriller"],"datePublished":"2019-10-04"
-								glist=[]
+								glist = []
 								genre = ff.partition('genre":[')[2].partition('],')[0].strip().split(",")
 								for i in genre:
-									genre=(i.replace('"',''))
+									genre = (i.replace('"',''))
 									glist.append(genre)
 								if Genre == None:
 									Genre = ", ".join(glist)
@@ -1090,7 +1090,7 @@ class downloads(Screen):
 							continue
 						except Exception as err:
 							with open("/tmp/xtraEvent.log", "a+") as f:
-								f.write("infos, %s, %s\n"%(title, err))
+								f.write("infos, %s, %s\n" % (title, err))
 			now = datetime.now()
 			dt = now.strftime("%d/%m/%Y %H:%M:%S")
 			report = "\n\nSTART : {}\nEND : {}\
@@ -1113,7 +1113,7 @@ class downloads(Screen):
 			except:
 				pass
 			with open("/tmp/xtra_report", "a+") as f:
-				f.write("%s"%report)
+				f.write("%s" % report)
 			Screen.show(self)
 			self.brokenImageRemove()
 			self.brokenInfoRemove()
@@ -1122,7 +1122,7 @@ class downloads(Screen):
 ####################################################################################################################################
 	def prgrs(self, downloaded, n):
 		self['status'].setText("Download : {} / {}".format(downloaded, n))
-		self['progress'].setValue(int(100*downloaded//n))
+		self['progress'].setValue(int(100 * downloaded // n))
 
 	def showPoster(self, dwnldFile):
 		if config.plugins.xtraEvent.onoff.value:

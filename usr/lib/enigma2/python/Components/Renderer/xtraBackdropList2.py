@@ -186,8 +186,8 @@ class xtraBackdropList2(Renderer):
 							desc = str(fd)
 					except:
 						desc = str(fd)
-					description =	'\\c0000????Description : \\c00??????{}\n\n'.format((desc))
-					description = "\n".join(["-"*100, description, "-"*100])
+					description = '\\c0000????Description : \\c00??????{}\n\n'.format((desc))
+					description = "\n".join(["-" * 100, description, "-" * 100])
 					events = self.epgcache.lookupEvent(['IBDCT', (service.toString(), 0, -1, 480)])
 					if self.epgcache is not None and events:
 						try:
@@ -195,7 +195,7 @@ class xtraBackdropList2(Renderer):
 							evnt = events[0][4]
 							evntNm = REGEX.sub('', evnt).strip()
 							bt = localtime(events[0][1])
-							evntNm0 = "%02d:%02d - %s\n%s"%(bt[3], bt[4], evnt, self.info())
+							evntNm0 = "%02d:%02d - %s\n%s" % (bt[3], bt[4], evnt, self.info())
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 							if os.path.exists(pstrNm):
 								self.eventPxmp0.setPixmap(loadJPG(pstrNm))
@@ -235,7 +235,7 @@ class xtraBackdropList2(Renderer):
 							evnt = events[1][4]
 							evntNm = REGEX.sub('', evnt).strip()
 							bt = localtime(events[1][1])
-							evntNm1 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+							evntNm1 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 							if os.path.exists(pstrNm):
 								self.eventPxmp1.setPixmap(loadJPG(pstrNm))
@@ -263,7 +263,7 @@ class xtraBackdropList2(Renderer):
 							evnt = events[2][4]
 							evntNm = REGEX.sub('', evnt).strip()
 							bt = localtime(events[2][1])
-							evntNm2 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+							evntNm2 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 							if os.path.exists(pstrNm):
 								self.eventPxmp2.setPixmap(loadJPG(pstrNm))
@@ -291,7 +291,7 @@ class xtraBackdropList2(Renderer):
 							evnt = events[3][4]
 							evntNm = REGEX.sub('', evnt).strip()
 							bt = localtime(events[3][1])
-							evntNm3 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+							evntNm3 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 							if os.path.exists(pstrNm):
 								self.eventPxmp3.setPixmap(loadJPG(pstrNm))

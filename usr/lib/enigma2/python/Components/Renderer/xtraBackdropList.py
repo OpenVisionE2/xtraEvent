@@ -107,7 +107,7 @@ class xtraBackdropList(Renderer):
 					evnt = events[1][4]
 					evntNm = REGEX.sub('', evnt).strip()
 					bt = localtime(events[1][1])
-					evntNm1 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+					evntNm1 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 
 					if os.path.exists(pstrNm):
@@ -125,7 +125,7 @@ class xtraBackdropList(Renderer):
 					self.eventName1.setText(str(evntNm1))
 					self.eventName1.setBackgroundColor(parseColor(self.backgroundColor))
 					self.eventName1.resize(eSize(nx, ny))
-					self.eventName1.move(ePoint(0, py+5))
+					self.eventName1.move(ePoint(0, py + 5))
 					self.eventName1.setFont(gFont("xtraRegular", self.fontSize))
 					self.eventName1.setHAlign(eLabel.alignLeft)
 					self.eventName1.setTransparent(0)
@@ -139,7 +139,7 @@ class xtraBackdropList(Renderer):
 					evnt = events[2][4]
 					evntNm = REGEX.sub('', evnt).strip()
 					bt = localtime(events[2][1])
-					evntNm2 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+					evntNm2 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 					if os.path.exists(pstrNm):
 						self.eventPxmp2.setPixmap(loadJPG(pstrNm))
@@ -156,7 +156,7 @@ class xtraBackdropList(Renderer):
 					self.eventName2.setText(str(evntNm2))
 					self.eventName2.setBackgroundColor(parseColor(self.backgroundColor))
 					self.eventName2.resize(eSize(nx, ny))
-					self.eventName2.move(ePoint(px + 5, py+5))
+					self.eventName2.move(ePoint(px + 5, py + 5))
 					self.eventName2.setFont(gFont("xtraRegular", self.fontSize))
 					self.eventName2.setHAlign(eLabel.alignLeft)
 					self.eventName2.setTransparent(0)
@@ -170,12 +170,12 @@ class xtraBackdropList(Renderer):
 					evnt = events[3][4]
 					evntNm = REGEX.sub('', evnt).strip()
 					bt = localtime(events[3][1])
-					evntNm3 = "%02d:%02d - %s\n"%(bt[3], bt[4], evnt)
+					evntNm3 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 					if os.path.exists(pstrNm):
 						self.eventPxmp3.setPixmap(loadJPG(pstrNm))
 						self.eventPxmp3.resize(eSize(px, py))
-						self.eventPxmp3.move(ePoint(((px)*2) + 10, 0))
+						self.eventPxmp3.move(ePoint(((px) * 2) + 10, 0))
 						self.eventPxmp3.setTransparent(0)
 						self.eventPxmp3.setZPosition(3)
 						self.eventPxmp3.setScale(1)
@@ -187,7 +187,7 @@ class xtraBackdropList(Renderer):
 					self.eventName3.setText(str(evntNm3))
 					self.eventName3.setBackgroundColor(parseColor(self.backgroundColor))
 					self.eventName3.resize(eSize(nx, ny))
-					self.eventName3.move(ePoint(((px)*2) + 10, py+5))
+					self.eventName3.move(ePoint(((px) * 2) + 10, py + 5))
 					self.eventName3.setFont(gFont("xtraRegular", self.fontSize))
 					self.eventName3.setHAlign(eLabel.alignLeft)
 					self.eventName3.setTransparent(0)
@@ -206,7 +206,7 @@ class xtraBackdropList(Renderer):
 				self.eventName3.hide()
 		elif self.mode == "single":
 			if self.epgcache is not None and events:
-				evnt=[]
+				evnt = []
 				event = events[1][4]
 				evntNm = REGEX.sub('', event).strip()
 				bt = localtime(events[1][1])
@@ -253,7 +253,7 @@ class xtraBackdropList(Renderer):
 				tc += '\\c00??????'
 				tc = tc.join(evnt)
 
-				evntNm1 = "%02d:%02d - %02d:%02d \n%s\n%s\n%s"%(bt[3], bt[4], et[3], et[4], event, tc, duration)
+				evntNm1 = "%02d:%02d - %02d:%02d \n%s\n%s\n%s" % (bt[3], bt[4], et[3], et[4], event, tc, duration)
 				pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 				if os.path.exists(pstrNm):
 					self.eventPxmp1.setPixmap(loadJPG(pstrNm))
@@ -268,7 +268,7 @@ class xtraBackdropList(Renderer):
 
 				self.eventName1.setText(str(evntNm1))
 				self.eventName1.setBackgroundColor(parseColor(self.backgroundColor))
-				self.eventName1.resize(eSize((px)*2, self.szY))
+				self.eventName1.resize(eSize((px) * 2, self.szY))
 				self.eventName1.move(ePoint((px) + 10, 0))
 				self.eventName1.setFont(gFont("xtraRegular", self.fontSize))
 				self.eventName1.setHAlign(eLabel.alignLeft)
