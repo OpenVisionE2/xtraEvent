@@ -20,13 +20,13 @@ try:
 	posterpath = "{}xtraEvent/poster".format(pathlocation)
 	maximumfoldersize = config.plugins.xtraEvent.rmposter.value
 	folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(posterpath, fname)), files)) for posterpath, folders, files in os.walk(posterpath)])
-	posters_size = "%0.f" % (folder_size / (1024 * 1024.0))
+	posters_size = "%0.f GB" % (folder_size / (1024 * 1024.0) / 1000)
 	print("[xtraEvent] posters_size = %s" % posters_size)
 	deleteposter = "rm -f %s/*" % posterpath
-	if posters_size >= maximumfoldersize:
+	if posters_size == maximumfoldersize:
 		Console().ePopen(deleteposter)
 	else:
-		print("[xtraEvent] posters size is %s MB, is less than to %s MB, your chosen maximum." % (posters_size, maximumfoldersize))
+		print("[xtraEvent] Size of the posters is %s, not equal to %s, your chosen size." % (posters_size, maximumfoldersize))
 except:
 	pass
 

@@ -76,6 +76,8 @@
 73 = Delete All Pictures
 74 = All Pictures Deleted!.
 75 = Update
+76 = Delete posters if the size on your device occupies
+77 = Choose the maximum size of the posters on your device.
 
 [tr]
 0 = Açık/Kapalı
@@ -132,7 +134,7 @@
 50 = Bozuk Resimleri Kaldır
 51 = {} Resim Optimizasyonu Sona Erdi...\nKazanç : {}KB - {}KB
 52 = Lütfen Zamanlayıcıyı Ayarlayın
-53 = Eklenti ile İndir 
+53 = Eklenti ile İndir
 54 = Zamanlayıcı ile Indir
 55 = Buket Seçimi
 56 = Indirmeler : Yok
@@ -155,12 +157,14 @@
 73 = Tüm Resimleri Sil
 74 = Tüm Resimler Silindi !..
 75 = Güncelle
+76 = Cihazınızdaki boyut kaplıyorsa posterleri silin
+77 = Cihazınızdaki posterlerin maksimum boyutunu seçin.
 
 [ru]
 0 = Включение плагина
 1 = Меню конфигурации
 2 = Установка и выключение... Ваши настройки действительны...
-3 = Место загрузки и хранения 
+3 = Место загрузки и хранения
 4 = Выберите место загрузки и хранения...
 5 = Тип скина
 6 = Оптимизировать картинки
@@ -234,6 +238,8 @@
 73 = Удалить все картинки
 74 = Все картинки удалены!
 75 = Обновить
+76 = Удаляйте постеры, если размер на вашем устройстве занимает
+77 = Выберите максимальный размер плакатов на вашем устройстве.
 
 [ar]
 0 = إيقاف البرنامج المساعد
@@ -313,6 +319,8 @@
 73 = حذف كل الصور
 74 = تم حذف كل الصور !.
 75 = تحديث
+76 = احذف الملصقات إذا احتل الحجم الموجود على جهازك
+77 = اختر الحجم الأقصى للملصقات على جهازك.
 
 [de]
 0 = ein/aus
@@ -392,6 +400,8 @@
 73 = Alle Bilder löschen
 74 = Alle Bilder gelöscht!.
 75 = Aktualisieren
+76 = Poster löschen, wenn die Größe auf Ihrem Gerät belegt ist
+77 = Wählen Sie die maximale Größe der Poster auf Ihrem Gerät.
 
 [fr]
 0 = Marche/Arrêt
@@ -471,6 +481,8 @@
 73 = Supprimer toutes les images
 74 = Toutes les images supprimées !.
 75 = Mise à jour
+76 = Supprimer les affiches si la taille de votre appareil occupe
+77 = Choisissez la taille maximale des affiches sur votre appareil.
 
 [es]
 0 = Encendido / Apagado
@@ -550,6 +562,8 @@
 73 = Eliminar todas las imágenes
 74 = ¡Todas las imágenes borradas !.
 75 = Actualizar
+76 = Eliminar posters si el tamaño en su dispositivo ocupa
+77 = Elija el tamaño máximo de los posters en su dispositivo.
 
 [it]
 0 = On/Off
@@ -629,6 +643,8 @@
 73 = Elimina tutte le immagini
 74 = Tutte le immagini eliminate!.
 75 = Aggiorna
+76 = Elimina i poster se la dimensione sul tuo dispositivo occupa
+77 = Scegli la dimensione massima dei poster sul tuo dispositivo.
 
 [pt]
 0 = Ligado / Desligado
@@ -708,6 +724,8 @@
 73 = Excluir todas as imagens
 74 = Todas as imagens excluídas !.
 75 = Atualizar
+76 = Excluir pôsteres se o tamanho do seu dispositivo ocupar
+77 = Escolha o tamanho máximo dos pôsteres em seu dispositivo.
 
 [pl]
 0 = wł./wył.
@@ -787,6 +805,8 @@
 73 = Usuń wszystkie zdjęcia
 74 = Wszystkie zdjęcia usunięte!.
 75 = Aktualizacja
+76 = Usuń plakaty, jeśli rozmiar na urządzeniu zajmuje
+77 = Wybierz maksymalny rozmiar plakatów na swoim urządzeniu.
 
 [el]
 0 = On/Off
@@ -866,3 +886,5 @@
 73 = Διαγραφή όλων των εικόνων
 74 = Όλες οι εικόνες διαγράφηκαν!.
 75 = Ενημέρωση
+76 = Διαγράψτε τις αφίσες εάν το μέγεθος στη συσκευή σας καταλαμβάνει
+77 = Επιλέξτε το μέγιστο μέγεθος των αφισών στη συσκευή σας.
