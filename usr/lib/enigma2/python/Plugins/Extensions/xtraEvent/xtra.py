@@ -224,10 +224,10 @@ config.plugins.xtraEvent.FANART_Banner_Size = ConfigSelection(default="1", choic
 	])
 config.plugins.xtraEvent.rmposter = ConfigSelection(default="No", choices=[
 	('No', 'No'),
-	('50', '50'),
-	('100', '100'),
-	('200', '200'),
-	('500', '500')])
+	('1 GB', '1 GB'),
+	('5 GB', '5 GB'),
+	('10 GB', '10 GB'),
+	('15 GB', '15 GB')])
 
 
 class xtra(Screen, ConfigListScreen):
@@ -363,7 +363,7 @@ class xtra(Screen, ConfigListScreen):
 			if config.plugins.xtraEvent.cnfg.value:
 				if config.plugins.xtraEvent.loc.value:
 					list.append(getConfigListEntry("{}".format(lng.get(lang, '3')), config.plugins.xtraEvent.loc, _(lng.get(lang, '4'))))
-					list.append(getConfigListEntry("    Delete Poster if size in your device reaches (MB)", config.plugins.xtraEvent.rmposter, _("Choose posters maximum size 'MB' on device")))
+					list.append(getConfigListEntry("{}".format(lng.get(lang, '76')), config.plugins.xtraEvent.rmposter, _(lng.get(lang, '77'))))
 				else:
 					list.append(getConfigListEntry("{}{}".format(off_color, lng.get(lang, '3')), config.plugins.xtraEvent.loc, _(lng.get(lang, '4'))))
 				list.append(getConfigListEntry(lng.get(lang, '5'), config.plugins.xtraEvent.skinSelect, _(lng.get(lang, '19'))))
