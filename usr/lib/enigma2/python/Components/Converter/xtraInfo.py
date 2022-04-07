@@ -2,7 +2,7 @@
 # by digiteng...07.2020 - 11.2020 - 11.2021
 # FOR INFO
 # <widget source="session.Event_Now" render="Label" position="50,545" size="930,400" font="Regular; 32" halign="left" transparent="1" zPosition="2" backgroundColor="background">
-  	# <convert type="xtraInfo">Title,Year,Description</convert>
+	# <convert type="xtraInfo">Title,Year,Description</convert>
 # </widget>
 #
 # FOR IMDB RATING STAR...
@@ -30,7 +30,7 @@ REGEX = re.compile(
 		r'(: odc.\d+)|'
 		r'(\d+: odc.\d+)|'
 		r'(\d+ odc.\d+)|(:)|'
-		r'( -(.*?).*)|(,)|'
+
 		r'!|'
 		r'/.*|'
 		r'\|\s[0-9]+\+|'
