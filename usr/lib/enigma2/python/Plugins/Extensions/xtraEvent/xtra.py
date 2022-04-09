@@ -261,7 +261,6 @@ class xtra(Screen, ConfigListScreen):
 			"right": self.keyRight,
 			"red": self.exit,
 			"green": self.search,
-			"yellow": self.update,
 			"blue": self.ms,
 			"cancel": self.exit,
 			"ok": self.keyOK,
@@ -480,52 +479,10 @@ class xtra(Screen, ConfigListScreen):
 	def menuS(self):
 		if config.plugins.xtraEvent.onoff.value:
 			list = [(_(lng.get(lang, '50')), self.brokenImageRemove), (_(lng.get(lang, '73')), self.removeImagesAll),
-			(_(lng.get(lang, "75")), self.update), (_(lng.get(lang, '35')), self.exit)]
+			(_(lng.get(lang, '35')), self.exit)]
 			self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('xtraEvent...'), list=list)
 		else:
 			self.exit()
-
-	def update(self):
-		try:
-			url = requests.get("https://api.github.com/repos/OpenVisionE2/xtraEvent/releases/latest")
-			new_version = url.json()["name"]
-			if version != new_version:
-				msg = url.json()["body"]
-				up_msg = "Current version : {}\n\\c00bb?fbbNew version : {} \n\n\\c00bb?fee{}\n\n\\c00??????Do you want UPDATE PLUGIN ?..".format(version, new_version, msg)
-				self.session.openWithCallback(self.instalUpdate, MessageBox, _(up_msg), MessageBox.TYPE_YESNO)
-			else:
-				self['info'].setText(lng.get(lang, '71'))
-		except Exception as err:
-			self['info'].setText(str(err))
-			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("update %s\n\n" % err)
-
-	def instalUpdate(self, answer):
-		try:
-			if answer is True:
-				url = requests.get("https://api.github.com/repos/OpenVisionE2/xtraEvent/releases/latest")
-				update_url = url.json()["assets"][1]["browser_download_url"]
-				up_name = url.json()["assets"][1]["name"]
-				up_tmp = "/tmp/{}".format(up_name)
-				if not os.path.exists(up_tmp):
-					open(up_tmp, 'wb').write(requests.get(update_url, stream=True, allow_redirects=True).content)
-				if os.path.exists(up_tmp):
-					from enigma import eConsoleAppContainer
-					cmd = ("rm -rf /usr/lib/enigma2/python/Components/Converter/xtra* \
-					| rm -rf /usr/lib/enigma2/python/Components/Renderer/xtra* \
-					| rm -rf /usr/lib/enigma2/python/Plugins/Extensions/xtraEvent \
-					| rm -rf /usr/share/enigma2/xtra \
-					")
-					os.system(cmd)
-					container = eConsoleAppContainer()
-					container.execute("tar xf /tmp/xtraEvent.tar.gz -C /")
-					self.updateFinish()
-			else:
-				self.close()
-		except Exception as err:
-			self['info'].setText(str(err))
-			with open("/tmp/xtraEvent.log", "a+") as f:
-				f.write("instalUpdate %s\n\n" % err)
 
 	def updateFinish(self):
 		for x in self["config"].list:
