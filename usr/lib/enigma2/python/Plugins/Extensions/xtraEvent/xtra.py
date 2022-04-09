@@ -505,7 +505,7 @@ class xtra(Screen, ConfigListScreen):
 			if answer is True:
 				url = requests.get("https://api.github.com/repos/OpenVisionE2/xtraEvent/releases/latest")
 				update_url = url.json()["assets"][1]["browser_download_url"]
-				up_name	= url.json()["assets"][1]["name"]
+				up_name = url.json()["assets"][1]["name"]
 				up_tmp = "/tmp/{}".format(up_name)
 				if not os.path.exists(up_tmp):
 					open(up_tmp, 'wb').write(requests.get(update_url, stream=True, allow_redirects=True).content)
