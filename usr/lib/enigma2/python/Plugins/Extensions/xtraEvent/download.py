@@ -982,8 +982,6 @@ class downloads(Screen):
 					glist = []
 					data = {}
 
-
-
 					info_files = "{}infos/{}.json".format(pathLoc, title)
 					if config.plugins.xtraEvent.omdbAPI.value:
 						omdb_apis = config.plugins.xtraEvent.omdbAPI.value
