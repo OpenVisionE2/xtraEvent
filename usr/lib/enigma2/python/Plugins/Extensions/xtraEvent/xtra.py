@@ -503,7 +503,7 @@ class xtra(Screen, ConfigListScreen):
 	def instalUpdate(self, answer):
 		try:
 			if answer is True:
-				url = requests.get("https://api.github.com/repos/digiteng/xtra/releases/latest")
+				url = requests.get("https://api.github.com/repos/OpenVisionE2/xtraEvent/releases/latest")
 				update_url = url.json()["assets"][1]["browser_download_url"]
 				up_name	= url.json()["assets"][1]["name"]
 				up_tmp = "/tmp/{}".format(up_name)
