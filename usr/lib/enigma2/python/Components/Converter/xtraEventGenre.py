@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 maintype = [_('Reserved'),
  _('Movie/Drama'),

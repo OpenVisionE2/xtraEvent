@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # by digiteng...06.2020, 11.2020, 11.2021
 from __future__ import absolute_import
-from __future__ import print_function
 from Components.AVSwitch import AVSwitch
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap

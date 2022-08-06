@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # by digiteng...06.2020, 11.2020, 11.2021, 12.2021, 01.2022
 from __future__ import absolute_import
