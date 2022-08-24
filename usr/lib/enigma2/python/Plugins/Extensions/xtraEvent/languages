@@ -78,6 +78,7 @@
 75 = Update
 76 = Delete posters if the size on your device occupies
 77 = Choose the maximum size of the posters on your device.
+78 = Download ?
 
 [tr]
 0 = Açık/Kapalı
@@ -159,6 +160,7 @@
 75 = Güncelle
 76 = Cihazınızdaki boyut kaplıyorsa posterleri silin
 77 = Cihazınızdaki posterlerin maksimum boyutunu seçin.
+78 = İndirmek ?
 
 [ru]
 0 = Включение плагина
@@ -240,6 +242,7 @@
 75 = Обновить
 76 = Удаляйте постеры, если размер на вашем устройстве занимает
 77 = Выберите максимальный размер плакатов на вашем устройстве.
+78 = Скачать ?
 
 [ar]
 0 = إيقاف البرنامج المساعد
@@ -321,6 +324,7 @@
 75 = تحديث
 76 = احذف الملصقات إذا احتل الحجم الموجود على جهازك
 77 = اختر الحجم الأقصى للملصقات على جهازك.
+78 = تحميل ؟
 
 [de]
 0 = ein/aus
@@ -402,6 +406,7 @@
 75 = Aktualisieren
 76 = Poster löschen, wenn die Größe auf Ihrem Gerät belegt ist
 77 = Wählen Sie die maximale Größe der Poster auf Ihrem Gerät.
+78 = Download ?
 
 [fr]
 0 = Marche/Arrêt
@@ -483,6 +488,7 @@
 75 = Mise à jour
 76 = Supprimer les affiches si la taille de votre appareil occupe
 77 = Choisissez la taille maximale des affiches sur votre appareil.
+78 = Télécharger ?
 
 [es]
 0 = Encendido / Apagado
@@ -564,6 +570,7 @@
 75 = Actualizar
 76 = Eliminar posters si el tamaño en su dispositivo ocupa
 77 = Elija el tamaño máximo de los posters en su dispositivo.
+78 = Descargar ?
 
 [it]
 0 = On/Off
@@ -645,6 +652,7 @@
 75 = Aggiorna
 76 = Elimina i poster se la dimensione sul tuo dispositivo occupa
 77 = Scegli la dimensione massima dei poster sul tuo dispositivo.
+78 = Scarica ?
 
 [pt]
 0 = Ligado / Desligado
@@ -726,6 +734,7 @@
 75 = Atualizar
 76 = Excluir pôsteres se o tamanho do seu dispositivo ocupar
 77 = Escolha o tamanho máximo dos pôsteres em seu dispositivo.
+78 = Download ?
 
 [pl]
 0 = wł./wył.
@@ -807,6 +816,7 @@
 75 = Aktualizacja
 76 = Usuń plakaty, jeśli rozmiar na urządzeniu zajmuje
 77 = Wybierz maksymalny rozmiar plakatów na swoim urządzeniu.
+78 = Ściągnij ?
 
 [el]
 0 = On/Off
@@ -888,3 +898,4 @@
 75 = Ενημέρωση
 76 = Διαγράψτε τις αφίσες εάν το μέγεθος στη συσκευή σας καταλαμβάνει
 77 = Επιλέξτε το μέγιστο μέγεθος των αφισών στη συσκευή σας.
+78 = Κατεβάστε ?

@@ -1341,7 +1341,7 @@ class selBouquets(Screen):
 
 			else:
 				list = [(_(lng.get(lang, '53')), self.withPluginDownload), (_(lng.get(lang, '54')), self.withTimerDownload), (_(lng.get(lang, '35')), self.cancel)]
-				self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_('Download ?'), list=list)
+				self.session.openWithCallback(self.menuCallback, ChoiceBox, title=_(lng.get(lang, '78')), list=list)
 		except Exception as err:
 			with open("/tmp/xtraEvent.log", "a+") as f:
 				f.write("bqtinchannels, %s\n" % (err))
