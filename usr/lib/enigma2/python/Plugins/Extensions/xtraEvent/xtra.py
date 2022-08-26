@@ -298,7 +298,7 @@ class xtra(Screen, ConfigListScreen):
 				folder_size = sum([sum(map(lambda fname: getsize(join(path_banner, fname)), files)) for path_banner, folders, files in walk(path_banner)])
 				banners_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				banner_nmbr = len(listdir(path_banner))
-				folder_size = sum([sum(map(lambda fname: .getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in walk(path_backdrop)])
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in walk(path_backdrop)])
 				backdrops_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
 				backdrop_nmbr = len(listdir(path_backdrop))
 				folder_size = sum([sum(map(lambda fname: getsize(join(path_info, fname)), files)) for path_info, folders, files in walk(path_info)])
