@@ -14,7 +14,8 @@ from Screens.MessageBox import MessageBox
 import Tools.Notifications
 import requests
 from requests.utils import quote
-import os
+from os import remove, listdir
+from os.path import exists, isfile, isdir
 import re
 import json
 from PIL import Image
@@ -22,7 +23,6 @@ import socket
 from . import xtra
 from datetime import datetime
 import time
-import threading
 from Components.ProgressBar import ProgressBar
 import io
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
@@ -41,19 +41,14 @@ else:
 	fanart_api = "6d231536dea4318a88cb2520ce89473b"
 
 try:
-	import sys
-	PY3 = sys.version_info[0]
-	if PY3 == 3:
-		from builtins import str
-		from builtins import range
-		from builtins import object
-		from configparser import ConfigParser
-		from _thread import start_new_thread
-	else:
-		from ConfigParser import ConfigParser
-		from thread import start_new_thread
+	import ConfigParser
+	from thread import start_new_thread
 except:
-	pass
+	import configparser as ConfigParser
+	from _thread import start_new_thread
+	from builtins import str
+	from builtins import range
+	from builtins import object
 
 try:
 	from Components.Language import language
@@ -216,7 +211,7 @@ class downloads(Screen):
 					f.write("currentChEpgs, %s\n" % (err))
 
 	def selBouquets(self):
-		if os.path.exists("{}bqts".format(pathLoc)):
+		if exists("{}bqts".format(pathLoc)):
 			with open("{}bqts".format(pathLoc), "r") as f:
 				refs = f.readlines()
 			nl = len(refs)
@@ -287,13 +282,13 @@ class downloads(Screen):
 				setime = ""
 				try:
 
-					if not os.path.exists("/tmp/urlo.html"):
+					if not isfile("/tmp/urlo.html"):
 						url = "https://elcinema.com/en/tvguide/"
 						urlo = requests.get(url)
 						urlo = urlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
 						with io.open("/tmp/urlo.html", "w", encoding="utf-8") as f:
 							f.write(urlo)
-					if os.path.exists("/tmp/urlo.html"):
+					if isfile("/tmp/urlo.html"):
 						with io.open("/tmp/urlo.html", "r", encoding="utf-8") as f:
 							urlor = f.read()
 						titles = re.findall('<li><a title="(.*?)" href="/en/work', urlor)
@@ -309,7 +304,7 @@ class downloads(Screen):
 						info_files = "{}infos/{}.json".format(pathLoc, title)
 						tid = re.findall('title="%s" href="/en/work/(.*?)/"' % title, urlor)[0]
 						self.setTitle(_("{}".format(title)))
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							turl = "https://elcinema.com/en/work/{}/".format(tid)
 							jurlo = requests.get(turl.strip(), stream=True, allow_redirects=True, headers=headers)
 							jurlo = jurlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
@@ -325,7 +320,7 @@ class downloads(Screen):
 						with open("/tmp/xtraEvent.log", "a+") as f:
 							f.write("elcinema poster, %s, %s\n" % (title, err))
 					#info elcinema,
-					if not os.path.exists(info_files):
+					if not exists(info_files):
 						turl = "https://elcinema.com/en/work/{}/".format(tid)
 						jurlo = requests.get(turl.strip(), stream=True, allow_redirects=True, headers=headers)
 						jurlo = jurlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
@@ -437,12 +432,12 @@ class downloads(Screen):
 							}
 							open(info_files, "w").write(json.dumps(ej))
 
-							if os.path.exists(info_files):
+							if exists(info_files):
 								extra3_info_downloaded += 1
 								downloaded = extra3_info_downloaded
 								self.prgrs(downloaded, n)
 								self['info'].setText("► {}, EXTRA3, INFO".format(title.upper()))
-							if os.path.exists(dwnldFile):
+							if exists(dwnldFile):
 								self.showPoster(dwnldFile)
 
 						except Exception as err:
@@ -459,7 +454,7 @@ class downloads(Screen):
 				if config.plugins.xtraEvent.poster.value == True:
 					dwnldFile = "{}poster/{}.jpg".format(pathLoc, title)
 					if config.plugins.xtraEvent.tmdb.value == True:
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								srch = config.plugins.xtraEvent.searchType.value
 
@@ -473,7 +468,7 @@ class downloads(Screen):
 								url = "https://image.tmdb.org/t/p/{}{}".format(p_size, poster)
 								if poster != "":
 									open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-								if os.path.exists(dwnldFile):
+								if exists(dwnldFile):
 									self['info'].setText("►  {}, TMDB, POSTER".format(title.upper()))
 									tmdb_poster_downloaded += 1
 									downloaded = tmdb_poster_downloaded
@@ -487,7 +482,7 @@ class downloads(Screen):
 										with open("/tmp/xtraEvent.log", "a+") as f:
 											f.write("deleted tmdb poster: %s.jpg\n" % title)
 										try:
-											os.remove(dwnldFile)
+											remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
@@ -502,10 +497,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url_tvdb = "https://thetvdb.com/api/GetSeries.php?seriesname={}".format(quote(title))
 								url_read = requests.get(url_tvdb).text
@@ -520,7 +515,7 @@ class downloads(Screen):
 										if config.plugins.xtraEvent.TVDBpostersize.value == "thumbnail":
 											url = url.replace(".jpg", "_t.jpg")
 										open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-										if os.path.exists(dwnldFile):
+										if exists(dwnldFile):
 											self['info'].setText("►  {}, TVDB, POSTER".format(title.upper()))
 											tvdb_poster_downloaded += 1
 											downloaded = tvdb_poster_downloaded
@@ -534,7 +529,7 @@ class downloads(Screen):
 												with open("/tmp/xtraEvent.log", "a+") as f:
 													f.write("deleted tvdb poster: %s.jpg\n" % title)
 												try:
-													os.remove(dwnldFile)
+													remove(dwnldFile)
 												except:
 													pass
 							except Exception as err:
@@ -549,15 +544,15 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							url_maze = "http://api.tvmaze.com/search/shows?q={}".format(quote(title))
 							try:
 								url = requests.get(url_maze).json()[0]['show']['image']['medium']
 								open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-								if os.path.exists(dwnldFile):
+								if exists(dwnldFile):
 									self['info'].setText("►  {}, MAZE, POSTER".format(title.upper()))
 									maze_poster_downloaded += 1
 									downloaded = maze_poster_downloaded
@@ -570,7 +565,7 @@ class downloads(Screen):
 										with open("/tmp/xtraEvent.log", "a+") as f:
 											f.write("deleted maze poster: %s.jpg\n" % title)
 										try:
-											os.remove(dwnldFile)
+											remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
@@ -585,10 +580,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url = None
 								srch = "multi"
@@ -619,7 +614,7 @@ class downloads(Screen):
 												url = fjs['movieposter'][0]['url']
 											if url:
 												open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True, verify=False).content)
-											if os.path.exists(dwnldFile):
+											if exists(dwnldFile):
 												self['info'].setText("►  {}, FANART, POSTER".format(title.upper()))
 												fanart_poster_downloaded += 1
 												downloaded = fanart_poster_downloaded
@@ -632,7 +627,7 @@ class downloads(Screen):
 													with open("/tmp/xtraEvent.log", "a+") as f:
 														f.write("deleted fanart poster: %s.jpg\n" % title)
 													try:
-														os.remove(dwnldFile)
+														remove(dwnldFile)
 													except:
 														pass
 							except Exception as err:
@@ -642,7 +637,7 @@ class downloads(Screen):
 				if config.plugins.xtraEvent.backdrop.value == True:
 					dwnldFile = "{}backdrop/{}.jpg".format(pathLoc, title)
 					if config.plugins.xtraEvent.extra.value == True:
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url = "http://capi.tvmovie.de/v1/broadcasts/search?q={}&page=1&rows=1".format(title.replace(" ", "+"))
 								try:
@@ -650,7 +645,7 @@ class downloads(Screen):
 								except:
 									pass
 								open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-								if os.path.exists(dwnldFile):
+								if exists(dwnldFile):
 									self['info'].setText("►  {}, EXTRA, BACKDROP".format(title.upper()))
 									extra_downloaded += 1
 									downloaded = extra_downloaded
@@ -663,7 +658,7 @@ class downloads(Screen):
 										with open("/tmp/xtraEvent.log", "a+") as f:
 											f.write("deleted extra poster: %s.jpg\n" % title)
 										try:
-											os.remove(dwnldFile)
+											remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
@@ -677,10 +672,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							srch = "multi"
 
 							url_tmdb = "https://api.themoviedb.org/3/search/{}?api_key={}&query={}".format(srch, tmdb_api, quote(title))
@@ -693,7 +688,7 @@ class downloads(Screen):
 									# backdrop_size = "w300"
 									url = "https://image.tmdb.org/t/p/{}{}".format(backdrop_size, backdrop)
 									open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-									if os.path.exists(dwnldFile):
+									if exists(dwnldFile):
 										self['info'].setText("►  {}, TMDB, BACKDROP".format(title.upper()))
 										tmdb_backdrop_downloaded += 1
 										downloaded = tmdb_backdrop_downloaded
@@ -706,7 +701,7 @@ class downloads(Screen):
 											with open("/tmp/xtraEvent.log", "a+") as f:
 												f.write("deleted tmdb backdrop: %s.jpg\n" % title)
 											try:
-												os.remove(dwnldFile)
+												remove(dwnldFile)
 											except:
 												pass
 							except Exception as err:
@@ -720,10 +715,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url_tvdb = "https://thetvdb.com/api/GetSeries.php?seriesname={}".format(quote(title))
 								url_read = requests.get(url_tvdb).text
@@ -737,7 +732,7 @@ class downloads(Screen):
 										if config.plugins.xtraEvent.TVDBbackdropsize.value == "thumbnail":
 											url = url.replace(".jpg", "_t.jpg")
 										open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-										if os.path.exists(dwnldFile):
+										if exists(dwnldFile):
 											self['info'].setText("►  {}, TVDB, BACKDROP".format(title.upper()))
 											tvdb_backdrop_downloaded += 1
 											downloaded = tvdb_backdrop_downloaded
@@ -750,7 +745,7 @@ class downloads(Screen):
 												with open("/tmp/xtraEvent.log", "a+") as f:
 													f.write("deleted tvdb backdrop: %s.jpg\n" % title)
 												try:
-													os.remove(dwnldFile)
+													remove(dwnldFile)
 												except:
 													pass
 							except Exception as err:
@@ -764,10 +759,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url = "https://www.bing.com/images/search?q={}".format(title.replace(" ", "+"))
 								if config.plugins.xtraEvent.PB.value == "posters":
@@ -794,7 +789,7 @@ class downloads(Screen):
 										f.write("google-backdrop, %s, %s\n" % (title, err))
 							try:
 								open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-								if os.path.exists(dwnldFile):
+								if exists(dwnldFile):
 									self['info'].setText("►  {}, EXTRA2, BACKDROP".format(title.upper()))
 									extra2_downloaded += 1
 									downloaded = extra2_downloaded
@@ -807,7 +802,7 @@ class downloads(Screen):
 										with open("/tmp/xtraEvent.log", "a+") as f:
 											f.write("deleted extra2 backdrop: %s.jpg\n" % title)
 										try:
-											os.remove(dwnldFile)
+											remove(dwnldFile)
 										except:
 											pass
 							except Exception as err:
@@ -823,11 +818,11 @@ class downloads(Screen):
 						with open("/tmp/xtraEvent.log", "a+") as f:
 							f.write("deleted : %s.jpg\n" % title)
 						try:
-							os.remove(dwnldFile)
+							remove(dwnldFile)
 						except:
 							pass
 					if config.plugins.xtraEvent.tvdb.value == True:
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								banner_img = ""
 								url = "https://thetvdb.com/api/GetSeries.php?seriesname={}".format(quote(title))
@@ -837,7 +832,7 @@ class downloads(Screen):
 									url = "https://artworks.thetvdb.com{}".format(banner_img)
 									if url:
 										open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True).content)
-										if os.path.exists(dwnldFile):
+										if exists(dwnldFile):
 											self['info'].setText("►  {}, TVDB, BANNER".format(title.upper()))
 											banner_downloaded += 1
 											downloaded = banner_downloaded
@@ -850,7 +845,7 @@ class downloads(Screen):
 												with open("/tmp/xtraEvent.log", "a+") as f:
 													f.write("deleted extra2 backdrop: %s.jpg\n" % title)
 												try:
-													os.remove(dwnldFile)
+													remove(dwnldFile)
 												except:
 													pass
 											scl = 1
@@ -869,10 +864,10 @@ class downloads(Screen):
 							with open("/tmp/xtraEvent.log", "a+") as f:
 								f.write("deleted : %s.jpg\n" % title)
 							try:
-								os.remove(dwnldFile)
+								remove(dwnldFile)
 							except:
 								pass
-						if not os.path.exists(dwnldFile):
+						if not exists(dwnldFile):
 							try:
 								url = "https://api.themoviedb.org/3/search/multi?api_key={}&query={}".format(tmdb_api, quote(title))
 								jp = requests.get(url, verify=False).json()
@@ -891,7 +886,7 @@ class downloads(Screen):
 									url = fjs["moviebanner"][0]["url"]
 									if url:
 										open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True, verify=False, timeout=5).content)
-										if os.path.exists(dwnldFile):
+										if exists(dwnldFile):
 											self['info'].setText("►  {}, FANART, BANNER".format(title.upper()))
 											banner_downloaded += 1
 											downloaded = banner_downloaded
@@ -904,7 +899,7 @@ class downloads(Screen):
 												with open("/tmp/xtraEvent.log", "a+") as f:
 													f.write("deleted fanart banner: %s.jpg\n" % title)
 												try:
-													os.remove(dwnldFile)
+													remove(dwnldFile)
 												except:
 													pass
 											scl = 1
@@ -931,7 +926,7 @@ class downloads(Screen):
 									try:
 										if url:
 											open(dwnldFile, 'wb').write(requests.get(url, stream=True, allow_redirects=True, verify=False).content)
-											if os.path.exists(dwnldFile):
+											if exists(dwnldFile):
 												self['info'].setText("►  {}, FANART, BANNER".format(title.upper()))
 												banner_downloaded += 1
 												downloaded = banner_downloaded
@@ -944,7 +939,7 @@ class downloads(Screen):
 													with open("/tmp/xtraEvent.log", "a+") as f:
 														f.write("deleted fanart banner: %s.jpg\n" % title)
 													try:
-														os.remove(dwnldFile)
+														remove(dwnldFile)
 													except:
 														pass
 												scl = 1
@@ -986,7 +981,7 @@ class downloads(Screen):
 						omdb_apis = config.plugins.xtraEvent.omdbAPI.value
 					else:
 						omdb_apis = ["6a4c9432", "a8834925", "550a7c40", "8ec53e6b"]
-					if not os.path.exists(info_files):
+					if not exists(info_files):
 						try:
 							try:
 								srch = config.plugins.xtraEvent.searchType.value
@@ -1092,7 +1087,7 @@ class downloads(Screen):
 							with open(info_files, "w") as f:
 								f.write(js)
 
-							if os.path.exists(info_files):
+							if exists(info_files):
 								info_downloaded += 1
 								downloaded = info_downloaded
 								self.prgrs(downloaded, n)
@@ -1118,8 +1113,8 @@ class downloads(Screen):
 			self['info2'].setText(report)
 			self.report = report
 			try:
-				if os.path.exists("/tmp/urlo.html"):
-					os.remove("/tmp/urlo.html")
+				if isfile("/tmp/urlo.html"):
+					remove("/tmp/urlo.html")
 			except:
 				pass
 			with open("/tmp/xtra_report", "a+") as f:
@@ -1186,21 +1181,21 @@ class downloads(Screen):
 		self["Picture2"].show()
 
 	def brokenImageRemove(self):
-		b = os.listdir(pathLoc)
+		b = listdir(pathLoc)
 		rmvd = 0
 		try:
 			for i in b:
 				bb = "{}{}/".format(pathLoc, i)
-				fc = os.path.isdir(bb)
+				fc = isdir(bb)
 				if fc != False:
-					for f in os.listdir(bb):
+					for f in listdir(bb):
 						if f.endswith('.jpg'):
 							try:
 								img = Image.open("{}{}".format(bb, f))
 								img.verify()
 							except:
 								try:
-									os.remove("{}{}".format(bb, f))
+									remove("{}{}".format(bb, f))
 									rmvd += 1
 								except:
 									pass
@@ -1209,16 +1204,17 @@ class downloads(Screen):
 
 	def brokenInfoRemove(self):
 		try:
-			infs = os.listdir("{}infos".format(pathLoc))
+			infs = listdir("{}infos".format(pathLoc))
 			for i in infs:
 				with open("{}infos/{}".format(pathLoc, i)) as f:
 					rj = json.load(f)
 				if rj["Response"] == "False":
-					os.remove("{}infos/{}".format(pathLoc, i))
+					remove("{}infos/{}".format(pathLoc, i))
 		except:
 			pass
 
 	def cleanRam(self):
-		os.system("echo 1 > /proc/sys/vm/drop_caches")
-		os.system("echo 2 > /proc/sys/vm/drop_caches")
-		os.system("echo 3 > /proc/sys/vm/drop_caches")
+		from Components.Console import Console
+		Console().ePopen("echo 1 > /proc/sys/vm/drop_caches")
+		Console().ePopen("echo 2 > /proc/sys/vm/drop_caches")
+		Console().ePopen("echo 3 > /proc/sys/vm/drop_caches")

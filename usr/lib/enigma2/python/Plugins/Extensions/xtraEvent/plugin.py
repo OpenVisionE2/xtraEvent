@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 from Plugins.Plugin import PluginDescriptor
 from Components.config import config
-import threading
+from threading import Timer
 from datetime import datetime
 from six.moves import reload_module
 from . import xtra
@@ -28,7 +28,7 @@ try:
 			from . import download
 			download.downloads("").save()
 
-		t = threading.Timer(secs, startDownload)
+		t = Timer(secs, startDownload)
 		t.start()
 
 except Exception as err:
@@ -41,7 +41,7 @@ def ddwn():
 		if config.plugins.xtraEvent.timerMod.value == "Period":
 			download.downloads("").save()
 			tmr = config.plugins.xtraEvent.timer.value
-			t = threading.Timer(3600 * int(tmr), ddwn) # 1h=3600
+			t = Timer(3600 * int(tmr), ddwn) # 1h=3600
 			t.start()
 	except Exception as err:
 		with open("/tmp/xtra_error.log", "a+") as f:
@@ -50,7 +50,7 @@ def ddwn():
 
 try:
 	if config.plugins.xtraEvent.timerMod.value == "Period":
-		threading.Timer(30, ddwn).start()
+		Timer(30, ddwn).start()
 except Exception as err:
 	with open("/tmp/xtra_error.log", "a+") as f:
 		f.write("xtra plugin timer start, %s\n\n" % err)

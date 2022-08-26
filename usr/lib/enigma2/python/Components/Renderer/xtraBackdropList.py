@@ -10,7 +10,7 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 from skin import parseColor
 import re
-import os
+from os.path import exists
 import json
 from time import localtime
 try:
@@ -111,7 +111,7 @@ class xtraBackdropList(Renderer):
 					evntNm1 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
 
-					if os.path.exists(pstrNm):
+					if exists(pstrNm):
 						self.eventPxmp1.setPixmap(loadJPG(pstrNm))
 						self.eventPxmp1.resize(eSize(px, py))
 						self.eventPxmp1.move(ePoint(0, 0))
@@ -142,7 +142,7 @@ class xtraBackdropList(Renderer):
 					bt = localtime(events[2][1])
 					evntNm2 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-					if os.path.exists(pstrNm):
+					if exists(pstrNm):
 						self.eventPxmp2.setPixmap(loadJPG(pstrNm))
 						self.eventPxmp2.resize(eSize(px, py))
 						self.eventPxmp2.move(ePoint((px) + 5, 0))
@@ -173,7 +173,7 @@ class xtraBackdropList(Renderer):
 					bt = localtime(events[3][1])
 					evntNm3 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 					pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-					if os.path.exists(pstrNm):
+					if exists(pstrNm):
 						self.eventPxmp3.setPixmap(loadJPG(pstrNm))
 						self.eventPxmp3.resize(eSize(px, py))
 						self.eventPxmp3.move(ePoint(((px) * 2) + 10, 0))
@@ -213,7 +213,7 @@ class xtraBackdropList(Renderer):
 				bt = localtime(events[1][1])
 				et = localtime(events[1][1] + events[1][2])
 				rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
-				if os.path.exists(rating_json):
+				if exists(rating_json):
 					with open(rating_json) as f:
 						read_json = json.load(f)
 				try:
@@ -255,7 +255,7 @@ class xtraBackdropList(Renderer):
 
 				evntNm1 = "%02d:%02d - %02d:%02d \n%s\n%s\n%s" % (bt[3], bt[4], et[3], et[4], event, tc, duration)
 				pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-				if os.path.exists(pstrNm):
+				if exists(pstrNm):
 					self.eventPxmp1.setPixmap(loadJPG(pstrNm))
 					self.eventPxmp1.resize(eSize(px, py))
 					self.eventPxmp1.move(ePoint(0, 0))

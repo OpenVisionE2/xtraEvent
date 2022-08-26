@@ -9,7 +9,7 @@ from Components.Renderer.Renderer import Renderer
 from Components.VariableValue import VariableValue
 from enigma import eSlider
 from Components.config import config
-import os
+from os.path import exists
 import re
 import json
 
@@ -66,7 +66,7 @@ class xtraStar(VariableValue, Renderer):
 				evnt = event.getEventName()
 				evntNm = REGEX.sub('', evnt).strip()
 				rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
-				if os.path.exists(rating_json):
+				if exists(rating_json):
 					with open(rating_json) as f:
 						rating = json.load(f)['imdbRating']
 					if rating:

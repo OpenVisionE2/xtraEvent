@@ -11,7 +11,7 @@ from Components.config import config
 from skin import parseColor
 from time import localtime
 import re
-import os
+from os.path import exists
 import json
 try:
 	import sys
@@ -108,7 +108,7 @@ class xtraBackdropList2(Renderer):
 					evnt = event.getEventName()
 					evntNm = REGEX.sub('', evnt).strip()
 					rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
-					if os.path.exists(rating_json):
+					if exists(rating_json):
 						with open(rating_json) as f:
 							read_json = json.load(f)
 					fd = "{}\n{}\n{}".format(event.getEventName(), event.getShortDescription(), event.getExtendedDescription())
@@ -199,7 +199,7 @@ class xtraBackdropList2(Renderer):
 							bt = localtime(events[0][1])
 							evntNm0 = "%02d:%02d - %s\n%s" % (bt[3], bt[4], evnt, self.info())
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-							if os.path.exists(pstrNm):
+							if exists(pstrNm):
 								self.eventPxmp0.setPixmap(loadJPG(pstrNm))
 								self.eventPxmp0.resize(eSize(300, 170))
 								self.eventPxmp0.move(ePoint(0, 0))
@@ -239,7 +239,7 @@ class xtraBackdropList2(Renderer):
 							bt = localtime(events[1][1])
 							evntNm1 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-							if os.path.exists(pstrNm):
+							if exists(pstrNm):
 								self.eventPxmp1.setPixmap(loadJPG(pstrNm))
 								self.eventPxmp1.resize(eSize(300, 170))
 								self.eventPxmp1.move(ePoint(0, 630))
@@ -267,7 +267,7 @@ class xtraBackdropList2(Renderer):
 							bt = localtime(events[2][1])
 							evntNm2 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-							if os.path.exists(pstrNm):
+							if exists(pstrNm):
 								self.eventPxmp2.setPixmap(loadJPG(pstrNm))
 								self.eventPxmp2.resize(eSize(300, 170))
 								self.eventPxmp2.move(ePoint(310, 630))
@@ -295,7 +295,7 @@ class xtraBackdropList2(Renderer):
 							bt = localtime(events[3][1])
 							evntNm3 = "%02d:%02d - %s\n" % (bt[3], bt[4], evnt)
 							pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-							if os.path.exists(pstrNm):
+							if exists(pstrNm):
 								self.eventPxmp3.setPixmap(loadJPG(pstrNm))
 								self.eventPxmp3.resize(eSize(300, 170))
 								self.eventPxmp3.move(ePoint(620, 630))
@@ -352,7 +352,7 @@ class xtraBackdropList2(Renderer):
 				evntNm = REGEX.sub('', evnt).strip()
 				rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
 				fd = "{}\n{}\n{}".format(event.getEventName(), event.getShortDescription(), event.getExtendedDescription())
-				if os.path.exists(rating_json):
+				if exists(rating_json):
 					with open(rating_json) as f:
 						read_json = json.load(f)
 				evnt = []

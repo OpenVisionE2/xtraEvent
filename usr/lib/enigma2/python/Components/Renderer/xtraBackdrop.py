@@ -6,14 +6,14 @@ from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG, eServiceCenter
 from Components.config import config
 import re
-import os
+from os.path import isdir, exists
 
 piconPath = ""
 paths = ('/media/hdd/picon/', '/media/usb/picon/', '/media/mmc/picon/',
 '/usr/share/enigma2/picon/', '/picon/', '/media/sda1/picon/',
 '/media/sda2/picon/', '/media/sda3/picon/')
 for path in paths:
-	if os.path.isdir(path):
+	if isdir(path):
 		piconPath = path
 		break
 
@@ -75,7 +75,7 @@ class xtraBackdrop(Renderer):
 						evnt = event.getEventName()
 						evntNm = REGEX.sub('', evnt).strip()
 						pstrNm = "{}xtraEvent/backdrop/{}.jpg".format(pathLoc, evntNm)
-						if os.path.exists(pstrNm):
+						if exists(pstrNm):
 							self.instance.setPixmap(loadJPG(pstrNm))
 							self.instance.setScale(1)
 							self.instance.show()
@@ -103,16 +103,16 @@ class xtraBackdrop(Renderer):
 
 			picName = "{}{}.png".format(piconPath, ChNm)
 			picName = picName.strip()
-			if os.path.exists(picName):
+			if exists(picName):
 				self.instance.setScale(2)
 				self.instance.setPixmapFromFile(picName)
 				self.instance.setAlphatest(2)
 				self.instance.show()
 
-			elif not os.path.exists(picName):
+			elif not exists(picName):
 				picName = "{}{}.png".format(piconPath, str(ref).replace(':', '_'))
 				picName = picName.replace('_.png', '.png')
-				if os.path.exists(picName):
+				if exists(picName):
 					self.instance.setScale(2)
 					self.instance.setPixmapFromFile(picName)
 					self.instance.setAlphatest(2)
