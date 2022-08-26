@@ -7,7 +7,8 @@ from enigma import ePixmap, eEPGCache, loadJPG
 from Components.config import config
 from Components.Console import Console
 import re
-import os
+from os import walk
+from os.path import getsize, join, exists
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
@@ -18,7 +19,7 @@ try:
 	pathlocation = config.plugins.xtraEvent.loc.value
 	posterpath = "{}xtraEvent/poster".format(pathlocation)
 	maximumfoldersize = config.plugins.xtraEvent.rmposter.value
-	folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(posterpath, fname)), files)) for posterpath, folders, files in os.walk(posterpath)])
+	folder_size = sum([sum(map(lambda fname: getsize(join(posterpath, fname)), files)) for posterpath, folders, files in walk(posterpath)])
 	posters_size = "%0.f GB" % (folder_size / (1024 * 1024.0) / 1000)
 	print("[xtraEvent] posters_size = %s" % posters_size)
 	deleteposter = "rm -f %s/*" % posterpath
@@ -75,7 +76,7 @@ class xtraPoster(Renderer):
 						evnt = event.getEventName()
 						evntNm = REGEX.sub('', evnt).strip()
 						pstrNm = "{}xtraEvent/poster/{}.jpg".format(pathLoc, evntNm)
-						if os.path.exists(pstrNm):
+						if exists(pstrNm):
 							self.instance.setPixmap(loadJPG(pstrNm))
 							self.instance.setScale(1)
 							self.instance.show()

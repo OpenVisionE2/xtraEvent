@@ -9,7 +9,7 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 import re
 import json
-import os
+from os.path import exists
 try:
 	import sys
 	if sys.version_info[0] == 3:
@@ -80,7 +80,7 @@ class xtraParental(Renderer):
 					evnt = event.getEventName()
 					evntNm = REGEX.sub('', evnt).strip()
 					rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
-					if os.path.exists(rating_json):
+					if exists(rating_json):
 						try:
 							with open(rating_json) as f:
 								prate = json.load(f)['Rated']

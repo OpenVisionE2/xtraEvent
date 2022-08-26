@@ -9,7 +9,8 @@ from Components.ActionMap import ActionMap
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
 import Tools.Notifications
-import os
+from os import walk, listdir, makedirs, remove
+from os.path import getsize, join, isdir, exists, isfile
 import re
 from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory, ConfigClock, NoSave
 from Components.ConfigList import ConfigListScreen
@@ -37,19 +38,14 @@ except:
 	pass
 
 try:
-	import sys
-	infoPY = sys.version_info[0]
-	if infoPY == 3:
-		from builtins import str
-		from builtins import range
-		from builtins import object
-		from configparser import ConfigParser
-		from _thread import start_new_thread
-	else:
-		from ConfigParser import ConfigParser
-		from thread import start_new_thread
+	import ConfigParser
+	from thread import start_new_thread
 except:
-	pass
+	import configparser as ConfigParser
+	from _thread import start_new_thread
+	from builtins import str
+	from builtins import range
+	from builtins import object
 try:
 	if config.plugins.xtraEvent.tmdbAPI.value != "":
 		tmdb_api = config.plugins.xtraEvent.tmdbAPI.value
@@ -296,18 +292,18 @@ class xtra(Screen, ConfigListScreen):
 				path_banner = "{}banner/".format(pathLoc)
 				path_backdrop = "{}backdrop/".format(pathLoc)
 				path_info = "{}infos/".format(pathLoc)
-				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_poster, fname)), files)) for path_poster, folders, files in os.walk(path_poster)])
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_poster, fname)), files)) for path_poster, folders, files in walk(path_poster)])
 				posters_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				poster_nmbr = len(os.listdir(path_poster))
-				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_banner, fname)), files)) for path_banner, folders, files in os.walk(path_banner)])
+				poster_nmbr = len(listdir(path_poster))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_banner, fname)), files)) for path_banner, folders, files in walk(path_banner)])
 				banners_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				banner_nmbr = len(os.listdir(path_banner))
-				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_backdrop, fname)), files)) for path_backdrop, folders, files in os.walk(path_backdrop)])
+				banner_nmbr = len(listdir(path_banner))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in walk(path_backdrop)])
 				backdrops_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				backdrop_nmbr = len(os.listdir(path_backdrop))
-				folder_size = sum([sum(map(lambda fname: os.path.getsize(os.path.join(path_info, fname)), files)) for path_info, folders, files in os.walk(path_info)])
+				backdrop_nmbr = len(listdir(path_backdrop))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_info, fname)), files)) for path_info, folders, files in walk(path_info)])
 				infos_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				info_nmbr = len(os.listdir(path_info))
+				info_nmbr = len(listdir(path_info))
 				self['status'].setText(_(lng.get(lang, '48')))
 				pstr = "Poster : {} poster {} MB".format(poster_nmbr, posters_sz)
 				bnnr = "Banner : {} banner {} MB".format(banner_nmbr, banners_sz)
@@ -331,13 +327,13 @@ class xtra(Screen, ConfigListScreen):
 		if res is not None:
 			config.plugins.xtraEvent.loc.value = res
 			pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
-			if not os.path.isdir(pathLoc):
-				os.makedirs("{}poster".format(pathLoc))
-				os.makedirs("{}banner".format(pathLoc))
-				os.makedirs("{}backdrop".format(pathLoc))
-				os.makedirs("{}infos".format(pathLoc))
-				os.makedirs("{}mSearch".format(pathLoc))
-				os.makedirs("{}EMC".format(pathLoc))
+			if not isdir(pathLoc):
+				makedirs("{}poster".format(pathLoc))
+				makedirs("{}banner".format(pathLoc))
+				makedirs("{}backdrop".format(pathLoc))
+				makedirs("{}infos".format(pathLoc))
+				makedirs("{}mSearch".format(pathLoc))
+				makedirs("{}EMC".format(pathLoc))
 			self.updateFinish()
 
 	def delay(self):
@@ -501,33 +497,33 @@ class xtra(Screen, ConfigListScreen):
 		if answer:
 			import shutil
 			pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
-			if os.path.isdir(pathLoc):
+			if isdir(pathLoc):
 				shutil.rmtree(pathLoc)
-			if not os.path.isdir(pathLoc):
-				os.makedirs("{}poster".format(pathLoc))
-				os.makedirs("{}banner".format(pathLoc))
-				os.makedirs("{}backdrop".format(pathLoc))
-				os.makedirs("{}infos".format(pathLoc))
-				os.makedirs("{}mSearch".format(pathLoc))
-				os.makedirs("{}EMC".format(pathLoc))
+			if not isdir(pathLoc):
+				makedirs("{}poster".format(pathLoc))
+				makedirs("{}banner".format(pathLoc))
+				makedirs("{}backdrop".format(pathLoc))
+				makedirs("{}infos".format(pathLoc))
+				makedirs("{}mSearch".format(pathLoc))
+				makedirs("{}EMC".format(pathLoc))
 			self.updateFinish()
 
 	def compressImg(self):
 		try:
 			filepath = "{}{}".format(pathLoc, config.plugins.xtraEvent.cnfgSel.value)
-			folder_size = sum([sum([os.path.getsize(os.path.join(filepath, fname)) for fname in files]) for filepath, folders, files in os.walk(filepath)])
+			folder_size = sum([sum([getsize(join(filepath, fname)) for fname in files]) for filepath, folders, files in walk(filepath)])
 			old_size = "%0.1f" % (folder_size // 1024)
-			if os.path.exists(filepath):
-				lstdr = os.listdir(filepath)
+			if exists(filepath):
+				lstdr = listdir(filepath)
 				for j in lstdr:
 					try:
 						filepath = "".join([filepath, "/", j])
-						if os.path.isfile(filepath):
+						if isfile(filepath):
 							im = Image.open(filepath)
 							im.save(filepath, optimize=True, quality=80)
 					except:
 						pass
-				folder_size = sum([sum([os.path.getsize(os.path.join(filepath, fname)) for fname in files]) for filepath, folders, files in os.walk(filepath)])
+				folder_size = sum([sum([getsize(join(filepath, fname)) for fname in files]) for filepath, folders, files in walk(filepath)])
 				new_size = "%0.1f" % (folder_size // 1024)
 				self['info'].setText(_("{} images optimization end...\nGain : {}KB to {}KB".format(len(lstdr), old_size, new_size)))
 		except Exception as err:
@@ -536,21 +532,21 @@ class xtra(Screen, ConfigListScreen):
 			self['info'].setText(str(err))
 
 	def brokenImageRemove(self):
-		b = os.listdir(pathLoc)
+		b = listdir(pathLoc)
 		rmvd = 0
 		try:
 			for i in b:
 				bb = "{}{}/".format(pathLoc, i)
-				fc = os.path.isdir(bb)
+				fc = isdir(bb)
 				if fc != False:
-					for f in os.listdir(bb):
+					for f in listdir(bb):
 						if f.endswith('.jpg'):
 							try:
 								img = Image.open("{}{}".format(bb, f))
 								img.verify()
 							except:
 								try:
-									os.remove("{}{}".format(bb, f))
+									remove("{}{}".format(bb, f))
 									rmvd += 1
 								except:
 									pass
@@ -764,7 +760,7 @@ class manuelSearch(Screen, ConfigListScreen):
 	def movieList(self):
 		pathLoc = config.plugins.xtraEvent.EMCloc.value
 		try:
-			mlst = os.listdir(pathLoc)
+			mlst = listdir(pathLoc)
 			if mlst:
 				movieList = [x for x in mlst if x.endswith(".mvi") or x.endswith(".ts") or x.endswith(".mp4") or x.endswith(".avi") or x.endswith(".mkv") or x.endswith(".divx")]
 				if movieList:
@@ -799,9 +795,9 @@ class manuelSearch(Screen, ConfigListScreen):
 
 	def mnlSrch(self):
 		try:
-			fs = os.listdir("{}mSearch/".format(pathLoc))
+			fs = listdir("{}mSearch/".format(pathLoc))
 			for f in fs:
-				os.remove("{}mSearch/{}".format(pathLoc, f))
+				remove("{}mSearch/{}".format(pathLoc, f))
 		except:
 			return
 		if config.plugins.xtraEvent.PB.value == "posters":
@@ -871,14 +867,14 @@ class manuelSearch(Screen, ConfigListScreen):
 		try:
 			msLoc = "{}mSearch/".format(pathLoc)
 			n = 0
-			for file in os.listdir(msLoc):
+			for file in listdir(msLoc):
 				if file.startswith("{}-{}".format(self.title, config.plugins.xtraEvent.PB.value)) == True:
-					e = os.path.join(msLoc, file)
+					e = join(msLoc, file)
 					n += 1
 			tot = n
 			cur = config.plugins.xtraEvent.imgNmbr.value
 			pb_path = "{}mSearch/{}-{}-{}.jpg".format(pathLoc, self.title, config.plugins.xtraEvent.PB.value, self.iNmbr)
-			pb_sz = "{} KB".format(os.path.getsize(pb_path) // 1024)
+			pb_sz = "{} KB".format(getsize(pb_path) // 1024)
 			im = Image.open(pb_path)
 			pb_res = im.size
 			self['info'].setText(_("{}/{} - {} - {}".format(cur, tot, pb_sz, pb_res)))
@@ -904,15 +900,15 @@ class manuelSearch(Screen, ConfigListScreen):
 				else:
 					target = "{}EMC/{}-backdrop.jpg".format(pathLoc, self.title)
 			import shutil
-			if os.path.exists(self.path):
+			if exists(self.path):
 				shutil.copyfile(self.path, target)
-				if os.path.exists(target):
+				if exists(target):
 					if config.plugins.xtraEvent.PB.value == "backdrops":
 						if not config.plugins.xtraEvent.searchModManuel.value == lng.get(lang, '16'):
 							im1 = Image.open(target)
 							im1 = im1.resize((1280, 720))
 							im1 = im1.save(target)
-							if os.path.exists(target):
+							if exists(target):
 								im1 = Image.open(target)
 								im2 = Image.open(resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/emc_background.png"))
 								mask = Image.new("L", im1.size, 80)
@@ -1318,8 +1314,8 @@ class selBouquets(Screen):
 
 	def bqtinchannels(self):
 		try:
-			if os.path.exists("{}bqts".format(pathLoc)):
-				os.remove("{}bqts".format(pathLoc))
+			if exists("{}bqts".format(pathLoc)):
+				remove("{}bqts".format(pathLoc))
 
 			bE = "{}bqts".format(pathLoc)
 			blist = []
