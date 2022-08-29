@@ -33,14 +33,17 @@ except:
 	pass
 
 try:
-	import ConfigParser
-	from thread import start_new_thread
+	if PY3:
+		from builtins import str
+		from builtins import range
+		from builtins import object
+		from configparser import ConfigParser
+		from _thread import start_new_thread
+	else:
+		from ConfigParser import ConfigParser
+		from thread import start_new_thread
 except:
-	import configparser as ConfigParser
-	from _thread import start_new_thread
-	from builtins import str
-	from builtins import range
-	from builtins import object
+	pass
 try:
 	if config.plugins.xtraEvent.tmdbAPI.value != "":
 		tmdb_api = config.plugins.xtraEvent.tmdbAPI.value
