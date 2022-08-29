@@ -26,8 +26,6 @@ from .xtraSelectionList import xtraSelectionList, xtraSelectionEntryComponent
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
 from six import PY3
 
-version = "v5.3"
-
 pathLoc = ""
 try:
 	pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
@@ -260,7 +258,7 @@ class xtra(Screen, ConfigListScreen):
 			"menu": self.menuS
 		}, -1)
 
-		self.setTitle(_("xtraEvent {}".format(version)))
+		self.setTitle(_("xtraEvent"))
 		self['status'] = Label()
 		self['info'] = Label()
 		self['int_statu'] = Label()
