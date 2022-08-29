@@ -12,9 +12,9 @@ from six.moves import reload_module
 from . import xtra
 from . import download
 from enigma import addFont
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_FONTS
 
-addFont(resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/fonts/arial.ttf"), "xtraRegular", 100, 1)
+addFont(resolveFilename(SCOPE_FONTS, "arial.ttf"), "xtraRegular", 100, 1)
 
 try:
 	if config.plugins.xtraEvent.timerMod.value == "Clock":

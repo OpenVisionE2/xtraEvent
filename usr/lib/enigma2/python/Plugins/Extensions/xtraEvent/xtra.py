@@ -26,7 +26,7 @@ from .xtraSelectionList import xtraSelectionList, xtraSelectionEntryComponent
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
 from six import PY3
 
-version = "v5.2"
+version = "v5.3"
 
 pathLoc = ""
 try:
