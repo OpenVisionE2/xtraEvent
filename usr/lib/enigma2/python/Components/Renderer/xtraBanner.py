@@ -3,11 +3,11 @@
 # <widget source="session.Event_Now" render="xtraBanner" position="0,0" size="762,141" zPosition="1" />
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
-from enigma import ePixmap, ePicLoad, eEPGCache
+from enigma import ePixmap, ePicLoad
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
 from Components.config import config
-import os
+from os.path import exists
 import re
 
 try:
@@ -62,7 +62,7 @@ class xtraBanner(Renderer):
 						evnt = event.getEventName()
 						evntNm = REGEX.sub('', evnt).strip()
 						pstrNm = "{}xtraEvent/banner/{}.jpg".format(pathLoc, evntNm)
-						if os.path.exists(pstrNm):
+						if exists(pstrNm):
 							size = self.instance.size()
 							self.picload = ePicLoad()
 							sc = AVSwitch().getFramebufferScale()

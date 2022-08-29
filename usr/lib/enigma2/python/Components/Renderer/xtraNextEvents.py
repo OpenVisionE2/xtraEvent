@@ -12,7 +12,7 @@ from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG, eTimer, eEPGCache
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
-import os
+from os.path import exists
 import re
 
 NoImage = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/pic/film.jpg")
@@ -99,7 +99,7 @@ class xtraNextEvents(Renderer):
 					evnt = events[self.nxEvnt][0]
 					evntNm = REGEX.sub('', evnt).strip()
 					pstrNm = "{}xtraEvent/{}/{}.jpg".format(pathLoc, self.nxEvntUsed, evntNm)
-					if os.path.exists(pstrNm):
+					if exists(pstrNm):
 						self.instance.setPixmap(loadJPG(pstrNm))
 						self.instance.setScale(1)
 						self.instance.show()

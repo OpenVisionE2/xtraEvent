@@ -13,7 +13,7 @@ from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
 import re
 import json
-import os
+from os.path import exists
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
 except:
@@ -81,7 +81,7 @@ class xtraStar2(VariableValue, Renderer):
 					try:
 						evntNm = REGEX.sub('', evnt).strip()
 						rating_json = "{}xtraEvent/infos/{}.json".format(pathLoc, evntNm)
-						if os.path.exists(rating_json):
+						if exists(rating_json):
 							with open(rating_json) as f:
 								rating = json.load(f)['imdbRating']
 							if rating:

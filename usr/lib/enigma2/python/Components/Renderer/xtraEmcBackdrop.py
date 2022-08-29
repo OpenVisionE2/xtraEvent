@@ -5,10 +5,9 @@ from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
-from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.CurrentService import CurrentService
 from Components.config import config
-import os
+from os.path import exists
 import re
 
 try:
@@ -62,7 +61,7 @@ class xtraEmcBackdrop(Renderer):
 						movieNm = evnt.split('-')[-1].split(".")[0].strip()
 						movieNm = REGEX.sub('', movieNm).strip()
 						pstrNm = "{}xtraEvent/EMC/{}-backdrop.jpg".format(pathLoc, movieNm.strip())
-						if os.path.exists(pstrNm):
+						if exists(pstrNm):
 							self.instance.setScale(2)
 							self.instance.setPixmap(loadJPG(pstrNm))
 							self.instance.show()

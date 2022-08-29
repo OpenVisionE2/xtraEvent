@@ -3,7 +3,7 @@
 # "SelectionList" edited by digiteng...
 from __future__ import absolute_import
 from Components.MenuList import MenuList
-from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER
+from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Tools.LoadPixmap import LoadPixmap
 import skin

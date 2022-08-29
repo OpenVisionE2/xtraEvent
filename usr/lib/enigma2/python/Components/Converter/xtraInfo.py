@@ -18,7 +18,7 @@ from Components.config import config
 from Components.Converter.xtraEventGenre import getGenreStringSub
 import re
 import json
-import os
+from os.path import exists
 
 try:
 	pathLoc = config.plugins.xtraEvent.loc.value
@@ -92,7 +92,7 @@ class xtraInfo(Converter, object):
 				try:
 					for type in self.types:
 						type.strip()
-						if os.path.exists(rating_json):
+						if exists(rating_json):
 							with open(rating_json) as f:
 								read_json = json.load(f)
 
@@ -415,7 +415,7 @@ class xtraInfo(Converter, object):
 					for type in self.types:
 						type.strip()
 						if type == self.imdbRatingValue:
-							if os.path.exists(rating_json):
+							if exists(rating_json):
 								with open(rating_json) as f:
 									read_json = json.load(f)
 								try:

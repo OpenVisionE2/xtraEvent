@@ -4,8 +4,7 @@
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG
-import os
-from Components.Sources.ServiceEvent import ServiceEvent
+from os.path import exists
 from Components.Sources.CurrentService import CurrentService
 from Components.config import config
 import re
@@ -64,7 +63,7 @@ class xtraEmcPoster(Renderer):
 						movieNm = evnt.split('-')[-1].split(".")[0].strip()
 						movieNm = REGEX.sub('', movieNm).strip()
 						pstrNm = "{}xtraEvent/EMC/{}-poster.jpg".format(pathLoc, movieNm.strip())
-						if os.path.exists(pstrNm):
+						if exists(pstrNm):
 							self.instance.setScale(1)
 							self.instance.setPixmap(loadJPG(pstrNm))
 							self.instance.show()
