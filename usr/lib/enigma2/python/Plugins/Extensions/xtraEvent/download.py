@@ -285,11 +285,11 @@ class downloads(Screen):
 						with open("/tmp/urlo.html", "w", encoding="utf-8") as f:
 							f.write(urlo)
 					if isfile("/tmp/urlo.html"):
-<<<<<<< HEAD
+<< << << < HEAD
 						with open("/tmp/urlo.html", "r", encoding="utf-8") as f:
-=======
+== == == =
 						with io.open("/tmp/urlo.html", "r", encoding="utf-8") as f:
->>>>>>> b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
+>>>>>> > b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
 							urlor = f.read()
 						titles = re.findall('<li><a title="(.*?)" href="/en/work', urlor)
 					n = len(titles)
