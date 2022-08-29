@@ -285,6 +285,8 @@ class downloads(Screen):
 						with open("/tmp/urlo.html", "w", encoding="utf-8") as f:
 							f.write(urlo)
 					if isfile("/tmp/urlo.html"):
+
+
 << << << < HEAD
 						with open("/tmp/urlo.html", "r", encoding="utf-8") as f:
 == == == =
