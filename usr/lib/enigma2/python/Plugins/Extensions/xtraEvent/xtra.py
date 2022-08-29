@@ -26,8 +26,6 @@ from .xtraSelectionList import xtraSelectionList, xtraSelectionEntryComponent
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
 from six import PY3
 
-version = "v5.3"
-
 pathLoc = ""
 try:
 	pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
@@ -35,14 +33,17 @@ except:
 	pass
 
 try:
-	import ConfigParser
-	from thread import start_new_thread
+	if PY3:
+		from builtins import str
+		from builtins import range
+		from builtins import object
+		from configparser import ConfigParser
+		from _thread import start_new_thread
+	else:
+		from ConfigParser import ConfigParser
+		from thread import start_new_thread
 except:
-	import configparser as ConfigParser
-	from _thread import start_new_thread
-	from builtins import str
-	from builtins import range
-	from builtins import object
+	pass
 try:
 	if config.plugins.xtraEvent.tmdbAPI.value != "":
 		tmdb_api = config.plugins.xtraEvent.tmdbAPI.value
@@ -260,7 +261,7 @@ class xtra(Screen, ConfigListScreen):
 			"menu": self.menuS
 		}, -1)
 
-		self.setTitle(_("xtraEvent {}".format(version)))
+		self.setTitle(_("xtraEvent"))
 		self['status'] = Label()
 		self['info'] = Label()
 		self['int_statu'] = Label()

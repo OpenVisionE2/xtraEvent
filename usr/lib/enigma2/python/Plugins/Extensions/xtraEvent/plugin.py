@@ -16,6 +16,15 @@ from Tools.Directories import resolveFilename, SCOPE_FONTS
 
 addFont(resolveFilename(SCOPE_FONTS, "arial.ttf"), "xtraRegular", 100, 1)
 
+with open("/var/lib/opkg/info/enigma2-plugin-extensions-xtraevent.control") as origin:
+	for version in origin:
+		if not "Version: " in version:
+			continue
+		try:
+			versionnumber = version.split('+')[1]
+		except IndexError:
+			print("[xtraEvent] can't detect version!")
+
 try:
 	if config.plugins.xtraEvent.timerMod.value == "Clock":
 		tc = config.plugins.xtraEvent.timerClock.value
@@ -67,4 +76,4 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name="xtraEvent {}".format(xtra.version), description="Poster, Baskdrop, Banner, Info...Etc, Support...", where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
+	return [PluginDescriptor(name=_("xtraEvent"), description=_("Poster, backdrop, banner, info and more") + " git-" + versionnumber, where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
