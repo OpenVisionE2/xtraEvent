@@ -5,6 +5,10 @@ from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG
 from os.path import exists
+<<<<<<< HEAD
+=======
+from Components.Sources.ServiceEvent import ServiceEvent
+>>>>>>> b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
 from Components.Sources.CurrentService import CurrentService
 from Components.config import config
 import re
