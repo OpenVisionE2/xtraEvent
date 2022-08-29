@@ -7,10 +7,6 @@ from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-<< << << < HEAD
-== == == =
-import Tools.Notifications
->>>>>> > b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
 from os import walk, listdir, makedirs, remove
 from os.path import getsize, join, isdir, exists, isfile
 import re
@@ -293,24 +289,18 @@ class xtra(Screen, ConfigListScreen):
 				path_banner = "{}banner/".format(pathLoc)
 				path_backdrop = "{}backdrop/".format(pathLoc)
 				path_info = "{}infos/".format(pathLoc)
-				folder_size = sum([sum(map(lambda fname: getsize(join(path_poster, fname)), files)) for path_poster, folders, files in walk(path_poster)])
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_poster, fname)), files)) for path_poster, folders, files in os.walk(path_poster)])
 				posters_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				poster_nmbr = len(listdir(path_poster))
-				folder_size = sum([sum(map(lambda fname: getsize(join(path_banner, fname)), files)) for path_banner, folders, files in walk(path_banner)])
+				poster_nmbr = len(os.listdir(path_poster))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_banner, fname)), files)) for path_banner, folders, files in os.walk(path_banner)])
 				banners_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				banner_nmbr = len(listdir(path_banner))
-
-
-<< << << < HEAD
-				folder_size = sum([sum(map(lambda fname: .getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in walk(path_backdrop)])
-== == == =
-				folder_size = sum([sum(map(lambda fname: getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in walk(path_backdrop)])
->>>>>> > b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
+				banner_nmbr = len(os.listdir(path_banner))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_backdrop, fname)), files)) for path_backdrop, folders, files in os.walk(path_backdrop)])
 				backdrops_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				backdrop_nmbr = len(listdir(path_backdrop))
-				folder_size = sum([sum(map(lambda fname: getsize(join(path_info, fname)), files)) for path_info, folders, files in walk(path_info)])
+				backdrop_nmbr = len(os.listdir(path_backdrop))
+				folder_size = sum([sum(map(lambda fname: getsize(join(path_info, fname)), files)) for path_info, folders, files in os.walk(path_info)])
 				infos_sz = "%0.1f" % (folder_size // (1024 * 1024.0))
-				info_nmbr = len(listdir(path_info))
+				info_nmbr = len(os.listdir(path_info))
 				self['status'].setText(_(lng.get(lang, '48')))
 				pstr = "Poster : {} poster {} MB".format(poster_nmbr, posters_sz)
 				bnnr = "Banner : {} banner {} MB".format(banner_nmbr, banners_sz)
@@ -504,12 +494,8 @@ class xtra(Screen, ConfigListScreen):
 		if answer:
 			pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
 			if isdir(pathLoc):
-<<<<<<< HEAD
 				from shutil import rmtree
 				rmtree(pathLoc)
-=======
-				shutil.rmtree(pathLoc)
->>>>>>> b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
 			if not isdir(pathLoc):
 				makedirs("{}poster".format(pathLoc))
 				makedirs("{}banner".format(pathLoc))
@@ -911,15 +897,9 @@ class manuelSearch(Screen, ConfigListScreen):
 						target = "{}backdrop/{}.jpg".format(pathLoc, evntNm)
 				else:
 					target = "{}EMC/{}-backdrop.jpg".format(pathLoc, self.title)
-<<<<<<< HEAD
 			if exists(self.path):
 				from shutil import copyfile
 				copyfile(self.path, target)
-=======
-			import shutil
-			if exists(self.path):
-				shutil.copyfile(self.path, target)
->>>>>>> b58eab3d6ba9ac4d5b1ec838fa04bed6be55b83e
 				if exists(target):
 					if config.plugins.xtraEvent.PB.value == "backdrops":
 						if not config.plugins.xtraEvent.searchModManuel.value == lng.get(lang, '16'):
