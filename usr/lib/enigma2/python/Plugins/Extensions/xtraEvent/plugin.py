@@ -76,4 +76,4 @@ def main(session, **kwargs):
 
 
 def Plugins(**kwargs):
-	return [PluginDescriptor(name=_("xtraEvent"), description=_("Poster, backdrop, banner, info and more") + ", " + versionnumber, where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
+	return [PluginDescriptor(name=_("xtraEvent"), description=_("Poster, backdrop, banner, info and more") + " git-" + versionnumber, where=PluginDescriptor.WHERE_PLUGINMENU, icon="plugin.png", fnc=main)]
