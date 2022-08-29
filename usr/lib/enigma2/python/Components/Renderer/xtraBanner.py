@@ -3,7 +3,7 @@
 # <widget source="session.Event_Now" render="xtraBanner" position="0,0" size="762,141" zPosition="1" />
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
-from enigma import ePixmap, ePicLoad, eEPGCache
+from enigma import ePixmap, ePicLoad
 from Components.AVSwitch import AVSwitch
 from Components.Pixmap import Pixmap
 from Components.config import config

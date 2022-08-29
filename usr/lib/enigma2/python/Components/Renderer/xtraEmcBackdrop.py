@@ -5,7 +5,6 @@ from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadJPG
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
-from Components.Sources.ServiceEvent import ServiceEvent
 from Components.Sources.CurrentService import CurrentService
 from Components.config import config
 from os.path import exists

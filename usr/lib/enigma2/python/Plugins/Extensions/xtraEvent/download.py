@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 # by digiteng...06.2020, 11.2020, 11.2021
 from __future__ import absolute_import
-from Components.AVSwitch import AVSwitch
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
 from Components.Label import Label
 from Components.ActionMap import ActionMap
-from enigma import eEPGCache, eTimer, getDesktop, ePixmap, ePoint, eSize, loadJPG
+from enigma import eEPGCache, getDesktop, ePoint, eSize, loadJPG
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.config import config
-from ServiceReference import ServiceReference
-from Screens.MessageBox import MessageBox
-import Tools.Notifications
 import requests
 from requests.utils import quote
 from os import remove, listdir
@@ -24,8 +20,8 @@ from . import xtra
 from datetime import datetime
 import time
 from Components.ProgressBar import ProgressBar
-import io
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
+from six import PY3
 
 if config.plugins.xtraEvent.tmdbAPI.value != "":
 	tmdb_api = config.plugins.xtraEvent.tmdbAPI.value
@@ -63,7 +59,7 @@ except:
 lang_path = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/languages")
 try:
 	lng = ConfigParser()
-	if PY3 == 3:
+	if PY3:
 		lng.read(lang_path, encoding='utf8')
 	else:
 		lng.read(lang_path)
@@ -72,7 +68,7 @@ except:
 	try:
 		lang = "en"
 		lng = ConfigParser()
-		if PY3 == 3:
+		if PY3:
 			lng.read(lang_path, encoding='utf8')
 		else:
 			lng.read(lang_path)
@@ -286,10 +282,10 @@ class downloads(Screen):
 						url = "https://elcinema.com/en/tvguide/"
 						urlo = requests.get(url)
 						urlo = urlo.text.replace('&#39;', "'").replace('&quot;', '"').replace('&amp;', 'and').replace('(', '').replace(')', '')
-						with io.open("/tmp/urlo.html", "w", encoding="utf-8") as f:
+						with open("/tmp/urlo.html", "w", encoding="utf-8") as f:
 							f.write(urlo)
 					if isfile("/tmp/urlo.html"):
-						with io.open("/tmp/urlo.html", "r", encoding="utf-8") as f:
+						with open("/tmp/urlo.html", "r", encoding="utf-8") as f:
 							urlor = f.read()
 						titles = re.findall('<li><a title="(.*?)" href="/en/work', urlor)
 					n = len(titles)

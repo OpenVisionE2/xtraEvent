@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 # by digiteng...06.2020, 11.2020, 11.2021, 12.2021, 01.2022
 from __future__ import absolute_import
-from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from Components.Pixmap import Pixmap
 from Components.Label import Label
 from Components.ActionMap import ActionMap
 from Screens.MessageBox import MessageBox
 from Screens.Standby import TryQuitMainloop
-import Tools.Notifications
 from os import walk, listdir, makedirs, remove
 from os.path import getsize, join, isdir, exists, isfile
 import re
-from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory, ConfigClock, NoSave
+from Components.config import config, configfile, ConfigYesNo, ConfigSubsection, getConfigListEntry, ConfigSelection, ConfigText, ConfigInteger, ConfigSelectionNumber, ConfigDirectory, ConfigClock
 from Components.ConfigList import ConfigListScreen
-from enigma import eTimer, eLabel, ePixmap, eSize, ePoint, loadJPG, eEPGCache, getDesktop, addFont, eServiceReference, eServiceCenter
+from enigma import eTimer, eSize, ePoint, loadJPG, eEPGCache, getDesktop, eServiceReference, eServiceCenter
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from Components.Sources.StaticText import StaticText
 from Screens.VirtualKeyBoard import VirtualKeyBoard
@@ -24,11 +22,10 @@ import socket
 import requests
 from Components.ProgressBar import ProgressBar
 from Screens.ChoiceBox import ChoiceBox
-import shutil
 from .xtraSelectionList import xtraSelectionList, xtraSelectionEntryComponent
 from Plugins.Extensions.xtraEvent.skins.xtraSkins import *
-from threading import Timer
-from datetime import datetime
+from six import PY3
+
 version = "v5.2"
 
 pathLoc = ""
@@ -75,7 +72,7 @@ except:
 lang_path = resolveFilename(SCOPE_PLUGINS, "Extensions/xtraEvent/languages")
 try:
 	lng = ConfigParser()
-	if infoPY == 3:
+	if PY3:
 		lng.read(lang_path, encoding='utf8')
 	else:
 		lng.read(lang_path)
@@ -84,7 +81,7 @@ except:
 	try:
 		lang = "en"
 		lng = ConfigParser()
-		if infoPY == 3:
+		if PY3:
 			lng.read(lang_path, encoding='utf8')
 		else:
 			lng.read(lang_path)
@@ -495,10 +492,10 @@ class xtra(Screen, ConfigListScreen):
 
 	def removeImagesAllYes(self, answer):
 		if answer:
-			import shutil
 			pathLoc = "{}xtraEvent/".format(config.plugins.xtraEvent.loc.value)
 			if isdir(pathLoc):
-				shutil.rmtree(pathLoc)
+				from shutil import rmtree
+				rmtree(pathLoc)
 			if not isdir(pathLoc):
 				makedirs("{}poster".format(pathLoc))
 				makedirs("{}banner".format(pathLoc))
@@ -599,6 +596,7 @@ class xtra(Screen, ConfigListScreen):
 		try:
 			if config.plugins.xtraEvent.timerMod.value == "Clock":
 				tc = config.plugins.xtraEvent.timerClock.value
+				from datetime import datetime
 				dt = datetime.today()
 				setclk = dt.replace(day=dt.day + 1, hour=tc[0], minute=tc[1], second=0, microsecond=0)
 				ds = setclk - dt
@@ -607,7 +605,7 @@ class xtra(Screen, ConfigListScreen):
 				def startDownload():
 					from . import download
 					download.downloads("").save()
-
+				from threading import Timer
 				t = Timer(secs, startDownload)
 				t.start()
 			self.close()
@@ -899,9 +897,9 @@ class manuelSearch(Screen, ConfigListScreen):
 						target = "{}backdrop/{}.jpg".format(pathLoc, evntNm)
 				else:
 					target = "{}EMC/{}-backdrop.jpg".format(pathLoc, self.title)
-			import shutil
 			if exists(self.path):
-				shutil.copyfile(self.path, target)
+				from shutil import copyfile
+				copyfile(self.path, target)
 				if exists(target):
 					if config.plugins.xtraEvent.PB.value == "backdrops":
 						if not config.plugins.xtraEvent.searchModManuel.value == lng.get(lang, '16'):
