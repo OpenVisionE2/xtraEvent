@@ -14,7 +14,7 @@ from . import download
 from enigma import addFont
 from Tools.Directories import resolveFilename, SCOPE_FONTS
 
-addFont(resolveFilename(SCOPE_FONTS, "arial.ttf"), "xtraRegular", 100, 1)
+addFont(resolveFilename(SCOPE_FONTS, "DejaVuSans.ttf"), "xtraRegular", 100, 1)
 
 with open("/var/lib/opkg/info/enigma2-plugin-extensions-xtraevent.control") as origin:
 	for version in origin:
