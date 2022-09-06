@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # by digiteng...
 # 07.2020 - 11.2020 - 11.2021
-# <widget render="xtraParental" source="session.Event_Now" position="0,0" size="60,60" alphatest="blend" zPosition="2" transparent="1" />
+# <widget render="xtraParental" source="session.Event_Now" position="0,0" size="60,60" alphaTest="blend" zPosition="2" transparent="1" />
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from enigma import ePixmap, loadPNG

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # by digiteng...07.2020 - 11.2020 - 11.2021
 # FOR INFO
-# <widget source="session.Event_Now" render="Label" position="50,545" size="930,400" font="Regular; 32" halign="left" transparent="1" zPosition="2" backgroundColor="background">
+# <widget source="session.Event_Now" render="Label" position="50,545" size="930,400" font="Regular; 32" horizontalAlignment="left" transparent="1" zPosition="2" backgroundColor="background">
 	# <convert type="xtraInfo">Title,Year,Description</convert>
 # </widget>
 #
 # FOR IMDB RATING STAR...
-# <ePixmap pixmap="xtra/star_b.png" position="990,278" size="200,20" alphatest="blend" zPosition="2" transparent="1" />
-# <widget source="ServiceEvent" render="Progress" pixmap="xtra/star.png" position="990,278" size="200,20" alphatest="blend" transparent="1" zPosition="2" backgroundColor="background">
+# <ePixmap pixmap="xtra/star_b.png" position="990,278" size="200,20" alphaTest="blend" zPosition="2" transparent="1" />
+# <widget source="ServiceEvent" render="Progress" pixmap="xtra/star.png" position="990,278" size="200,20" alphaTest="blend" transparent="1" zPosition="2" backgroundColor="background">
 	# <convert type="xtraInfo">imdbRatingValue</convert>
 # </widget>
 

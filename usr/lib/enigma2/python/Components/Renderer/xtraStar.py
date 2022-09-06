@@ -2,8 +2,8 @@
 # by digiteng
 # v1 07.2020, 11.2021
 
-# <ePixmap pixmap="xtra/star_b.png" position="560,367" size="200,20" alphatest="blend" zPosition="2" transparent="1" />
-# <widget render="xtraStar" source="session.Event_Now" pixmap="xtra/star.png" position="560,367" size="200,20" alphatest="blend" transparent="1" zPosition="3" />
+# <ePixmap pixmap="xtra/star_b.png" position="560,367" size="200,20" alphaTest="blend" zPosition="2" transparent="1" />
+# <widget render="xtraStar" source="session.Event_Now" pixmap="xtra/star.png" position="560,367" size="200,20" alphaTest="blend" transparent="1" zPosition="3" />
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from Components.VariableValue import VariableValue

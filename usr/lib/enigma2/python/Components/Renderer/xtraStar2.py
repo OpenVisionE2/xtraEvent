@@ -2,9 +2,9 @@
 # by digiteng
 # 11.2021
 # for channellist
-# <widget source="ServiceEvent" render="xtraStar" position="750,390" size="200,20" alphatest="blend" transparent="1" zPosition="3" />
+# <widget source="ServiceEvent" render="xtraStar" position="750,390" size="200,20" alphaTest="blend" transparent="1" zPosition="3" />
 # or
-# <widget source="ServiceEvent" render="xtraStar" pixmap="xtra/star.png" position="750,390" size="200,20" alphatest="blend" transparent="1" zPosition="3" />
+# <widget source="ServiceEvent" render="xtraStar" pixmap="xtra/star.png" position="750,390" size="200,20" alphaTest="blend" transparent="1" zPosition="3" />
 from __future__ import absolute_import
 from Components.Renderer.Renderer import Renderer
 from Components.VariableValue import VariableValue
