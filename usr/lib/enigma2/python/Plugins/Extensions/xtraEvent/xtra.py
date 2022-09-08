@@ -244,7 +244,6 @@ class xtra(Screen, ConfigListScreen):
 
 		self['key_red'] = Label(_('Close'))
 		self['key_green'] = Label(_(lng.get(lang, '40')))
-		self['key_yellow'] = Label(_(lng.get(lang, '75')))
 		self['key_blue'] = Label(_(lng.get(lang, '18')))
 		self["actions"] = ActionMap(["xtraEventAction"],
 		{
