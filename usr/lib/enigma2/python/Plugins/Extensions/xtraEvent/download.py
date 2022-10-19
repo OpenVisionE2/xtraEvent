@@ -485,8 +485,11 @@ class downloads(Screen):
 										except:
 											pass
 							except Exception as err:
-								with open("/tmp/xtraEvent.log", "a+") as f:
-									f.write("tmdb poster, %s, %s\n" % (title, err))
+								try:
+									with open("/tmp/xtraEvent.log", "a+") as f:
+										f.write("tmdb poster, %s, %s\n" % (title, err))
+								except UnicodeEncodeError as err:
+									pass
 		# tvdb_Poster() #################################################################
 					if config.plugins.xtraEvent.tvdb.value == True:
 						try:
